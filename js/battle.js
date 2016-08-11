@@ -25,8 +25,8 @@ var enemy;
 var enemy_X = 50;  // x/y coords of enemies
 var enemy_Y = 200;
 var dialogBox;
-var textBox;
-var infolist = [""]   //list of deforestation info
+var infoBox;
+var infolist = ["Hello","Goodbye","YO"]; //list of deforestation info
 var mainOptions;
 var fightOptions;
 var backButton;
@@ -37,10 +37,6 @@ var baseButton_3_X = 420;
 var baseButton_Y = 450;   // all buttons are based off of same y coord
 
 function create(){
-	// var list = ["tiggers are cool","asdfads","Adsfasdf"];
-	// for i in that
-	// 	 random index display at set interval
-
 	// adding (displaying) our sprites to the game
 	player = game.add.sprite(player_X, player_Y,'betty');
 	enemy = game.add.sprite(enemy_X, enemy_Y, 'forest');
@@ -49,15 +45,15 @@ function create(){
 	// rescaling sprites
 	dialogBox.scale.setTo(2, 2);
 
-	// creating and configuring our textBox
-	var style = { font: "bold 32px Arial", 
-	fill: "#fff", 
-	boundsAlignH: "center", 
-	boundsAlignV: "middle" };
-	textBox = game.add.text(game.world.width/2,425, 
-		style, "hello world!");
-	textBox.anchor.setTo(0.5); //centering textBox
+	//creating infoBox
+	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
+	infoBox = game.add.text(game.world.width/2, 425, 
+	infolist[randInfo]);
+    infoBox.anchor.set(0.5);   // places infoBox at center
 
+    //displays new info after set interval
+	game.time.events.loop(Phaser.Timer.SECOND * 2, show_infoBox, this); //*2 increases amount of seconds
+	
 	// setting health values
 	player.maxHealth = 5;
 	player.health = 5;
@@ -147,6 +143,13 @@ function create(){
 	game.world.sendToBack(backButton);
 	// bringing options to top of screen
 	game.world.bringToTop(mainOptions);
+
+}
+
+//displays new info (after some time)
+function show_infoBox(){
+	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
+	infoBox.setText(infolist[randInfo])
 
 }
 // clicking displays next set of options (subMenu)
