@@ -18,6 +18,7 @@ function preload(){
 
 //  setting variables for game objects
 // you can manipulate a lot of properties from here
+var player_turn = true;  //if true, player can do actions (or else its enemy's turn!)
 var player;
 var player_X = 500;  // x/y coords of player
 var player_Y = 200;
@@ -139,11 +140,15 @@ function create(){
 	returnToMainOptions,this, 1, 0, 2); 
 	backButton.add(back);
 
-	// sends back button to back of screen
-	game.world.sendToBack(backButton);
-	// bringing options to top of screen
-	game.world.bringToTop(mainOptions);
+	// hides all buttons but mainOptions
+	fightOptions.visible = false;
+	itemsOptions.visible = false;
+	backButton.visible = false;
+}
 
+function switchTurns(){
+	if (!player_turn){
+	}
 }
 
 //displays new info (after some time)
@@ -152,11 +157,12 @@ function show_infoBox(){
 	infoBox.setText(infolist[randInfo])
 
 }
+
 // clicking displays next set of options (subMenu)
 // for example, fightClicked() shows 3 attack options ontop of hud
 function fightClicked(){
 	// show fightOptions and back button wile hiding mainOptions
-	game.world.bringToTop(fightOptions);
+	fightOptions.visible = true;
 	showSubMenu();
 }   
 	function attackClicked(){  
@@ -164,23 +170,29 @@ function fightClicked(){
 		// health bar adjusts to percentage of health left
 		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
 	}
+
 //shows item submenu
 function itemsClicked(){
-	game.world.bringToTop(itemsOptions);
+	itemsOptions.visible = true;
 	showSubMenu();
 }
 	function potionClicked() {
 		enemy.heal(3);
 		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
 	}
+
 function showSubMenu(){
-	game.world.sendToBack(mainOptions);
-	game.world.bringToTop(backButton);
+	mainOptions.visible = false;
+	backButton.visible = true;
 }
 
 function returnToMainOptions(){
-	game.world.bringToTop(mainOptions);
-	game.world.sendToBack(backButton);
+	fightOptions.visible = false;
+	itemsOptions.visible = false;
+	fightButton.frame = 1;  //fixing a bug where button stuck at frame 2
+	itemsButton.frame = 1;
+	backButton.visible = false;
+	mainOptions.visible = true;
 }
 
 function runClicked(){

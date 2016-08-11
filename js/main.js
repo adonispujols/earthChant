@@ -3,15 +3,14 @@ create: create, update: update, render: render});
 function preload(){
 	game.stage.backgroundColor = '#007000';
 	// loading sprite sheet. key, url, width, hieght, frames
-	game.load.atlas('saraOvr','assets/saraOvr.png','assets/atlas.json',
-		Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
+	game.load.spritesheet('betty','assets/betty.png', 48, 48, 16);
 	game.load.image('forest','assets/forest_tiles.png');
 }
 // setting these variables as global for use after create()
-var saraOvr;
+var betty;
 var sara_X_speed = 200;
 var sara_Y_speed = 200;
-var saraOvrDirection=1;  //resets direciton when game starts
+var bettyDirection = 0;  //resets direciton when game starts
 var forest;
 var cursors;
 function create(){
@@ -19,12 +18,12 @@ function create(){
 	game.world.setBounds(0,0,2000,2000)
 	// staring physics system, for easy movement control/collision detection
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	// adding our sprites to game (saraOvr is at the world'ss center x and y)
-	saraOvr = game.add.sprite(game.world.centerX,game.world.centerY, 'saraOvr');
-	// actuall enabling arcade physics on saraOvr var (object)
-	game.physics.arcade.enable(saraOvr);
-	saraOvr.enableBody = true;
-	saraOvr.scale.setTo(1.5, 1.5);
+	// adding our sprites to game (betty is at the world'ss center x and y)
+	betty = game.add.sprite(game.world.centerX,game.world.centerY, 'betty');
+	// actuall enabling arcade physics on betty var (object)
+	game.physics.arcade.enable(betty);
+	betty.enableBody = true;
+	betty.scale.setTo(1.5, 1.5);
 
 	forest = game.add.sprite(1000,1200, 'forest');
 	// same for our forest
@@ -34,41 +33,41 @@ function create(){
 	// cursor controls (arrow keys)
 	cursors = game.input.keyboard.createCursorKeys();
 	// camera follow character (As easy as that!)
-	game.camera.follow(saraOvr);
-	// walk animation for saraOvr (key, list of frames, framerate,loop t/f
+	game.camera.follow(betty);
+	// walk animation for betty (key, list of frames, framerate,loop t/f
 	// left= walk left, right =walk right, etc)
-	saraOvr.animations.add('down', [0,1,2],10,true);
-	saraOvr.animations.add('left', [3,4,5],10,true);
-	saraOvr.animations.add('up', [9,10,11],10,true);
-	saraOvr.animations.add('right', [6,7,8],10,true);
+	betty.animations.add('down', [0,4,8,12],10,true);
+	betty.animations.add('left', [1,5,9,13],10,true);
+	betty.animations.add('up', [2,6,10,14],10,true);
+	betty.animations.add('right', [3,7,11,15],10,true);
 }
 function update(){
-	game.physics.arcade.overlap(saraOvr, forest, loadBattle());
-	// creating movement for saraOvr (she )
+	game.physics.arcade.overlap(betty, forest, loadBattle());
+	// creating movement for betty (she )
 	// reseting velocity x and y to zero
-	saraOvr.body.velocity.x = 0;
-	saraOvr.body.velocity.y = 0;
-	// store direction saraOvr is facing (the frame for our .stop() function)
+	betty.body.velocity.x = 0;
+	betty.body.velocity.y = 0;
+	// store direction betty is facing (the frame for our .stop() function)
 	if (cursors.down.isDown) {
-		saraOvr.body.velocity.y = sara_Y_speed;
-		saraOvr.animations.play('down');
-		saraOvrDirection = 1;
+		betty.body.velocity.y = sara_Y_speed;
+		betty.animations.play('down');
+		bettyDirection = 1;
 	} else if (cursors.left.isDown) {
-		saraOvr.body.velocity.x = -sara_X_speed;
-		saraOvr.animations.play('left');
-		saraOvrDirection = 4;
+		betty.body.velocity.x = -sara_X_speed;
+		betty.animations.play('left');
+		bettyDirection = 4;
 	} else if (cursors.up.isDown) {
-		saraOvr.body.velocity.y = -sara_Y_speed;
-		saraOvr.animations.play('up');
-		saraOvrDirection = 10;
+		betty.body.velocity.y = -sara_Y_speed;
+		betty.animations.play('up');
+		bettyDirection = 10;
 	} else if (cursors.right.isDown) {
-		saraOvr.body.velocity.x = sara_X_speed;
-		saraOvr.animations.play('right');
-		saraOvrDirection = 7;
+		betty.body.velocity.x = sara_X_speed;
+		betty.animations.play('right');
+		bettyDirection = 7;
 	} else {
-		//  when not in motion, saraOvr will stop
-		saraOvr.animations.stop()
-		saraOvr.frame = saraOvrDirection;
+		//  when not in motion, betty will stop
+		betty.animations.stop()
+		betty.frame = bettyDirection;
 	}
 	function loadBattle(){
 		
@@ -76,5 +75,5 @@ function update(){
 }
 function render() {
     game.debug.cameraInfo(game.camera, 32, 32);
-    game.debug.spriteCoords(saraOvr, 32, 500);
+    game.debug.spriteCoords(betty, 32, 500);
 }
