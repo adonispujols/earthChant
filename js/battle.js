@@ -18,7 +18,9 @@ function preload(){
 
 //  setting variables for game objects
 // you can manipulate a lot of properties from here
-var player_turn = true;  //if true, player can do actions (or else its enemy's turn!)
+var anim;  //creating animation object
+var power; //var that controls power of attacks (changes depending on attack chosen)
+var attackPower=3;  //specifices the exact power stat of attack (should be put in seperate list)
 var player;
 var player_X = 500;  // x/y coords of player
 var player_Y = 200;
@@ -42,10 +44,12 @@ function create(){
 	player = game.add.sprite(player_X, player_Y,'betty');
 	enemy = game.add.sprite(enemy_X, enemy_Y, 'forest');
 	dialogBox = game.add.sprite(-15, 400, 'dialogBox');
-
 	// rescaling sprites
 	dialogBox.scale.setTo(2, 2);
 
+	//setting up betty's basic animation
+	anim = player.animations.add('walk'); 
+	
 	//creating infoBox
 	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
 	infoBox = game.add.text(game.world.width/2, 425, 
@@ -160,14 +164,13 @@ function fightClicked(){
 	fightOptions.visible = true;
 	showSubMenu();
 }   
-	function attackClicked(){  
-		enemy.damage(3);
-		// health bar adjusts to percentage of health left
-		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
-		switchTurns();
+	function attackClicked(){
+		power = attackPower;  
+		anim.play(10, false); 
+		anim.onComplete.add(hitEnemy, this); //when anim is finished run hitEnemy function
 	}
 
-//shows item submenu
+// shows item submenu
 function itemsClicked(){
 	itemsOptions.visible = true;
 	showSubMenu();
@@ -185,26 +188,44 @@ function showSubMenu(){
 function returnToMainOptions(){
 	fightOptions.visible = false;
 	itemsOptions.visible = false;
-	fightButton.frame = 1;  //fixing a bug where button stuck at frame 2
+	fightButton.frame = 1;  // fixing a bug where button stuck at frame 2
 	itemsButton.frame = 1;
 	backButton.visible = false;
 	mainOptions.visible = true;
 }
 
-//switches turns, then hides&displays depending if its the players turn or not
+//deals damage to enemy when hit and switches to enemy turn
+function hitEnemy(){
+		enemy.damage(power);
+		// health bar adjusts to percentage of health left
+		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
+		switchTurns();
+}
+
+// switches turns by hiding the hud and playing enemy turn
 function switchTurns(){
-	if (player_turn){
-		mainOptions.visible = false;
-		fightOptions.visible = false;
-		itemsOptions.visible = false;
-		backButton.visible = false;
-		player_turn = false;
-	} else{
-		mainOptions.visible = true;
-		fightOptions.visible = true;
-		itemsOptions.visible = true;
-		backButton.visible = true;
-	}
+	mainOptions.visible = false;
+	fightOptions.visible = false;
+	itemsOptions.visible = false;
+	backButton.visible = false;
+	enemyTurn();
+}
+// defines what enemy does in their turn
+function enemyTurn(){
+	anim.play(10, false); 
+	anim.onComplete.add(hitPlayer, this); //when anim is finished run hitPlayer function
+}
+//deals damage to player when hit and switches to player turn
+function hitPlayer(){	
+	player.damage(3);
+	this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
+}
+// shows options again
+function switchTurn(){
+	mainOptions.visible = true;
+	fightOptions.visible = true;
+	itemsOptions.visible = true;
+	backButton.visible = true;
 }
 
 function runClicked(){
