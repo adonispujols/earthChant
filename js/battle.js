@@ -146,11 +146,6 @@ function create(){
 	backButton.visible = false;
 }
 
-function switchTurns(){
-	if (!player_turn){
-	}
-}
-
 //displays new info (after some time)
 function show_infoBox(){
 	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
@@ -169,6 +164,7 @@ function fightClicked(){
 		enemy.damage(3);
 		// health bar adjusts to percentage of health left
 		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
+		switchTurns();
 	}
 
 //shows item submenu
@@ -193,6 +189,22 @@ function returnToMainOptions(){
 	itemsButton.frame = 1;
 	backButton.visible = false;
 	mainOptions.visible = true;
+}
+
+//switches turns, then hides&displays depending if its the players turn or not
+function switchTurns(){
+	if (player_turn){
+		mainOptions.visible = false;
+		fightOptions.visible = false;
+		itemsOptions.visible = false;
+		backButton.visible = false;
+		player_turn = false;
+	} else{
+		mainOptions.visible = true;
+		fightOptions.visible = true;
+		itemsOptions.visible = true;
+		backButton.visible = true;
+	}
 }
 
 function runClicked(){
