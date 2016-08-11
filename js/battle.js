@@ -30,7 +30,7 @@ var enemy_Y = 200;
 var dialogBox;
 var infoBox;
 var infolist = ["Hello","Goodbye","YO"]; //list of deforestation info
-var mainOptions;
+var mainMenu;
 var fightOptions;
 var backButton;
 var backButton_X = 0; // x coor
@@ -44,6 +44,7 @@ function create(){
 	player = game.add.sprite(player_X, player_Y,'betty');
 	enemy = game.add.sprite(enemy_X, enemy_Y, 'forest');
 	dialogBox = game.add.sprite(-15, 400, 'dialogBox');
+
 	// rescaling sprites
 	dialogBox.scale.setTo(2, 2);
 
@@ -101,29 +102,29 @@ function create(){
 	this.enemyHealthBar = new HealthBar(this.game, enemyBarConfig);
 	
 	// creating groups for options (good for easy manipulation)
-	mainOptions = game.add.group(); 
+	mainMenu = game.add.group(); 
 	fightOptions = game.add.group();
 	itemsOptions = game.add.group();
 	backButton = game.add.group();
 	
 	// (interactive) buttons for inital/main options
 	fightButton = game.add.button( baseButton_1_X, baseButton_Y,'fightButton', 
-	fightClicked,this, 2, 1, 0); // fight button
+	showFightMenu,this, 2, 1, 0); // fight button
 	itemsButton = game.add.button( baseButton_2_X, baseButton_Y,'itemsButton', 
-	itemsClicked,this, 2, 1, 0); // items button
+	showItemsOptions,this, 2, 1, 0); // items button
 	runButton = game.add.button( baseButton_3_X, baseButton_Y, 'runButton', 
 	runClicked,this, 2, 1, 0); // run button
-	mainOptions.add(fightButton);
-	mainOptions.add(itemsButton);
-	mainOptions.add(runButton);	
+	mainMenu.add(fightButton);
+	mainMenu.add(itemsButton);
+	mainMenu.add(runButton);	
 	
 	// buttons for different fight options
 	var attack = game.add.button( baseButton_1_X, baseButton_Y, 'fightButton', 
 	attackClicked,this, 1, 0, 2); // attack button
 	var attack1 = game.add.button( baseButton_2_X, baseButton_Y, 'fightButton', 
-	fightClicked,this, 1, 0, 2); // attack1 button
+	showFightMenu,this, 1, 0, 2); // attack1 button
 	var attack2 = game.add.button( baseButton_3_X, baseButton_Y, 'fightButton', 
-	fightClicked,this, 1, 0, 2); // attack2 button
+	showFightMenu,this, 1, 0, 2); // attack2 button
 	fightOptions.add(attack);
 	fightOptions.add(attack1);
 	fightOptions.add(attack2);
@@ -132,46 +133,45 @@ function create(){
 	var potion = game.add.button( baseButton_1_X, baseButton_Y, 'itemsButton', 
 	potionClicked,this, 1, 0, 2); // potion2 button
 	var potion1 = game.add.button( baseButton_2_X, baseButton_Y, 'itemsButton', 
-	itemsClicked,this, 1, 0, 2); // potion1 button
+	showItemsOptions,this, 1, 0, 2); // potion1 button
 	var potion2 = game.add.button( baseButton_3_X, baseButton_Y, 'itemsButton', 
-	itemsClicked,this, 1, 0, 2); // potion2 button
+	showItemsOptions,this, 1, 0, 2); // potion2 button
 	itemsOptions.add(potion1);
 	itemsOptions.add(potion);
 	itemsOptions.add(potion2);
 
 	// back button that returns to main screen
 	var back = game.add.button(500, baseButton_Y, 'backButton',
-	returnToMainOptions,this, 1, 0, 2); 
+	showMainMenu,this, 1, 0, 2); 
 	backButton.add(back);
 
-	// hides all buttons but mainOptions
-	fightOptions.visible = false;
-	itemsOptions.visible = false;
-	backButton.visible = false;
+	//displays mainmenu/options
+	showMainMenu();
+
 }
 
 //displays new info (after some time)
 function show_infoBox(){
 	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
-	infoBox.setText(infolist[randInfo])
-
+	infoBox.setText(infolist[randInfo]);
 }
 
 // clicking displays next set of options (subMenu)
-// for example, fightClicked() shows 3 attack options ontop of hud
-function fightClicked(){
-	// show fightOptions and back button wile hiding mainOptions
+// for example, showFightMenu() shows 3 attack options ontop of hud
+function showFightMenu(){
+	// show fightOptions and back button wile hiding mainMenu
 	fightOptions.visible = true;
 	showSubMenu();
 }   
 	function attackClicked(){
-		power = attackPower;  
+		hideHud();
+		power = attackPower;   //sets power of attack according to power of move  
 		anim.play(10, false); 
 		anim.onComplete.add(hitEnemy, this); //when anim is finished run hitEnemy function
 	}
 
-// shows item submenu
-function itemsClicked(){
+//items button
+function showItemsOptions(){
 	itemsOptions.visible = true;
 	showSubMenu();
 }
@@ -179,50 +179,52 @@ function itemsClicked(){
 		enemy.heal(3);
 		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
 	}
-
+// shows item submenu, hides mainmenu
 function showSubMenu(){
-	mainOptions.visible = false;
+	mainMenu.visible = false;
 	backButton.visible = true;
 }
-
-function returnToMainOptions(){
+//shows mainhud/menu while hiding all submenus
+function showMainMenu(){
 	fightOptions.visible = false;
 	itemsOptions.visible = false;
-	fightButton.frame = 1;  // fixing a bug where button stuck at frame 2
-	itemsButton.frame = 1;
 	backButton.visible = false;
-	mainOptions.visible = true;
+	mainMenu.visible = true;
+	fightButton.frame = 1;  // fixing a bug where buttons are stuck at frame 2
+	itemsButton.frame = 1;
+}
+
+//hides all options (used after actions are done);
+function hideHud(){
+	mainMenu.visible = false;
+	fightOptions.visible = false;
+	itemsOptions.visible = false;
+	backButton.visible = false;
 }
 
 //deals damage to enemy when hit and switches to enemy turn
-function hitEnemy(){
+function hitEnemy(sprite, animation){  // parameters are the "this" for the animation
 		enemy.damage(power);
 		// health bar adjusts to percentage of health left
 		this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
-		switchTurns();
+		// plays enemy turn
+		enemyTurn();
 }
 
-// switches turns by hiding the hud and playing enemy turn
-function switchTurns(){
-	mainOptions.visible = false;
-	fightOptions.visible = false;
-	itemsOptions.visible = false;
-	backButton.visible = false;
-	enemyTurn();
-}
 // defines what enemy does in their turn
 function enemyTurn(){
 	anim.play(10, false); 
 	anim.onComplete.add(hitPlayer, this); //when anim is finished run hitPlayer function
 }
+
 //deals damage to player when hit and switches to player turn
-function hitPlayer(){	
+function hitPlayer(sprite, animation){	
 	player.damage(3);
 	this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
 }
 // shows options again
-function switchTurn(){
-	mainOptions.visible = true;
+function playerTurn(){
+	mainMenu.visible = true;
 	fightOptions.visible = true;
 	itemsOptions.visible = true;
 	backButton.visible = true;
