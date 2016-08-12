@@ -1,7 +1,10 @@
 var game = new Phaser.Game(800,600, Phaser.AUTO, '', {preload: preload, 
 create: create, update: update});
+
+//NOTES NOTES NOTES NOTES:
+
 //FIX COMMENTS
-//FIX COMMENTS
+//TOO SIMILAR TO POKEMON! (keep button system)
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
@@ -29,6 +32,7 @@ var power; //var that controls power of attacks (changes depending on attack cho
 var attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
 var attackPower2 = 3;
 var potionRegen = 3;  //amount of health gained 
+var battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
 var player;
 var player_X = 500;  // x/y coords of player
 var player_Y = 250;
@@ -190,7 +194,7 @@ function showItemsOptions(){
 	//potions button
 	function potionClicked() {
 		player.heal(potionRegen);
-		this.playerHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
+		this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
 	}
 // shows item submenu, hides mainmenu
 function showSubMenu(){
@@ -228,10 +232,14 @@ function hitEnemy(){
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
 function enemyTurn(){
-	atkanim2.play();  
-	power = attackPower2;   //se
-	//again, add an conditional (if hit)
-	atkanim2.onComplete.add(hitPlayer, this); // fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
+	//adds a slight delay before enemy does anything
+	game.time.events.add(Phaser.Timer.SECOND*battleSpeed, runEnemyTurn, this);
+	function runEnemyTurn(){
+		atkanim2.play();  
+		power = attackPower2;    //still using same power variable 
+		//again, add an conditional (if hit)
+		atkanim2.onComplete.add(hitPlayer, this); 
+	}
 }
 
 // deals damage to player when hit and switches to player turn
@@ -251,6 +259,3 @@ function runClicked(){
 
 function update(){
 }
-
-//FIX COMMENTS
-//FIX COMMENTS
