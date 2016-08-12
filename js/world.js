@@ -3,18 +3,18 @@ var earthChant = earthChant || {}; // calling from base game
 // setting up state
 earthChant.World = function(){};
 
-//setting game configuration and loading the assets for the loading screen
+//setting up vraibles, functions, and objects of world
 earthChant.World.prototype = {
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
 	this.game.world.setBounds( 0, 0, 2000, 2000);
 	this.game.stage.backgroundColor = '#007000';
 
-	//setting up variables  for objects
+	//setting up variables for objects
 	this.betty;
 	this.sara_X_speed = 200;
 	this.sara_Y_speed = 200;
-	this.bettyDirection = 0;  //resets direciton when game starts
+	this.bettyDirection = 0;  //resets direction she faces when game starts
 	this.enemy;
 	this.cursors;
 

@@ -24,20 +24,21 @@ create: function(){
 	this.healanim;    //heal (health gained) animation  
 	this.hitanim;    //hit (or hurt) animation 
 	this.hitanim2; 
-	this.nullanim; 		// use this null animation to debbug
+	this.nullanim; 		// use this null animation to debug
 	this.power; //var that controls power of attacks (changes depending on attack chosen)
 	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 3;
 	this.potionRegen = 3;  //amount of health gained 
 	this.battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
 	this.player;
-	this.player_X = 500;  // x/y coords of player
+	this.player_X = 500;  // starting x/y coords of player
 	this.player_Y = 250;
 	this.enemy;
 	this.enemyGroup; 
-	this.enemy_X = 50;  // x/y coords of enemies
+	this.enemy_X = 50;  // starting x/y coords of enemies
 	this.enemy_Y = 250;
 	this.dialogBox;
+	this.victoryBox;
 	this.infoBox;
 	this.infolist = ["FAct 1","Goodbye","YO",]; //list of deforestation info
 	this.mainMenu;
@@ -170,6 +171,7 @@ create_infoBox: function(){
     //displays new info after set interval
 	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.show_infoBox, this); //*2 increases amount of seconds
 },
+
 // displays new info (after some time)
 show_infoBox: function(){
 	this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
@@ -253,17 +255,18 @@ hitEnemy: function(){
 	this.enemy.damage(this.power);
 	// health bar adjusts to percentage of health left
 	this.enemyHealthBar.setPercent(100*this.enemy.health/this.enemy.maxHealth);
-	this.hitanim2.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
-},
-
-delayEnemyTurn: function(){
-	//if there are living enemies, add a slight delay before enemy does anything
-	if (this.enemyGroup.countLiving()>0){ 
-		this.game.time.events.add(Phaser.Timer.SECOND*this.battleSpeed, this.enemyTurn, this);
-	 }
-	else {
+	//when all enemes die, play enemiesDead(), or else run delayEnemyTurn
+	if (this.enemyGroup.countLiving()==0){ 
 		this.enemiesDead();
 	}
+	else{
+	this.hitanim2.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
+	}
+},
+
+//add a slight delay before enemy does anything
+delayEnemyTurn: function(){
+	this.game.time.events.add(Phaser.Timer.SECOND*this.battleSpeed, this.enemyTurn, this);
 },
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
@@ -287,8 +290,14 @@ playerTurn: function(){
 	this.showMainMenu();
 },
 
-// sends back to world screen when enemies are dead
+// defines what happens when enemies are all dead (right before sending to worldscreen)
 enemiesDead: function(){
+	this.victoryBox = this.game.add.text(this.game.world.width/2, 325, 
+	"You won!");
+    this.infoBox.anchor.set(0.5);   // places infoBox at center
+    //displays new info after set interval
+	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.show_infoBox, this); //*2 increases amount of seconds
+
 	this.game.state.start('World', true, false); 
 },
 

@@ -17,10 +17,10 @@ earthChant.Preload.prototype = {
 		},
 
 	create: function() {
-		// staring physics system, for easy movement control/collision detection
+		// starting physics system, for easy movement control/collision detection
 		this.game.physics.startSystem(Phaser.Physics.ARCADE)
 
-		// create world state
+		// start world state/scene
 		this.state.start('World');
 	}
 };
