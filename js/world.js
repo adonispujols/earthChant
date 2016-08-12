@@ -44,6 +44,8 @@ earthChant.World.prototype = {
 	// actuall enabling arcade physics on betty var (object)
 	this.game.physics.arcade.enable(this.betty);
 	this.betty.enableBody = true;
+	this.betty.body.collideWorldBounds=true;
+
 	this.betty.scale.setTo(1.5, 1.5); //rescalling betty
 
 	// same for our enemy

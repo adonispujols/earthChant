@@ -35,8 +35,8 @@ create: function(){
 	this.deadEnemy;
 	this.nullanim; 		// use this null animation to debug
 	this.power; //var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 2;  //specifices the exact power stat of attack (should be put in seperate list)
-	this.attackPower2 = 2;
+	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower2 = 3;
 	this.potionRegen = 3;  //amount of health gained 
 	this.battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
 	this.player;
