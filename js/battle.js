@@ -11,90 +11,78 @@ var earthChant = earthChant || {}; // calling from base game
 // setting up state
 earthChant.Battle = function(){};
 
-//setting game configuration and loading the assets for the loading screen
+//setting game configuration and loading the assets for the loading screen 
 earthChant.Battle.prototype = {
-function preload(){
-	game.stage.backgroundColor = '#007000';
 
-	// loading sprite sheet. key, url, width, hieght, frames
-	game.load.spritesheet('betty', 'assets/betty.png', 48, 48, 16);
-	game.load.spritesheet('betty2', 'assets/betty.png', 48, 48, 16);
-	game.load.spritesheet('fightButton','assets/button_sprite_sheet.png',193, 71);
-	game.load.spritesheet('itemsButton','assets/button_sprite_sheet.png',193, 71);
-	game.load.spritesheet('runButton','assets/button_sprite_sheet.png',193, 71);
-	game.load.spritesheet('backButton','assets/button_sprite_sheet.png',193, 71);
-	game.load.image('forest','assets/forest_tiles.png');
-	game.load.image('dialogBox','assets/dialogBox.png');
-}
+// Almost Every object, var, and function needs 'this' because it attaches it to our main game(stores in cache it)
+create: function(){
 
-//  setting variables for game objects
-// you can manipulate a lot of properties from here
-var atkanim;  	//attack animation (anim2 or hitanim2 are for enemy (as of now))
-var atkanim2;
-var healanim;    //heal (health gained) animation  
-var hitanim;    //hit (or hurt) animation 
-var hitanim2; 
-var nullanim; 		// use this null animation to debbug
-var power; //var that controls power of attacks (changes depending on attack chosen)
-var attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
-var attackPower2 = 3;
-var potionRegen = 3;  //amount of health gained 
-var battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
-var player;
-var player_X = 500;  // x/y coords of player
-var player_Y = 250;
-var enemy;
-var enemy_X = 50;  // x/y coords of enemies
-var enemy_Y = 250;
-var dialogBox;
-var infoBox;
-var infolist = ["FAct 1","Goodbye","YO",]; //list of deforestation info
-var mainMenu;
-var fightOptions;
-var backButton;
-var backButton_X = 0; // x coor
-var baseButton_1_X = 20;   // xcoord of base (frequently used) buttons
-var baseButton_2_X = 220;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
-var baseButton_3_X = 420;
-var baseButton_Y = 450;   // all buttons are based off of same y coord
+	//  setting variables for game objects
+	// you can manipulate a lot of properties from here
+	this.atkanim;  	//attack animation (anim2 or hitanim2 are for enemy (as of now))
+	this.atkanim2;
+	this.healanim;    //heal (health gained) animation  
+	this.hitanim;    //hit (or hurt) animation 
+	this.hitanim2; 
+	this.nullanim; 		// use this null animation to debbug
+	this.power; //var that controls power of attacks (changes depending on attack chosen)
+	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower2 = 3;
+	this.potionRegen = 3;  //amount of health gained 
+	this.battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
+	this.player;
+	this.player_X = 500;  // x/y coords of player
+	this.player_Y = 250;
+	this.enemy;
+	this.enemyGroup; 
+	this.enemy_X = 50;  // x/y coords of enemies
+	this.enemy_Y = 250;
+	this.dialogBox;
+	this.infoBox;
+	this.infolist = ["FAct 1","Goodbye","YO",]; //list of deforestation info
+	this.mainMenu;
+	this.fightOptions;
+	this.backButton;
+	this.backButton_X = 0; // x coor
+	this.baseButton_1_X = 20;   // xcoord of base (frequently used) buttons
+	this.baseButton_2_X = 220;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
+	this.baseButton_3_X = 420;
+	this.baseButton_Y = 450;   // all buttons are based off of same y coord
 
-function create(){
 
 	// adding (displaying) our sprites to the game
-	player = game.add.sprite(player_X, player_Y,'betty');
-	enemy = game.add.sprite(enemy_X, enemy_Y, 'betty2');
-	dialogBox = game.add.sprite(-15, 400, 'dialogBox');
+	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
+	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, 'betty2');
+	this.dialogBox = this.game.add.sprite(-15, 400, 'dialogBox');
 
-	// rescaling sprites
-	dialogBox.scale.setTo(2, 2);
-
-	// creating infoBox
-	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
-	infoBox = game.add.text(game.world.width/2, 425, 
-	infolist[randInfo]);
-    infoBox.anchor.set(0.5);   // places infoBox at center
-
-    //displays new info after set interval
-	game.time.events.loop(Phaser.Timer.SECOND * 2, show_infoBox, this); //*2 increases amount of seconds
+	// creating enemies group
+	this.enemyGroup = this.game.add.group(); 
+	this.enemyGroup.add(this.enemy);
 	
+	// rescaling sprites
+	this.dialogBox.scale.setTo(2, 2);
+
+	// creates infoBox (facts)
+	this.create_infoBox();
+
 	// setting health values
-	player.maxHealth = 5;
-	player.health = 5;
-	enemy.maxHealth = 5;
-	enemy.health = 5;
+	this.player.maxHealth = 5;
+	this.player.health = 5;
+	this.enemy.maxHealth = 5;
+	this.enemy.health = 5;
 
 	// setting up our animation sequences (key, frames, frame rate, loop)
-	atkanim = player.animations.add('spin',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); // defining animation frames here for now
-	hitanim = player.animations.add('spin2',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
-	healanim = player.animations.add('spin3',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
-	atkanim2 = enemy.animations.add('spin4',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); 
-	hitanim2 = enemy.animations.add('spin5',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
-	nullanim = enemy.animations.add('null',[0],1,false); 
+	this.atkanim = this.player.animations.add('spin',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); // defining animation frames here for now
+	this.hitanim = this.player.animations.add('spin2',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	this.healanim = this.player.animations.add('spin3',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	this.atkanim2 = this.enemy.animations.add('spin4',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); 
+	this.hitanim2 = this.enemy.animations.add('spin5',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	this.nullanim = this.enemy.animations.add('null',[0],1,false); 
 	
 	// creating and customizing our healthbars
 	// player health bar
-	var playerBarConfig = {
-    width: player.maxHealth*50,
+	this.playerBarConfig = {
+    width: this.player.maxHealth*50,
     height: 40,
     x: 550,
     y: 200,
@@ -107,11 +95,11 @@ function create(){
     animationDuration: 200,  // set how fast bar increases/decreases
     flipped: false
   	};
-	this.playerHealthBar = new HealthBar(this.game, playerBarConfig);
+	this.playerHealthBar = new HealthBar(this.game, this.playerBarConfig);
 
 	// enemy health bar
-	var enemyBarConfig = {
-    width: enemy.maxHealth*50,
+	this.enemyBarConfig = {
+    width: this.enemy.maxHealth*50,
     height: 40,
     x: 150,
     y: 200,
@@ -124,166 +112,188 @@ function create(){
     animationDuration: 200,
     flipped: false
   	};
-	this.enemyHealthBar = new HealthBar(this.game, enemyBarConfig);
+	this.enemyHealthBar = new HealthBar(this.game, this.enemyBarConfig);
 	
 	// creating groups for options (good for easy manipulation)
-	mainMenu = game.add.group(); 
-	fightOptions = game.add.group();
-	itemsOptions = game.add.group();
-	backButton = game.add.group();
+	this.mainMenu = this.game.add.group(); 
+	this.fightOptions = this.game.add.group();
+	this.itemsOptions = this.game.add.group();
+	this.backButton = this.game.add.group();
 	
 	// (interactive) buttons for inital/main options
-	fightButton = game.add.button( baseButton_1_X, baseButton_Y,'fightButton', 
-	showFightMenu,this, 2, 1, 0); // fight button
-	itemsButton = game.add.button( baseButton_2_X, baseButton_Y,'itemsButton', 
-	showItemsOptions,this, 2, 1, 0); // items button
-	runButton = game.add.button( baseButton_3_X, baseButton_Y, 'runButton', 
-	runClicked,this, 2, 1, 0); // run button
-	mainMenu.add(fightButton);
-	mainMenu.add(itemsButton);
-	mainMenu.add(runButton);	
+	this.fightButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'fightButton', 
+	this.showFightMenu,this, 2, 1, 0); // fight button
+	this.itemsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'itemsButton', 
+	this.showItemsOptions,this, 2, 1, 0); // items button
+	this.runButton = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'runButton', 
+	this.runClicked,this, 2, 1, 0); // run button
+	this.mainMenu.add(this.fightButton);
+	this.mainMenu.add(this.itemsButton);
+	this.mainMenu.add(this.runButton);	
 	
 	// buttons for different fight options
-	var attack = game.add.button( baseButton_1_X, baseButton_Y, 'fightButton', 
-	attackClicked,this, 1, 0, 2); // attack button
-	var attack1 = game.add.button( baseButton_2_X, baseButton_Y, 'fightButton', 
-	showFightMenu,this, 1, 0, 2); // attack1 button
-	var attack2 = game.add.button( baseButton_3_X, baseButton_Y, 'fightButton', 
-	showFightMenu,this, 1, 0, 2); // attack2 button
-	fightOptions.add(attack);
-	fightOptions.add(attack1);
-	fightOptions.add(attack2);
+	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'fightButton', 
+	this.attackClicked,this, 1, 0, 2); // attack button
+	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'fightButton', 
+	this.showFightMenu,this, 1, 0, 2); // attack1 button
+	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'fightButton', 
+	this.showFightMenu,this, 1, 0, 2); // attack2 button
+	this.fightOptions.add(this.attack);
+	this.fightOptions.add(this.attack1);
+	this.fightOptions.add(this.attack2);
 
 	// buttons for different items options
-	var potion = game.add.button( baseButton_1_X, baseButton_Y, 'itemsButton', 
-	potionClicked,this, 1, 0, 2); // potion2 button
-	var potion1 = game.add.button( baseButton_2_X, baseButton_Y, 'itemsButton', 
-	potion1Clicked,this, 1, 0, 2); // potion1 button
-	var potion2 = game.add.button( baseButton_3_X, baseButton_Y, 'itemsButton', 
-	showItemsOptions,this, 1, 0, 2); // potion2 button
-	itemsOptions.add(potion1);
-	itemsOptions.add(potion);
-	itemsOptions.add(potion2);
+	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'itemsButton', 
+	this.potionClicked,this, 1, 0, 2); // potion2 button
+	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'itemsButton', 
+	this.potion1Clicked,this, 1, 0, 2); // potion1 button
+	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'itemsButton', 
+	this.showItemsOptions,this, 1, 0, 2); // potion2 button
+	this.itemsOptions.add(this.potion1);
+	this.itemsOptions.add(this.potion);
+	this.itemsOptions.add(this.potion2);
 
 	// back button that returns to main screen
-	var back = game.add.button(500, baseButton_Y, 'backButton',
-	showMainMenu,this, 1, 0, 2); 
-	backButton.add(back);
+	this.back = this.game.add.button(500, this.baseButton_Y, 'backButton',
+	this.showMainMenu,this, 1, 0, 2); 
+	this.backButton.add(this.back);
 
 	// displays mainmenu/options
-	showMainMenu();
+	this.showMainMenu();
+},
 
-}
-
+create_infoBox: function(){
+	this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
+	this.infoBox = this.game.add.text(this.game.world.width/2, 425, 
+	this.infolist[this.randInfo]);
+    this.infoBox.anchor.set(0.5);   // places infoBox at center
+    //displays new info after set interval
+	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.show_infoBox, this); //*2 increases amount of seconds
+},
 // displays new info (after some time)
-function show_infoBox(){
-	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
-	infoBox.setText(infolist[randInfo]);
-}
+show_infoBox: function(){
+	this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
+	this.infoBox.setText(this.infolist[this.randInfo]);
+},
 
 // clicking displays next set of options (subMenu)
 // for example, showFightMenu() shows 3 attack options ontop of hud
-function showFightMenu(){
+showFightMenu: function(){
 	// show fightOptions and back button wile hiding mainMenu
-	fightOptions.visible = true;
-	showSubMenu();
-}   
-	function attackClicked(){
-		hideHud();
-		power = attackPower;   //sets power of attack according to power of move  
-		atkanim.play();         //plays animation
-		//should add an conditional (if hit)
-		atkanim.onComplete.add(hitEnemy, this); //when atkanim is finished run hitEnemy function
-	}
+	this.fightOptions.visible = true;
+	this.showSubMenu();
+}, 
+
+attackClicked: function(){
+	this.hideHud();
+	this.power = this.attackPower;   //sets power of attack according to power of move  
+	this.atkanim.play();         //plays animation
+	//should add an conditional (if hit)
+	this.atkanim.onComplete.add(this.hitEnemy, this); //when atkanim is finished run hitEnemy function
+},
 
 //items button
-function showItemsOptions(){
-	itemsOptions.visible = true;
-	showSubMenu();
-}
-	//potions button
-	function potionClicked() {
-		hideHud();
-		// should set regen to potion stat
-		healanim.play();   //play heal animation
-		healanim.onComplete.add(healPlayer, this);
-	}
-	//potions button
-	function potion1Clicked() {
-		hideHud();
-		// should set regen to potion stat
-		healanim.play();   //play heal animation
-		healanim.onComplete.add(healPlayer, this);
-	}
+showItemsOptions: function(){
+	this.itemsOptions.visible = true;
+	this.showSubMenu();
+},
+
+//potions button
+potionClicked: function() {
+	this.hideHud();
+	// should set regen to potion stat
+	this.healanim.play();   //play heal animation
+	this.healanim.onComplete.add(this.healPlayer, this);
+},
+
+//potions button
+potion1Clicked: function() {
+	this.hideHud();
+	// should set regen to potion stat
+	this.healanim.play();   //play heal animation
+	this.healanim.onComplete.add(this.healPlayer, this);
+},
+
 // shows item submenu, hides mainmenu
-function showSubMenu(){
-	mainMenu.visible = false;
-	backButton.visible = true;
-}
+showSubMenu: function(){
+	this.mainMenu.visible = false;
+	this.backButton.visible = true;
+},
+
 //shows mainhud/menu while hiding all submenus
-function showMainMenu(){
-	fightOptions.visible = false;
-	itemsOptions.visible = false;
-	backButton.visible = false;
-	mainMenu.visible = true;
-	fightButton.frame = 1;  // fixed buttons are stuck at frame 2 bug (previous frame not reseting) by reseting frames
-	itemsButton.frame = 1;
-}
+showMainMenu: function(){
+	this.fightOptions.visible = false;
+	this.itemsOptions.visible = false;
+	this.backButton.visible = false;
+	this.mainMenu.visible = true;
+	this.fightButton.frame = 1;  // fixed buttons are stuck at frame 2 bug (previous frame not reseting) by reseting frames
+	this.itemsButton.frame = 1;
+},
 
 // hides all options (used after actions are done);
-function hideHud(){
-	mainMenu.visible = false;
-	fightOptions.visible = false;
-	itemsOptions.visible = false;
-	backButton.visible = false;
-}
+hideHud: function(){
+	this.mainMenu.visible = false;
+	this.fightOptions.visible = false;
+	this.itemsOptions.visible = false;
+	this.backButton.visible = false;
+},
 
 // heals player and switches to enemy turn
-function healPlayer(){
-	nullanim.play();    //trying to fix scope error / setpercent not defined bug
-	player.heal(potionRegen);
+healPlayer: function(){
+	this.nullanim.play();    //trying to fix scope error / setpercent not defined bug
+	this.player.heal(this.potionRegen);
 	// health bar adjusts to percentage of health left
-	this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
-	nullanim.onComplete.add(enemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
-}
+	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
+	this.nullanim.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
+},
 
 //deals damage to enemy when hit and switches to enemy turn
-function hitEnemy(){  
-	hitanim2.play(); 
-	enemy.damage(power);
+hitEnemy: function(){  
+	this.hitanim2.play(); 
+	this.enemy.damage(this.power);
 	// health bar adjusts to percentage of health left
-	this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
-	hitanim2.onComplete.add(enemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
-}
+	this.enemyHealthBar.setPercent(100*this.enemy.health/this.enemy.maxHealth);
+	this.hitanim2.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
+},
+
+delayEnemyTurn: function(){
+	//if there are living enemies, add a slight delay before enemy does anything
+	if (this.enemyGroup.countLiving()>0){ 
+		this.game.time.events.add(Phaser.Timer.SECOND*this.battleSpeed, this.enemyTurn, this);
+	 }
+	else {
+		this.enemiesDead();
+	}
+},
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
-function enemyTurn(){
-	//adds a slight delay before enemy does anything
-	game.time.events.add(Phaser.Timer.SECOND*battleSpeed, runEnemyTurn, this);
-	function runEnemyTurn(){
-		atkanim2.play();  
-		power = attackPower2;    //still using same power variable 
-		//again, add an conditional (if hit)
-		atkanim2.onComplete.add(hitPlayer, this); 
-	}
-}
+enemyTurn: function(){
+	this.atkanim2.play();  
+	this.power = this.attackPower2;    //still using same power variable 
+	//again, add an conditional (if hit)
+	this.atkanim2.onComplete.add(this.hitPlayer, this); 
+},
 
 // deals damage to player when hit and switches to player turn
-function hitPlayer(){
-	hitanim.play();	
-	player.damage(power);
-	this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
-	playerTurn();   // play player turn
-}
+hitPlayer: function(){
+	this.hitanim.play();	
+	this.player.damage(this.power);
+	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
+	this.playerTurn();   // play player turn
+},
 
 // shows options again
-function playerTurn(){
-	showMainMenu();
+playerTurn: function(){
+	this.showMainMenu();
+},
+
+// sends back to world screen when enemies are dead
+enemiesDead: function(){
+	this.game.state.start('World', true, false); 
+},
+
+runClicked: function(){
+	// loading world scene (state name, world t/f, reset cache t/f)
+	this.game.state.start('World', true, false); 
 }
-
-function runClicked(){
-
-}
-
-function update(){
 }
