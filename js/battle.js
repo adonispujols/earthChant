@@ -3,8 +3,9 @@ create: create, update: update});
 
 //NOTES NOTES NOTES NOTES:
 
-//FIX COMMENTS
-//TOO SIMILAR TO POKEMON! (keep button system)
+// FIX COMMENTS
+// TOO SIMILAR TO POKEMON! (keep button system)
+// TURN INTO MINI GAME ENGINE (easily manipulable)
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
@@ -25,9 +26,11 @@ function preload(){
 //  setting variables for game objects
 // you can manipulate a lot of properties from here
 var atkanim;  	//attack animation (anim2 or hitanim2 are for enemy (as of now))
-var atkanim2;  
+var atkanim2;
+var healanim;    //heal (health gained) animation  
 var hitanim;    //hit (or hurt) animation 
 var hitanim2; 
+var nullanim; 		// use this null animation to debbug
 var power; //var that controls power of attacks (changes depending on attack chosen)
 var attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
 var attackPower2 = 3;
@@ -52,6 +55,7 @@ var baseButton_3_X = 420;
 var baseButton_Y = 450;   // all buttons are based off of same y coord
 
 function create(){
+
 	// adding (displaying) our sprites to the game
 	player = game.add.sprite(player_X, player_Y,'betty');
 	enemy = game.add.sprite(enemy_X, enemy_Y, 'betty2');
@@ -78,8 +82,10 @@ function create(){
 	// setting up our animation sequences (key, frames, frame rate, loop)
 	atkanim = player.animations.add('spin',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); // defining animation frames here for now
 	hitanim = player.animations.add('spin2',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
-	atkanim2 = enemy.animations.add('spin3',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); 
-	hitanim2 = enemy.animations.add('spin4',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	healanim = player.animations.add('spin3',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	atkanim2 = enemy.animations.add('spin4',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); 
+	hitanim2 = enemy.animations.add('spin5',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	nullanim = enemy.animations.add('null',[0],1,false); 
 	
 	// creating and customizing our healthbars
 	// player health bar
@@ -148,7 +154,7 @@ function create(){
 	var potion = game.add.button( baseButton_1_X, baseButton_Y, 'itemsButton', 
 	potionClicked,this, 1, 0, 2); // potion2 button
 	var potion1 = game.add.button( baseButton_2_X, baseButton_Y, 'itemsButton', 
-	showItemsOptions,this, 1, 0, 2); // potion1 button
+	potion1Clicked,this, 1, 0, 2); // potion1 button
 	var potion2 = game.add.button( baseButton_3_X, baseButton_Y, 'itemsButton', 
 	showItemsOptions,this, 1, 0, 2); // potion2 button
 	itemsOptions.add(potion1);
@@ -160,12 +166,12 @@ function create(){
 	showMainMenu,this, 1, 0, 2); 
 	backButton.add(back);
 
-	//displays mainmenu/options
+	// displays mainmenu/options
 	showMainMenu();
 
 }
 
-//displays new info (after some time)
+// displays new info (after some time)
 function show_infoBox(){
 	var randInfo = Math.floor(Math.random() * (infolist.length)); //chooses random index from list
 	infoBox.setText(infolist[randInfo]);
@@ -193,8 +199,17 @@ function showItemsOptions(){
 }
 	//potions button
 	function potionClicked() {
-		player.heal(potionRegen);
-		this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
+		hideHud();
+		// should set regen to potion stat
+		healanim.play();   //play heal animation
+		healanim.onComplete.add(healPlayer, this);
+	}
+	//potions button
+	function potion1Clicked() {
+		hideHud();
+		// should set regen to potion stat
+		healanim.play();   //play heal animation
+		healanim.onComplete.add(healPlayer, this);
 	}
 // shows item submenu, hides mainmenu
 function showSubMenu(){
@@ -211,12 +226,21 @@ function showMainMenu(){
 	itemsButton.frame = 1;
 }
 
-//hides all options (used after actions are done);
+// hides all options (used after actions are done);
 function hideHud(){
 	mainMenu.visible = false;
 	fightOptions.visible = false;
 	itemsOptions.visible = false;
 	backButton.visible = false;
+}
+
+// heals player and switches to enemy turn
+function healPlayer(){
+	nullanim.play();    //trying to fix scope error / setpercent not defined bug
+	player.heal(potionRegen);
+	// health bar adjusts to percentage of health left
+	this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
+	nullanim.onComplete.add(enemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
 }
 
 //deals damage to enemy when hit and switches to enemy turn
@@ -225,9 +249,7 @@ function hitEnemy(){
 	enemy.damage(power);
 	// health bar adjusts to percentage of health left
 	this.enemyHealthBar.setPercent(100*enemy.health/enemy.maxHealth);
-	hitanim2.onComplete.add(enemyTurn, this); // OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
-	// plays enemy turn
-	// enemyTurn();
+	hitanim2.onComplete.add(enemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
 }
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
@@ -249,12 +271,14 @@ function hitPlayer(){
 	this.playerHealthBar.setPercent(100*player.health/player.maxHealth);
 	playerTurn();   // play player turn
 }
+
 // shows options again
 function playerTurn(){
 	showMainMenu();
 }
 
 function runClicked(){
+	
 }
 
 function update(){
