@@ -1,4 +1,11 @@
 var earthChant = earthChant || {};
+//NOTES NOTES NOTES NOTES:
+
+// FIX/ADD COMMENTS
+// TOO SIMILAR TO POKEMON! (keep button system)
+// FOCUS GAME ON POLLUTION!!!
+// TURN INTO MINI GAME ENGINE (easily manipulable)
+
 // creating base game
 earthChant.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '');
 

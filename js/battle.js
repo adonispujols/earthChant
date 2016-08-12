@@ -3,6 +3,7 @@ var earthChant = earthChant || {}; // calling from base game
 
 // FIX/ADD COMMENTS
 // TOO SIMILAR TO POKEMON! (keep button system)
+// FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI GAME ENGINE (easily manipulable)
 
 // more amazing art:

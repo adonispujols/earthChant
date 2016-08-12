@@ -1,4 +1,10 @@
 var earthChant = earthChant || {}; // calling from base game
+//NOTES NOTES NOTES NOTES:
+
+// FIX/ADD COMMENTS
+// TOO SIMILAR TO POKEMON! (keep button system)
+// FOCUS GAME ON POLLUTION!!!
+// TURN INTO MINI GAME ENGINE (easily manipulable)
 
 // setting up state
 earthChant.World = function(){};

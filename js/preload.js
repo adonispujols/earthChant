@@ -1,7 +1,14 @@
 var earthChant = earthChant || {};
+//NOTES NOTES NOTES NOTES:
+
+// FIX/ADD COMMENTS
+// TOO SIMILAR TO POKEMON! (keep button system)
+// FOCUS GAME ON POLLUTION!!!
+// TURN INTO MINI GAME ENGINE (easily manipulable)
 
 // calling earthchant from main game
 earthChant.Preload = function(){};
+
 earthChant.Preload.prototype = {
 	preload: function() {
 		// loading sprite sheet. key, url, width, hieght, frames
@@ -23,7 +30,7 @@ earthChant.Preload.prototype = {
 		// starting physics system, for easy movement control/collision detection
 		this.game.physics.startSystem(Phaser.Physics.ARCADE)
 
-		// start world state/scene
-		this.state.start('World');
+		// goes to start screen state/scene
+		this.game.state.start('StartScreen');
 	}
 };
