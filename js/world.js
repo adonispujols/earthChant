@@ -32,10 +32,11 @@ earthChant.World.prototype = {
 	this.sara_X_speed = 300;
 	this.sara_Y_speed = 300;
 	this.bettyDirection = 0;  //resets direction she faces when game starts
-	this.enemy;
+	this.enemy;           //our enemies
 	this.enemy2;
 	this.enemy3;
 	this.enemy4;
+	this.enemyGroup;      //group to store enemies
 	this.cursors;
 
 	// adding our sprites to game (betty is at the world'ss center x and y)
@@ -54,12 +55,20 @@ earthChant.World.prototype = {
 	this.enemy3 = this.game.add.sprite(900,1000, 'snake');
 	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
 
-	// enable physics for enemy
-	this.game.physics.arcade.enable(this.enemy);
-	this.enemy.enableBody = true;
-	this.enemy.body.immovable= true;
+	// making enemy group and adding enemies to it
+	this.enemyGroup = this.game.add.group(); 
+	this.enemyGroup.add(this.enemy);
+	this.enemyGroup.add(this.enemy2);
+	this.enemyGroup.add(this.enemy3);
+	this.enemyGroup.add(this.enemy4);
 
-	//kill enemy if dead
+	// enable physics for enemy group
+	this.game.physics.arcade.enable(this.enemyGroup);
+	this.enemyGroup.enableBody = true;
+    this.enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
+	this.enemyGroup.body.immovable= true;
+
+	// kill enemy if dead
 	if (this.enemysDead){
     	this.enemy.kill();
     }
@@ -80,7 +89,7 @@ earthChant.World.prototype = {
 
   update: function() {
 	//plays battle scene when betty and enemies collide
-	this.game.physics.arcade.overlap(this.betty, this.enemy, this.loadBattle, null ,this);
+	this.game.physics.arcade.overlap(this.betty, this.enemyGroup, this.loadBattle, null ,this);
 
 	// creating movement for betty (she )
 	// reseting velocity x and y to zero
@@ -114,7 +123,7 @@ earthChant.World.prototype = {
   },
 
 	// loading battle scene (state name, reset world t/f, reset cache t/f)
-	loadBattle: function(betty, enemy) {
+	loadBattle: function(betty, enemyGroup) {
 	this.game.state.start('Battle', true, false); 
 	},
 
