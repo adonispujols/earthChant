@@ -1,7 +1,7 @@
 var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
 
-// FIX COMMENTS
+// FIX/ADD COMMENTS
 // TOO SIMILAR TO POKEMON! (keep button system)
 // TURN INTO MINI GAME ENGINE (easily manipulable)
 
@@ -11,9 +11,9 @@ var earthChant = earthChant || {}; // calling from base game
 // setting up state
 earthChant.Battle = function(){};
 
-//setting game configuration and loading the assets for the loading screen 
 earthChant.Battle.prototype = {
 
+//setting vars, functions, and objects
 // Almost Every object, var, and function needs 'this' because it attaches it to our main game(stores in cache it)
 create: function(){
 
@@ -23,7 +23,9 @@ create: function(){
 	this.atkanim2;
 	this.healanim;    //heal (health gained) animation  
 	this.hitanim;    //hit (or hurt) animation 
-	this.hitanim2; 
+	this.hitanim2;
+	this.deadPlayer;   // for dead player sprite
+	this.deadEnemy;
 	this.nullanim; 		// use this null animation to debug
 	this.power; //var that controls power of attacks (changes depending on attack chosen)
 	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
@@ -31,14 +33,18 @@ create: function(){
 	this.potionRegen = 3;  //amount of health gained 
 	this.battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
 	this.player;
+	this.playerGroup;
 	this.player_X = 500;  // starting x/y coords of player
 	this.player_Y = 250;
 	this.enemy;
+	this.enemyDead = false; 
 	this.enemyGroup; 
 	this.enemy_X = 50;  // starting x/y coords of enemies
 	this.enemy_Y = 250;
 	this.dialogBox;
 	this.victoryBox;
+	this.deadBox;
+	this.deadBox;
 	this.infoBox;
 	this.infolist = ["FAct 1","Goodbye","YO",]; //list of deforestation info
 	this.mainMenu;
@@ -56,6 +62,9 @@ create: function(){
 	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, 'betty2');
 	this.dialogBox = this.game.add.sprite(-15, 400, 'dialogBox');
 
+	// creaitng players group
+	this.playerGroup = this.game.add.group();
+	this.playerGroup.add(this.player);
 	// creating enemies group
 	this.enemyGroup = this.game.add.group(); 
 	this.enemyGroup.add(this.enemy);
@@ -252,7 +261,7 @@ healPlayer: function(){
 //deals damage to enemy when hit and switches to enemy turn
 hitEnemy: function(){  
 	this.hitanim2.play(); 
-	this.enemy.damage(this.power);
+	this.enemy.damage(this.power+5);
 	// health bar adjusts to percentage of health left
 	this.enemyHealthBar.setPercent(100*this.enemy.health/this.enemy.maxHealth);
 	//when all enemes die, play enemiesDead(), or else run delayEnemyTurn
@@ -279,10 +288,17 @@ enemyTurn: function(){
 
 // deals damage to player when hit and switches to player turn
 hitPlayer: function(){
-	this.hitanim.play();	
+	this.hitanim.play();
 	this.player.damage(this.power);
 	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
-	this.playerTurn();   // play player turn
+	//when all players die, play playersDead(), or else run playerTurn
+	if (this.playerGroup.countLiving()==0){
+		//add "dead player" sprite 
+		this.playersDead();
+	}
+	else{
+		this.playerTurn();   // play player turn
+	}
 },
 
 // shows options again
@@ -290,15 +306,37 @@ playerTurn: function(){
 	this.showMainMenu();
 },
 
+// defines what happens when players are all dead (right before sending to worldscreen)
+playersDead: function(){
+	//shows image of dead player
+	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer') 
+	
+	this.deadBox = this.game.add.text(this.game.world.width/2, 325, 
+	"You lost!");
+    this.deadBox.anchor.set(0.5); 
+    //displays new info after set interval (* Seconds)
+    //should go to gameover screen/ function
+	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.returnToWorld, this);
+
+},
+
 // defines what happens when enemies are all dead (right before sending to worldscreen)
 enemiesDead: function(){
+	this.enemyDead = true;  // this will be passed to world's init
+	//shows image of dead enemy
+	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy') 
+	
 	this.victoryBox = this.game.add.text(this.game.world.width/2, 325, 
 	"You won!");
-    this.infoBox.anchor.set(0.5);   // places infoBox at center
-    //displays new info after set interval
-	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.show_infoBox, this); //*2 increases amount of seconds
+    this.victoryBox.anchor.set(0.5); 
+    //displays new info after set interval (* Seconds)
+	this.game.time.events.loop(Phaser.Timer.SECOND* 2, this.returnToWorld, this);
+},
 
-	this.game.state.start('World', true, false); 
+//returns character to world and tells world living state of enemies
+//SHOULD MAKE THIS A LIST
+returnToWorld: function(){
+	this.game.state.start('World', true, false, this.enemyDead); 
 },
 
 runClicked: function(){

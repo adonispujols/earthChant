@@ -5,6 +5,12 @@ earthChant.World = function(){};
 
 //setting up vraibles, functions, and objects of world
 earthChant.World.prototype = {
+
+	//setting up global (across game) variables (sending parameters to state)
+	init: function(enemyDead) {
+    var enemyDead = enemyDead || false;
+    this.enemysDead = enemyDead;
+   },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
 	this.game.world.setBounds( 0, 0, 2000, 2000);
@@ -32,6 +38,11 @@ earthChant.World.prototype = {
 	this.game.physics.arcade.enable(this.enemy);
 	this.enemy.enableBody = true;
 	this.enemy.body.immovable= true;
+
+	//kill enemy if dead
+	if (this.enemysDead){
+    	this.enemy.kill();
+    }
 
 	// cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();
