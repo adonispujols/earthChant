@@ -3,8 +3,9 @@ var earthChant = earthChant || {};
 earthChant.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '');
 
 //setting up game states (secnes/instances)
-earthChant.game.state.add('World', SpaceHipster.Boot); //main world
-earthChant.game.state.add('Batlle', SpaceHipster.Game); //battle scene
+earthChant.game.state.add('Preload', earthChant.Preload);
+earthChant.game.state.add('World', earthChant.World); //main world
+// earthChant.game.state.add('Battle', earthChant.Battle); //battle scene
 
 //stating our World state
-earthChant.game.state.start('World');
+earthChant.game.state.start('Preload');

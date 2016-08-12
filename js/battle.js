@@ -1,6 +1,4 @@
-var game = new Phaser.Game(800,600, Phaser.AUTO, '', {preload: preload, 
-create: create, update: update});
-
+var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
 
 // FIX COMMENTS
@@ -9,6 +7,12 @@ create: create, update: update});
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
+
+// setting up state
+earthChant.Battle = function(){};
+
+//setting game configuration and loading the assets for the loading screen
+earthChant.Battle.prototype = {
 function preload(){
 	game.stage.backgroundColor = '#007000';
 
@@ -44,7 +48,7 @@ var enemy_X = 50;  // x/y coords of enemies
 var enemy_Y = 250;
 var dialogBox;
 var infoBox;
-var infolist = ["Hello","Goodbye","YO"]; //list of deforestation info
+var infolist = ["FAct 1","Goodbye","YO",]; //list of deforestation info
 var mainMenu;
 var fightOptions;
 var backButton;
@@ -278,7 +282,7 @@ function playerTurn(){
 }
 
 function runClicked(){
-	
+
 }
 
 function update(){
