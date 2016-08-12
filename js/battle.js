@@ -1,10 +1,16 @@
 var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
 
-// FIX/ADD COMMENTS
+//MAJOR:
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI GAME ENGINE (easily manipulable)
+
+//MINOR:
+// FIX/ADD COMMENTS
+// STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
+// USE BOOTSTRAP TO RESIZE SCREEN 
+// MAKE ENEMIES RESCALE DEPENDING ON SPRITE
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
@@ -29,39 +35,41 @@ create: function(){
 	this.deadEnemy;
 	this.nullanim; 		// use this null animation to debug
 	this.power; //var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
-	this.attackPower2 = 3;
+	this.attackPower = 2;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower2 = 2;
 	this.potionRegen = 3;  //amount of health gained 
 	this.battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
 	this.player;
 	this.playerGroup;
-	this.player_X = 500;  // starting x/y coords of player
-	this.player_Y = 250;
+	this.player_X = 920;  // starting x/y coords of player
+	this.player_Y = 220;
 	this.enemy;
 	this.enemyDead = false; 
 	this.enemyGroup; 
-	this.enemy_X = 50;  // starting x/y coords of enemies
-	this.enemy_Y = 250;
+	this.enemy_X = 330;  // starting x/y coords of enemies
+	this.enemy_Y = 220;
 	this.dialogBox;
 	this.victoryBox;
 	this.deadBox;
 	this.deadBox;
 	this.infoBox;
-	this.infolist = ["FAct 1","Goodbye","YO",]; //list of deforestation info
+	//list of deforestation info
+	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
+	this.infolist = ["Almost half of world’s timber and up \n to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
 	this.mainMenu;
 	this.fightOptions;
 	this.backButton;
-	this.backButton_X = 0; // x coor
-	this.baseButton_1_X = 20;   // xcoord of base (frequently used) buttons
-	this.baseButton_2_X = 220;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
-	this.baseButton_3_X = 420;
+	this.backButton_X = 820; // x coor
+	this.baseButton_1_X = 320;   // xcoord of base (frequently used) buttons
+	this.baseButton_2_X = 520;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
+	this.baseButton_3_X = 720;
 	this.baseButton_Y = 450;   // all buttons are based off of same y coord
 
 
 	// adding (displaying) our sprites to the game
 	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
-	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, 'betty2');
-	this.dialogBox = this.game.add.sprite(-15, 400, 'dialogBox');
+	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, 'canEnemy');
+	this.dialogBox = this.game.add.sprite(50, 400, 'dialogBox');
 
 	// creaitng players group
 	this.playerGroup = this.game.add.group();
@@ -71,7 +79,10 @@ create: function(){
 	this.enemyGroup.add(this.enemy);
 	
 	// rescaling sprites
-	this.dialogBox.scale.setTo(2, 2);
+	this.dialogBox.scale.setTo(3,2);
+	// SHOULD RESCALE DEPENDING ON ENEMY FIGHTING
+	this.enemy.scale.setTo(1,1);
+	this.player.scale.setTo(3,3);
 
 	// creates infoBox (facts)
 	this.create_infoBox();
@@ -86,8 +97,8 @@ create: function(){
 	this.atkanim = this.player.animations.add('spin',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); // defining animation frames here for now
 	this.hitanim = this.player.animations.add('spin2',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
 	this.healanim = this.player.animations.add('spin3',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
-	this.atkanim2 = this.enemy.animations.add('spin4',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); 
-	this.hitanim2 = this.enemy.animations.add('spin5',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	this.atkanim2 = this.enemy.animations.add('spin4',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],15,false); 
+	this.hitanim2 = this.enemy.animations.add('spin5',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],25,false); 
 	this.nullanim = this.enemy.animations.add('null',[0],1,false); 
 	
 	// creating and customizing our healthbars
@@ -95,13 +106,13 @@ create: function(){
 	this.playerBarConfig = {
     width: this.player.maxHealth*50,
     height: 40,
-    x: 550,
+    x: 1000,
     y: 200,
     bg: {    // bar's background color
       color: '#651828'
     },
     bar: {  //actual bar color (animated)
-      color: '#FEFF03'
+      color: '#04C404'
     },
     animationDuration: 200,  // set how fast bar increases/decreases
     flipped: false
@@ -112,13 +123,13 @@ create: function(){
 	this.enemyBarConfig = {
     width: this.enemy.maxHealth*50,
     height: 40,
-    x: 150,
+    x: 400,
     y: 200,
     bg: {
       color: '#651828'
     },
     bar: {
-      color: '#FEFF03'
+      color: '#04C404'
     },
     animationDuration: 200,
     flipped: false
@@ -165,7 +176,7 @@ create: function(){
 	this.itemsOptions.add(this.potion2);
 
 	// back button that returns to main screen
-	this.back = this.game.add.button(500, this.baseButton_Y, 'backButton',
+	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y, 'backButton',
 	this.showMainMenu,this, 1, 0, 2); 
 	this.backButton.add(this.back);
 
@@ -175,7 +186,7 @@ create: function(){
 
 create_infoBox: function(){
 	this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
-	this.infoBox = this.game.add.text(this.game.world.width/2, 425, 
+	this.infoBox = this.game.add.text(this.game.world.width/3, 100, 
 	this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
     //displays new info after set interval
@@ -262,7 +273,7 @@ healPlayer: function(){
 //deals damage to enemy when hit and switches to enemy turn
 hitEnemy: function(){  
 	this.hitanim2.play(); 
-	this.enemy.damage(this.power+5);
+	this.enemy.damage(this.power);
 	// health bar adjusts to percentage of health left
 	this.enemyHealthBar.setPercent(100*this.enemy.health/this.enemy.maxHealth);
 	//when all enemes die, play enemiesDead(), or else run delayEnemyTurn

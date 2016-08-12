@@ -1,10 +1,15 @@
 var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
 
-// FIX/ADD COMMENTS
+//MAJOR:
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI GAME ENGINE (easily manipulable)
+
+//MINOR:
+// FIX/ADD COMMENTS
+// STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
+// USE BOOTSTRAP TO RESIZE SCREEN 
 
 // setting up state
 earthChant.World = function(){};
@@ -24,10 +29,13 @@ earthChant.World.prototype = {
 
 	//setting up variables for objects
 	this.betty;
-	this.sara_X_speed = 200;
-	this.sara_Y_speed = 200;
+	this.sara_X_speed = 300;
+	this.sara_Y_speed = 300;
 	this.bettyDirection = 0;  //resets direction she faces when game starts
 	this.enemy;
+	this.enemy2;
+	this.enemy3;
+	this.enemy4;
 	this.cursors;
 
 	// adding our sprites to game (betty is at the world'ss center x and y)
@@ -39,8 +47,12 @@ earthChant.World.prototype = {
 	this.betty.scale.setTo(1.5, 1.5); //rescalling betty
 
 	// same for our enemy
-	this.enemy = this.game.add.sprite(1000,1200, 'betty1');
-	//eanbling physics for enemy
+	this.enemy = this.game.add.sprite(100,1200, 'smog');
+	this.enemy2 = this.game.add.sprite(550,1100, 'canEnemy');
+	this.enemy3 = this.game.add.sprite(900,1000, 'snake');
+	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
+
+	// enable physics for enemy
 	this.game.physics.arcade.enable(this.enemy);
 	this.enemy.enableBody = true;
 	this.enemy.body.immovable= true;
@@ -65,7 +77,7 @@ earthChant.World.prototype = {
   },
 
   update: function() {
-	//plays battle scene when betty and enemy collide
+	//plays battle scene when betty and enemies collide
 	this.game.physics.arcade.overlap(this.betty, this.enemy, this.loadBattle, null ,this);
 
 	// creating movement for betty (she )
