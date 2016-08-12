@@ -52,7 +52,7 @@ earthChant.World.prototype = {
 	// same for our enemy
 	this.enemy = this.game.add.sprite(100,1200, 'smog');
 	this.enemy2 = this.game.add.sprite(550,1100, 'canEnemy');
-	this.enemy3 = this.game.add.sprite(900,1000, 'snake');
+	this.enemy3 = this.game.add.sprite(900,1200, 'snake');
 	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
 
 	// making enemy group and adding enemies to it
@@ -65,8 +65,8 @@ earthChant.World.prototype = {
 	// enable physics for enemy group
 	this.game.physics.arcade.enable(this.enemyGroup);
 	this.enemyGroup.enableBody = true;
-    this.enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
-	this.enemyGroup.body.immovable= true;
+    // this.enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
+	// this.enemyGroup.body.immovable= true;
 
 	// kill enemy if dead
 	if (this.enemysDead){
