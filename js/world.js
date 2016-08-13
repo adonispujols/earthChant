@@ -22,12 +22,11 @@ earthChant.World.prototype = {
 
 	// locally storing variables (parameters available to all states)
 	// updating enemy properties from Battle.state
-	init: function(enemyDead, enemyBattle_number) {
+	init: function(enemyDead) {
     var enemyDead = enemyDead || false;      // if there is a value, use it, if not, use false
     this.enemyDead = enemyDead;        // assigns boolean if an enemy was killed or not 
 
-    var enemyBattle_number = enemyBattle_number || null;
-    this.enemyBattle_number = enemyBattle_number; // takes enemy's number from Battle
+    this.enemyBattle_number; // stores what enemy (by  number, i.e. enemy1=1, enemy2=2...) player was battling
 
     this.deadEnemies = this.deadEnemies || [];   // creates permanent list of dead enemies
    	if (this.enemyDead){

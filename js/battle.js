@@ -48,7 +48,7 @@ create: function(){
 	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 3;
 	this.potionRegen = 3;  //amount of health gained 
-	this.battleSpeed = .75;  //speed of battle (amount of seconds between enemy animations)
+	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
 	this.playerGroup;
 	this.player_X = 920;  // starting x/y coords of player
@@ -297,7 +297,7 @@ hitEnemy: function(){
 
 //add a slight delay before enemy does anything
 delayEnemyTurn: function(){
-	this.game.time.events.add(Phaser.Timer.SECOND*this.battleSpeed, this.enemyTurn, this);
+	this.game.time.events.add(Phaser.Timer.SECOND*this.enemyDelayTime, this.enemyTurn, this);
 },
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
@@ -358,7 +358,7 @@ enemiesDead: function(){
 // returns character to world and tells world living state of enemies (passes parameters to init)
 // SHOULD MAKE THIS A LIST
 returnToWorld: function(){
-	this.game.state.start('World', true, false, this.enemyDead, this.enemyBattle_number); 
+	this.game.state.start('World', true, false, this.enemyDead); 
 },
 
 runClicked: function(){
