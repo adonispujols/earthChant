@@ -5,13 +5,16 @@ var earthChant = earthChant || {};
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
+	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
+		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters)
+	// WRITE DOCUMENTAION ON CODE 
+		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
 
 //MINOR:
-// FIX/ADD COMMENTS
+// FIX/ADD COMMENTS 
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
-// STUPID CURSOR STUCK AFTER PRESSING BUTTON
-
+// MAKE ENEMIES
 // calling earthchant from main game
 earthChant.Preload = function(){};
 

@@ -5,14 +5,16 @@ var earthChant = earthChant || {};
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
+	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
+		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters)
+	// WRITE DOCUMENTAION ON CODE 
+		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
 
 //MINOR:
-// FIX/ADD COMMENTS (explain how to add more compnonets (i.e., coppy and paste here but change this property))
-// ORGANIZE CODE BETTER (USE JSON)
+// FIX/ADD COMMENTS 
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
-// MAKE ENEMIES RESCALE DEPENDING ON SPRITE
-
+// MAKE ENEMIES
 // creating base game
 earthChant.game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '');
 
