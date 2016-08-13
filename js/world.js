@@ -12,7 +12,7 @@ var earthChant = earthChant || {}; // calling from base game
 
 //MINOR:
 // FIX/ADD COMMENTS 
-// STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
+// ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
 
@@ -23,20 +23,29 @@ earthChant.World = function(){};
 earthChant.World.prototype = {
 
 	// 'permanently' storing variables (parameters available to all states)
-	init: function(enemyDead) {    // updating enemy properties from Battle.state
-    var enemyDead = enemyDead || false;      // assumes no enemies are dead if no parameters are passed
-    this.enemyDead = enemyDead;        // assigns boolean if an enemy was killed or not 
+	init: function(enemyDead, score) {    
+    var enemyDead = enemyDead || false;      // assumes no enemies are dead if no parameters are passed from Battle.state
+    this.enemyDead = enemyDead;        // assigns boolean to local var if an enemy was killed or not 
+	
+	// stores what enemy (by  number, i.e. enemy1=1, enemy2=2...) player was battling
+    this.enemyBattle_number; 
 
-    this.enemyBattle_number; // stores what enemy (by  number, i.e. enemy1=1, enemy2=2...) player was battling
-
-    this.deadEnemies = this.deadEnemies || [];   // permanent list of dead enemies (creates empty list if nothing set yet)
+    // permanent list of dead enemies (creates empty list if nothing set yet)
+    this.deadEnemies = this.deadEnemies || [];
+    
+    var score = score || 0;      // assumes score is 0 if nothing was passed
+    this.score = this.score || 0;     // local object of var score
+    this.score += score;     //increasing world score by score gained in Battle
+    //defines actions if enemy is dead
    	if (this.enemyDead){
-   		this.deadEnemies.push(this.enemyBattle_number);    // adds the enemy's number 
+   		this.deadEnemies.push(this.enemyBattle_number); // storing dead enemy in list
    	}
 
    	// current player's location on World (sets to defined value if nothing changed)
 	this.playerLocation_X  = this.playerLocation_X || 1000;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
 	this.playerLocation_Y  = this.playerLocation_Y || 1000;
+   
+
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -53,8 +62,8 @@ earthChant.World.prototype = {
 	this.enemy3;
 	this.enemy4;
 	this.enemyBattle_sprite;     // stores sprite of enemy player ran into (look at loadBattle)
-	
-	this.cursors;
+	this.cursors;  // arrow keys
+	this.scoreText;
 
 	// adding our sprites to game (set at playerLocation_X and Y
 	this.player = this.game.add.sprite(this.playerLocation_X, this.playerLocation_Y, 'betty');
@@ -107,6 +116,12 @@ earthChant.World.prototype = {
 	    	}
 		}
 
+	// display score
+	this.scoreText = this.game.add.text(1000, 1000, 'Score ' + this.score);
+    this.scoreText.anchor.set(0.5);   // sets text to center
+    this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
+    this.scoreText.cameraOffset.setTo(1000,100);   // moves score text
+    
 	// cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 

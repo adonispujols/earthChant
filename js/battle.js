@@ -12,9 +12,10 @@ var earthChant = earthChant || {}; // calling from base game
 
 //MINOR:
 // FIX/ADD COMMENTS 
-// STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
+// ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
-// MAKE ENEMIES
+// MAKE ENEMIES RESCALE DEPENDING ON SPRITE
+
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
 
@@ -57,7 +58,8 @@ create: function(){
 	this.enemyGroup; 
 	this.enemy_X = 330;  // starting x/y coords of enemies
 	this.enemy_Y = 220;
-	this.dialogBox;
+	this.score = 0;     
+	this.dialogBox;    //i.e. blue background box
 	this.victoryBox;
 	this.deadBox;
 	this.deadBox;
@@ -349,13 +351,15 @@ enemiesDead: function(){
 	this.victoryBox = this.game.add.text(this.game.world.width/2, 225, 
 	"You won!");
     this.victoryBox.anchor.set(0.5); 
+    //increases score by a hundred 
+    this.score += 100; 
     //displays new info after set interval (* Seconds)
 	this.game.time.events.loop(Phaser.Timer.SECOND* 2, this.returnToWorld, this);
 },
 
 // returns character to world and tells world living state of enemies (passes parameters to init)
 returnToWorld: function(){
-	this.game.state.start('World', true, false, this.enemyDead);  // SHOULD MAKE THIS A LIST
+	this.game.state.start('World', true, false, this.enemyDead, this.score);  // SHOULD MAKE THIS A LIST
 },
 
 runClicked: function(){
