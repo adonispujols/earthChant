@@ -22,18 +22,21 @@ earthChant.World = function(){};
 //setting up vraibles, functions, and objects of world
 earthChant.World.prototype = {
 
-	// locally storing variables (parameters available to all states)
-	// updating enemy properties from Battle.state
-	init: function(enemyDead) {
-    var enemyDead = enemyDead || false;      // if there is a value, use it, if not, use false
+	// 'permanently' storing variables (parameters available to all states)
+	init: function(enemyDead) {    // updating enemy properties from Battle.state
+    var enemyDead = enemyDead || false;      // assumes no enemies are dead if no parameters are passed
     this.enemyDead = enemyDead;        // assigns boolean if an enemy was killed or not 
 
     this.enemyBattle_number; // stores what enemy (by  number, i.e. enemy1=1, enemy2=2...) player was battling
 
-    this.deadEnemies = this.deadEnemies || [];   // creates permanent list of dead enemies
+    this.deadEnemies = this.deadEnemies || [];   // permanent list of dead enemies (creates empty list if nothing set yet)
    	if (this.enemyDead){
    		this.deadEnemies.push(this.enemyBattle_number);    // adds the enemy's number 
    	}
+
+   	// TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
+	this.playerLocation_X  = this.playerLocation_X || this.game.world.center.X;  // current player's location on World (assumes center if nothing chaned)
+	this.playerLocation_Y  = this.playerLocation_Y || this.game.world.center.Y;  // current player's location on World (assumes center if nothing chaned)
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -41,10 +44,10 @@ earthChant.World.prototype = {
 	this.game.stage.backgroundColor = '#007000';
 
 	//setting up variables for objects
-	this.betty;
+	this.player;
 	this.sara_X_speed = 300;
 	this.sara_Y_speed = 300;
-	this.bettyDirection = 0;  //resets direction she faces when game starts
+	this.playerDirection = 0;  //resets direction she faces when game starts
 	this.enemy1;           //our enemies
 	this.enemy2;
 	this.enemy3;
@@ -53,15 +56,15 @@ earthChant.World.prototype = {
 	// this.enemyBattle_number;     // stores enemy's number
 	this.cursors;
 
-	// adding our sprites to game (betty is at the world'ss center x and y)
-	this.betty = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY, 'betty');
+	// adding our sprites to game (player is at the world'ss center x and y)
+	this.player = this.game.add.sprite(this.playerLocation, 'betty');
 
-	// actuall enabling arcade physics on betty var (object)
-	this.game.physics.arcade.enable(this.betty);
-	this.betty.enableBody = true;
-	this.betty.body.collideWorldBounds=true;
+	// actuall enabling arcade physics on player var (object)
+	this.game.physics.arcade.enable(this.player);
+	this.player.enableBody = true;
+	this.player.body.collideWorldBounds=true;
 
-	this.betty.scale.setTo(1.5, 1.5); //rescalling betty
+	this.player.scale.setTo(1.5, 1.5); //rescalling player
 
 	// same for our enemy
 	this.enemy1 = this.game.add.sprite(100,1200, 'smog');
@@ -108,54 +111,55 @@ earthChant.World.prototype = {
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 
 	// camera follow character (As easy as that!)
-	this.game.camera.follow(this.betty);
+	this.game.camera.follow(this.player);
 
-	// walk animation for betty (key, list of frames, framerate,loop t/f
+	// walk animation for player (key, list of frames, framerate,loop t/f
 	// left= walk left, right =walk right, etc)
-	this.betty.animations.add('down', [0,4,8,12],10,true);
-	this.betty.animations.add('left', [1,5,9,13],10,true);
-	this.betty.animations.add('up', [2,6,10,14],10,true);
-	this.betty.animations.add('right', [3,7,11,15],10,true);
+	this.player.animations.add('down', [0,4,8,12],10,true);
+	this.player.animations.add('left', [1,5,9,13],10,true);
+	this.player.animations.add('up', [2,6,10,14],10,true);
+	this.player.animations.add('right', [3,7,11,15],10,true);
   },
 
   update: function() {
 	// indicates waht enemy was ran into (or "hit")
 	// when adding new enemies, create new ENEMY<enemy number>
 	// FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
-	this.game.physics.arcade.overlap(this.betty, this.enemy1, this.enemy1Hit, null ,this);
-	this.game.physics.arcade.overlap(this.betty, this.enemy2, this.enemy2Hit, null ,this);
-	this.game.physics.arcade.overlap(this.betty, this.enemy3, this.enemy3Hit, null ,this);
-	this.game.physics.arcade.overlap(this.betty, this.enemy4, this.enemy4Hit, null ,this);
+	this.game.physics.arcade.overlap(this.player, this.enemy1, this.enemy1Hit, null ,this);
+	this.game.physics.arcade.overlap(this.player, this.enemy2, this.enemy2Hit, null ,this);
+	this.game.physics.arcade.overlap(this.player, this.enemy3, this.enemy3Hit, null ,this);
+	this.game.physics.arcade.overlap(this.player, this.enemy4, this.enemy4Hit, null ,this);
 
-	// creating movement for betty (she )
+	// creating movement for player (she )
 	// reseting velocity x and y to zero
-	this.betty.body.velocity.x = 0;
-	this.betty.body.velocity.y = 0;
-	// store direction betty is facing (the frame for our .stop() function)
+	this.player.body.velocity.x = 0;
+	this.player.body.velocity.y = 0;
+
+	// store direction player is facing (the frame for our .stop() function)
 	if (this.cursors.down.isDown) {
-		this.betty.body.velocity.y = this.sara_Y_speed;
-		this.betty.animations.play('down');
-		this.bettyDirection = 0;
+		this.player.body.velocity.y = this.sara_Y_speed;
+		this.player.animations.play('down');
+		this.playerDirection = 0;
 	} 
 	else if (this.cursors.left.isDown) {
-		this.betty.body.velocity.x = -this.sara_X_speed;
-		this.betty.animations.play('left');
-		this.bettyDirection = 1;
+		this.player.body.velocity.x = -this.sara_X_speed;
+		this.player.animations.play('left');
+		this.playerDirection = 1;
 	} 
 	else if (this.cursors.up.isDown) {
-		this.betty.body.velocity.y = -this.sara_Y_speed;
-		this.betty.animations.play('up');
-		this.bettyDirection = 2;
+		this.player.body.velocity.y = -this.sara_Y_speed;
+		this.player.animations.play('up');
+		this.playerDirection = 2;
 	} 
 	else if (this.cursors.right.isDown) {
-		this.betty.body.velocity.x = this.sara_X_speed;
-		this.betty.animations.play('right');
-		this.bettyDirection = 3;
+		this.player.body.velocity.x = this.sara_X_speed;
+		this.player.animations.play('right');
+		this.playerDirection = 3;
 	} 
 	else {
-		//  when not in motion, betty will stop
-		this.betty.animations.stop()
-		this.betty.frame = this.bettyDirection;
+		//  when not in motion, player will stop
+		this.player.animations.stop()
+		this.player.frame = this.playerDirection;
 	}
   	},
 
@@ -194,6 +198,6 @@ earthChant.World.prototype = {
   	//just some debugging info
   render: function() {
    	this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    this.game.debug.spriteCoords(this.betty, 32, 500);
+    this.game.debug.spriteCoords(this.player, 32, 500);
 	}
 };
