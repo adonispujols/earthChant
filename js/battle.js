@@ -24,11 +24,9 @@ earthChant.Battle = function(){};
 earthChant.Battle.prototype = {
 	//setting up global (across game) variables (sending parameters to state)
 	// loads the specific enemy(s) encountered (defined in World.state)
-	init: function(enemyBattle_sprite, enemyBattle_number){
+	init: function(enemyBattle_sprite){
     var enemyBattle_sprite = enemyBattle_sprite || null;  //enemy's sprite
     this.enemyBattle_sprite = enemyBattle_sprite;    //creates local variable from World's variable value
-    var enemyBattle_number = enemyBattle_number || null;  //enemy's number
-    this.enemyBattle_number = enemyBattle_number;
    },
 
 //setting vars, functions, and objects

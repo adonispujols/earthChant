@@ -191,8 +191,9 @@ earthChant.World.prototype = {
 
 	// loading battle scene (state name, reset world t/f, reset cache t/f)
 	loadBattle: function() {
+		this.playerLocation_X
 	// also telling Battle State what enemy the player will fight (only one enemy for now)
-	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.enemyBattle_number); 
+	this.game.state.start('Battle', true, false, this.enemyBattle_sprite); 
 	},
 
   	//just some debugging info
