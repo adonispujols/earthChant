@@ -63,9 +63,8 @@ create: function(){
 	this.deadBox;
 	this.infoBox;
 	//list of deforestation info
-	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
 	this.infolist = ["Almost half of world’s timber and up \n to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
-	this.mainMenu;
+	this.mainMenu; 	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
 	this.fightOptions;
 	this.backButton;
 	this.backButton_X = 820; // x coor
@@ -355,9 +354,8 @@ enemiesDead: function(){
 },
 
 // returns character to world and tells world living state of enemies (passes parameters to init)
-// SHOULD MAKE THIS A LIST
 returnToWorld: function(){
-	this.game.state.start('World', true, false, this.enemyDead); 
+	this.game.state.start('World', true, false, this.enemyDead);  // SHOULD MAKE THIS A LIST
 },
 
 runClicked: function(){

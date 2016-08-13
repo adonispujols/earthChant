@@ -19,7 +19,7 @@ var earthChant = earthChant || {}; // calling from base game
 // setting up state
 earthChant.World = function(){};
 
-//setting up vraibles, functions, and objects of world
+//setting up variables, functions, and objects of world
 earthChant.World.prototype = {
 
 	// 'permanently' storing variables (parameters available to all states)
@@ -34,9 +34,9 @@ earthChant.World.prototype = {
    		this.deadEnemies.push(this.enemyBattle_number);    // adds the enemy's number 
    	}
 
-   	// TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
-	this.playerLocation_X  = this.playerLocation_X || this.game.world.center.X;  // current player's location on World (assumes center if nothing chaned)
-	this.playerLocation_Y  = this.playerLocation_Y || this.game.world.center.Y;  // current player's location on World (assumes center if nothing chaned)
+   	// current player's location on World (sets to defined value if nothing changed)
+	this.playerLocation_X  = this.playerLocation_X || 1000;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
+	this.playerLocation_Y  = this.playerLocation_Y || 1000;
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -53,11 +53,11 @@ earthChant.World.prototype = {
 	this.enemy3;
 	this.enemy4;
 	this.enemyBattle_sprite;     // stores sprite of enemy player ran into (look at loadBattle)
-	// this.enemyBattle_number;     // stores enemy's number
+	
 	this.cursors;
 
-	// adding our sprites to game (player is at the world'ss center x and y)
-	this.player = this.game.add.sprite(this.playerLocation, 'betty');
+	// adding our sprites to game (set at playerLocation_X and Y
+	this.player = this.game.add.sprite(this.playerLocation_X, this.playerLocation_Y, 'betty');
 
 	// actuall enabling arcade physics on player var (object)
 	this.game.physics.arcade.enable(this.player);
@@ -124,8 +124,7 @@ earthChant.World.prototype = {
   update: function() {
 	// indicates waht enemy was ran into (or "hit")
 	// when adding new enemies, create new ENEMY<enemy number>
-	// FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
-	this.game.physics.arcade.overlap(this.player, this.enemy1, this.enemy1Hit, null ,this);
+	this.game.physics.arcade.overlap(this.player, this.enemy1, this.enemy1Hit, null ,this); 	// FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
 	this.game.physics.arcade.overlap(this.player, this.enemy2, this.enemy2Hit, null ,this);
 	this.game.physics.arcade.overlap(this.player, this.enemy3, this.enemy3Hit, null ,this);
 	this.game.physics.arcade.overlap(this.player, this.enemy4, this.enemy4Hit, null ,this);
@@ -164,8 +163,7 @@ earthChant.World.prototype = {
   	},
 
   	// define what sprite to load in battle when corresponding enemy is ran into
-  	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
-  	enemy1Hit: function(){
+  	enemy1Hit: function(){    	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
   		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
   		this.enemyBattle_number = 1;  // tells Battle.state the enemy number
   		this.loadBattle();
@@ -191,7 +189,10 @@ earthChant.World.prototype = {
 
 	// loading battle scene (state name, reset world t/f, reset cache t/f)
 	loadBattle: function() {
-		this.playerLocation_X
+	// storing player's location before switching states
+	this.playerLocation_X = this.player.x;
+	this.playerLocation_Y = this.player.y;
+	
 	// also telling Battle State what enemy the player will fight (only one enemy for now)
 	this.game.state.start('Battle', true, false, this.enemyBattle_sprite); 
 	},
