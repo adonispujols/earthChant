@@ -10,6 +10,7 @@ var earthChant = earthChant || {};
 // FIX/ADD COMMENTS
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
+// STUPID CURSOR STUCK AFTER PRESSING BUTTON
 
 // calling earthchant from main game
 earthChant.Preload = function(){};

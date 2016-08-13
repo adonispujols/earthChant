@@ -7,7 +7,8 @@ var earthChant = earthChant || {}; // calling from base game
 // TURN INTO MINI GAME ENGINE (easily manipulable)
 
 //MINOR:
-// FIX/ADD COMMENTS
+// FIX/ADD COMMENTS (explain how to add certain objects/events (i.e., coppy and paste here but increase x by one))
+// ORGANIZE CODE BETTER
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
@@ -19,6 +20,14 @@ var earthChant = earthChant || {}; // calling from base game
 earthChant.Battle = function(){};
 
 earthChant.Battle.prototype = {
+	//setting up global (across game) variables (sending parameters to state)
+	// loads the specific enemy(s) encountered (defined in World.state)
+	init: function(enemyBattle_sprite, enemyBattle_number){
+    var enemyBattle_sprite = enemyBattle_sprite || null;  //enemy's sprite
+    this.enemyBattle_sprite = enemyBattle_sprite;    //creates local variable from World's variable value
+    var enemyBattle_number = enemyBattle_number || null;  //enemy's number
+    this.enemyBattle_number = enemyBattle_number;
+   },
 
 //setting vars, functions, and objects
 // Almost Every object, var, and function needs 'this' because it attaches it to our main game(stores in cache it)
@@ -26,15 +35,15 @@ create: function(){
 
 	//  setting variables for game objects
 	// you can manipulate a lot of properties from here
-	this.atkanim;  	//attack animation (anim2 or hitanim2 are for enemy (as of now))
+	this.atkanim;  	// attack animation (anim2 or hitanim2 are for enemy (as of now))
 	this.atkanim2;
-	this.healanim;    //heal (health gained) animation  
-	this.hitanim;    //hit (or hurt) animation 
+	this.healanim;    // heal (health gained) animation  
+	this.hitanim;    // hit (or hurt) animation 
 	this.hitanim2;
 	this.deadPlayer;   // for dead player sprite
 	this.deadEnemy;
 	this.nullanim; 		// use this null animation to debug
-	this.power; //var that controls power of attacks (changes depending on attack chosen)
+	this.power; 	// var that controls power of attacks (changes depending on attack chosen)
 	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 3;
 	this.potionRegen = 3;  //amount of health gained 
@@ -68,7 +77,7 @@ create: function(){
 
 	// adding (displaying) our sprites to the game
 	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
-	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, 'canEnemy');
+	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
 	this.dialogBox = this.game.add.sprite(50, 400, 'dialogBox');
 
 	// creaitng players group
@@ -185,7 +194,7 @@ create: function(){
 },
 
 create_infoBox: function(){
-	this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
+	this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
 	this.infoBox = this.game.add.text(this.game.world.width/3, 100, 
 	this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
@@ -323,7 +332,7 @@ playersDead: function(){
 	//shows image of dead player
 	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer') 
 	
-	this.deadBox = this.game.add.text(this.game.world.width/2, 325, 
+	this.deadBox = this.game.add.text(this.game.world.width/2, 225, 
 	"You lost!");
     this.deadBox.anchor.set(0.5); 
     //displays new info after set interval (* Seconds)
@@ -338,17 +347,17 @@ enemiesDead: function(){
 	//shows image of dead enemy
 	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy') 
 	
-	this.victoryBox = this.game.add.text(this.game.world.width/2, 325, 
+	this.victoryBox = this.game.add.text(this.game.world.width/2, 225, 
 	"You won!");
     this.victoryBox.anchor.set(0.5); 
     //displays new info after set interval (* Seconds)
 	this.game.time.events.loop(Phaser.Timer.SECOND* 2, this.returnToWorld, this);
 },
 
-//returns character to world and tells world living state of enemies
-//SHOULD MAKE THIS A LIST
+// returns character to world and tells world living state of enemies (passes parameters to init)
+// SHOULD MAKE THIS A LIST
 returnToWorld: function(){
-	this.game.state.start('World', true, false, this.enemyDead); 
+	this.game.state.start('World', true, false, this.enemyDead, this.enemyBattle_number); 
 },
 
 runClicked: function(){

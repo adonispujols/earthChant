@@ -7,9 +7,11 @@ var earthChant = earthChant || {}; // calling from base game
 // TURN INTO MINI GAME ENGINE (easily manipulable)
 
 //MINOR:
-// FIX/ADD COMMENTS
+// FIX/ADD COMMENTS (explain how to add certain objects/events (i.e., coppy and paste here but increase x by one))
+// ORGANIZE CODE BETTER (USE JSON)
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
+// MAKE ENEMIES RESCALE DEPENDING ON SPRITE
 
 // setting up state
 earthChant.World = function(){};
@@ -18,9 +20,12 @@ earthChant.World = function(){};
 earthChant.World.prototype = {
 
 	//setting up global (across game) variables (sending parameters to state)
-	init: function(enemyDead) {
+	// kill enemies killed in Battle state/scene
+	init: function(enemyDead, enemyBattle_number) {
     var enemyDead = enemyDead || false;
-    this.enemysDead = enemyDead;
+    this.enemysDead = enemyDead;        //creates local variable from Battle's variable value
+    var enemyBattle_number = enemyBattle_number || null;
+    this.enemyBattle_number = enemyBattle_number; // stores enemy's number
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -32,11 +37,12 @@ earthChant.World.prototype = {
 	this.sara_X_speed = 300;
 	this.sara_Y_speed = 300;
 	this.bettyDirection = 0;  //resets direction she faces when game starts
-	this.enemy;           //our enemies
+	this.enemy1;           //our enemies
 	this.enemy2;
 	this.enemy3;
 	this.enemy4;
-	this.enemyGroup;      //group to store enemies
+	this.enemyBattle_sprite;     // stores sprite of enemy player ran into (look at loadBattle)
+	// this.enemyBattle_number;     // stores enemy's number
 	this.cursors;
 
 	// adding our sprites to game (betty is at the world'ss center x and y)
@@ -50,27 +56,46 @@ earthChant.World.prototype = {
 	this.betty.scale.setTo(1.5, 1.5); //rescalling betty
 
 	// same for our enemy
-	this.enemy = this.game.add.sprite(100,1200, 'smog');
+	this.enemy1 = this.game.add.sprite(100,1200, 'smog');
 	this.enemy2 = this.game.add.sprite(550,1100, 'canEnemy');
 	this.enemy3 = this.game.add.sprite(900,1200, 'snake');
 	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
 
 	// making enemy group and adding enemies to it
-	this.enemyGroup = this.game.add.group(); 
-	this.enemyGroup.add(this.enemy);
-	this.enemyGroup.add(this.enemy2);
-	this.enemyGroup.add(this.enemy3);
-	this.enemyGroup.add(this.enemy4);
+	// this.enemyGroup = this.game.add.group(); 
+	// this.enemyGroup.add(this.enemy);
+	// this.enemyGroup.add(this.enemy2);
+	// this.enemyGroup.add(this.enemy3);
+	// this.enemyGroup.add(this.enemy4);
 
-	// enable physics for enemy group
-	this.game.physics.arcade.enable(this.enemyGroup);
-	this.enemyGroup.enableBody = true;
-    // this.enemyGroup.physicsBodyType = Phaser.Physics.ARCADE;
-	// this.enemyGroup.body.immovable= true;
+	// enable physics for enemies (individually for now)
+	this.game.physics.arcade.enable(this.enemy1);
+	this.enemy1.enableBody = true;
+	this.game.physics.arcade.enable(this.enemy2);
+	this.enemy2.enableBody = true;
+	this.game.physics.arcade.enable(this.enemy3);
+	this.enemy3.enableBody = true;
+	this.game.physics.arcade.enable(this.enemy4);
+	this.enemy4.enableBody = true;
 
-	// kill enemy if dead
+
+	// cycles through the living state of each enemy and kills what is dead
 	if (this.enemysDead){
-    	this.enemy.kill();
+		if (this.enemyBattle_number == 1){
+    	this.enemy1.kill();
+    	}
+
+    	else if (this.enemyBattle_number==2){
+    	this.enemy2.kill();
+   		}
+
+	    else if (this.enemyBattle_number==3){
+    	this.enemy3.kill();
+    	}
+    	
+	    else if (this.enemyBattle_number==4){
+    	this.enemy4.kill();
+    	}
     }
 
 	// cursor controls (arrow keys)
@@ -88,8 +113,13 @@ earthChant.World.prototype = {
   },
 
   update: function() {
-	//plays battle scene when betty and enemies collide
-	this.game.physics.arcade.overlap(this.betty, this.enemyGroup, this.loadBattle, null ,this);
+	// indicates waht enemy was ran into (or "hit")
+	// when adding new enemies, create new ENEMY<enemy number>
+	// FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
+	this.game.physics.arcade.overlap(this.betty, this.enemy1, this.enemy1Hit, null ,this);
+	this.game.physics.arcade.overlap(this.betty, this.enemy2, this.enemy2Hit, null ,this);
+	this.game.physics.arcade.overlap(this.betty, this.enemy3, this.enemy3Hit, null ,this);
+	this.game.physics.arcade.overlap(this.betty, this.enemy4, this.enemy4Hit, null ,this);
 
 	// creating movement for betty (she )
 	// reseting velocity x and y to zero
@@ -115,16 +145,44 @@ earthChant.World.prototype = {
 		this.betty.body.velocity.x = this.sara_X_speed;
 		this.betty.animations.play('right');
 		this.bettyDirection = 3;
-	} else {
+	} 
+	else {
 		//  when not in motion, betty will stop
 		this.betty.animations.stop()
 		this.betty.frame = this.bettyDirection;
 	}
-  },
+  	},
+
+  	// define what sprite to load in battle when corresponding enemy is ran into
+  	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
+  	enemy1Hit: function(){
+  		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
+  		this.enemyBattle_number = 1;  // tells Battle.state the enemy number
+  		this.loadBattle();
+  	},
+
+  	enemy2Hit: function(){
+  		this.enemyBattle_sprite = 'canEnemy';
+  		this.enemyBattle_number = 2; 
+  		this.loadBattle();
+  	},
+
+  	enemy3Hit: function(){
+  		this.enemyBattle_sprite = 'snake';
+  		this.enemyBattle_number = 3; 
+  		this.loadBattle();  	
+  	},
+
+  	enemy4Hit: function(){
+  		this.enemyBattle_sprite = 'trashMan';
+  		this.enemyBattle_number = 4; 
+  		this.loadBattle();  	
+  	},
 
 	// loading battle scene (state name, reset world t/f, reset cache t/f)
-	loadBattle: function(betty, enemyGroup) {
-	this.game.state.start('Battle', true, false); 
+	loadBattle: function() {
+	// also telling Battle State what enemy the player will fight (only one enemy for now)
+	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.enemyBattle_number); 
 	},
 
   	//just some debugging info
