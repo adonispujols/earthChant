@@ -4,7 +4,7 @@ var earthChant = earthChant || {};
 //MAJOR:
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
-// TURN INTO MINI GAME ENGINE (easily manipulable)
+// TURN INTO MINI RPG ENGINE (easily manipulable)
 
 //MINOR:
 // FIX/ADD COMMENTS

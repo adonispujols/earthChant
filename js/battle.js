@@ -4,11 +4,12 @@ var earthChant = earthChant || {}; // calling from base game
 //MAJOR:
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
-// TURN INTO MINI GAME ENGINE (easily manipulable)
+// TURN INTO MINI RPG ENGINE (easily manipulable)
+	// BE MORE EFFICIENT 
+	// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters)
 
 //MINOR:
-// FIX/ADD COMMENTS (explain how to add certain objects/events (i.e., coppy and paste here but increase x by one))
-// ORGANIZE CODE BETTER
+// FIX/ADD COMMENTS (explain how to add more compnonets (i.e., coppy and paste here but change this property))
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE

@@ -4,11 +4,12 @@ var earthChant = earthChant || {}; // calling from base game
 //MAJOR:
 // TOO SIMILAR TO POKEMON! (keep button system)
 // FOCUS GAME ON POLLUTION!!!
-// TURN INTO MINI GAME ENGINE (easily manipulable)
+// TURN INTO MINI RPG ENGINE (easily manipulable)
+	// BE MORE EFFICIENT 
+	// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters)
 
 //MINOR:
-// FIX/ADD COMMENTS (explain how to add certain objects/events (i.e., coppy and paste here but increase x by one))
-// ORGANIZE CODE BETTER (USE JSON)
+// FIX/ADD COMMENTS (explain how to add more compnonets (i.e., coppy and paste here but change this property))
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
@@ -19,13 +20,19 @@ earthChant.World = function(){};
 //setting up vraibles, functions, and objects of world
 earthChant.World.prototype = {
 
-	//setting up global (across game) variables (sending parameters to state)
-	// kill enemies killed in Battle state/scene
+	// locally storing variables (parameters available to all states)
+	// updating enemy properties from Battle.state
 	init: function(enemyDead, enemyBattle_number) {
-    var enemyDead = enemyDead || false;
-    this.enemysDead = enemyDead;        //creates local variable from Battle's variable value
+    var enemyDead = enemyDead || false;      // if there is a value, use it, if not, use false
+    this.enemyDead = enemyDead;        // assigns boolean if an enemy was killed or not 
+
     var enemyBattle_number = enemyBattle_number || null;
-    this.enemyBattle_number = enemyBattle_number; // stores enemy's number
+    this.enemyBattle_number = enemyBattle_number; // takes enemy's number from Battle
+
+    this.deadEnemies = this.deadEnemies || [];   // creates permanent list of dead enemies
+   	if (this.enemyDead){
+   		this.deadEnemies.push(this.enemyBattle_number);    // adds the enemy's number 
+   	}
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -63,7 +70,7 @@ earthChant.World.prototype = {
 
 	// making enemy group and adding enemies to it
 	// this.enemyGroup = this.game.add.group(); 
-	// this.enemyGroup.add(this.enemy);
+	// this.enemyGroup.add(this.enemy1);
 	// this.enemyGroup.add(this.enemy2);
 	// this.enemyGroup.add(this.enemy3);
 	// this.enemyGroup.add(this.enemy4);
@@ -80,23 +87,21 @@ earthChant.World.prototype = {
 
 
 	// cycles through the living state of each enemy and kills what is dead
-	if (this.enemysDead){
-		if (this.enemyBattle_number == 1){
-    	this.enemy1.kill();
+	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
+	for (var i = 0; i < this.deadEnemies.length; i++) {
+		if (this.deadEnemies[i] == 1){
+	    	this.enemy1.kill();
     	}
-
-    	else if (this.enemyBattle_number==2){
-    	this.enemy2.kill();
-   		}
-
-	    else if (this.enemyBattle_number==3){
-    	this.enemy3.kill();
-    	}
-    	
-	    else if (this.enemyBattle_number==4){
-    	this.enemy4.kill();
-    	}
-    }
+		if (this.deadEnemies[i] == 2){
+	    	this.enemy2.kill();
+	    }
+		if (this.deadEnemies[i] == 3){
+	    	this.enemy3.kill();
+	    }
+		if (this.deadEnemies[i] == 4){
+	    	this.enemy4.kill();
+	    	}
+		}
 
 	// cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();
