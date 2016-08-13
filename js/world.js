@@ -73,20 +73,16 @@ earthChant.World.prototype = {
 	this.player.enableBody = true;
 	this.player.body.collideWorldBounds=true;
 
-	this.player.scale.setTo(1.5, 1.5); //rescalling player
 
 	// same for our enemy
-	this.enemy1 = this.game.add.sprite(100,1200, 'smog');
-	this.enemy2 = this.game.add.sprite(550,1100, 'canEnemy');
+	this.enemy1 = this.game.add.sprite(200,1200, 'smog');
+	this.enemy2 = this.game.add.sprite(550,1000, 'canEnemy');
 	this.enemy3 = this.game.add.sprite(900,1200, 'snake');
 	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
 
-	// making enemy group and adding enemies to it
-	// this.enemyGroup = this.game.add.group(); 
-	// this.enemyGroup.add(this.enemy1);
-	// this.enemyGroup.add(this.enemy2);
-	// this.enemyGroup.add(this.enemy3);
-	// this.enemyGroup.add(this.enemy4);
+	// rescalling sprites
+	this.player.scale.setTo(1.5, 1.5); 
+	// this.enemy2.scale.setTo(2,2); 
 
 	// enable physics for enemies (individually for now)
 	this.game.physics.arcade.enable(this.enemy1);
