@@ -45,8 +45,8 @@ earthChant.World.prototype = {
 
 	//setting up variables for objects
 	this.player;
-	this.sara_X_speed = 300;
-	this.sara_Y_speed = 300;
+	this.player_X_speed = 300;
+	this.player_Y_speed = 300;
 	this.playerDirection = 0;  //resets direction she faces when game starts
 	this.enemy1;           //our enemies
 	this.enemy2;
@@ -137,22 +137,22 @@ earthChant.World.prototype = {
 
 	// store direction player is facing (the frame for our .stop() function)
 	if (this.cursors.down.isDown) {
-		this.player.body.velocity.y = this.sara_Y_speed;
+		this.player.body.velocity.y = this.player_Y_speed;
 		this.player.animations.play('down');
 		this.playerDirection = 0;
 	} 
 	else if (this.cursors.left.isDown) {
-		this.player.body.velocity.x = -this.sara_X_speed;
+		this.player.body.velocity.x = -this.player_X_speed;
 		this.player.animations.play('left');
 		this.playerDirection = 1;
 	} 
 	else if (this.cursors.up.isDown) {
-		this.player.body.velocity.y = -this.sara_Y_speed;
+		this.player.body.velocity.y = -this.player_Y_speed;
 		this.player.animations.play('up');
 		this.playerDirection = 2;
 	} 
 	else if (this.cursors.right.isDown) {
-		this.player.body.velocity.x = this.sara_X_speed;
+		this.player.body.velocity.x = this.player_X_speed;
 		this.player.animations.play('right');
 		this.playerDirection = 3;
 	} 
