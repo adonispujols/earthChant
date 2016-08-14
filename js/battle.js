@@ -6,6 +6,7 @@ var earthChant = earthChant || {}; // calling from base game
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
+		// DELETE NOT NEEDED VARIABLES (you don't nee da vaiable for each object!)
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
@@ -36,7 +37,7 @@ earthChant.Battle.prototype = {
 // Almost Every object, var, and function needs 'this' because it attaches it to our main game(stores in cache it)
 create: function(){
 
-	//  setting variables for game objects
+	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 	// you can manipulate a lot of properties from here
 	this.atkanim;  	// attack animation (anim2 or hitanim2 are for enemy (as of now))
 	this.atkanim2;
@@ -71,17 +72,18 @@ create: function(){
 	this.mainMenu; 	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
 	this.fightOptions;
 	this.backButton;
-	this.backButton_X = 820; // x coor
-	this.baseButton_1_X = 320;   // xcoord of base (frequently used) buttons
-	this.baseButton_2_X = 520;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
+	this.backButton_X = 220; // x coor
+	this.baseButton_1_X = 220;   // xcoord of base (frequently used) buttons
+	this.baseButton_2_X = 450;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
 	this.baseButton_3_X = 720;
 	this.baseButton_Y = 450;   // all buttons are based off of same y coord
+	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
 
 	// adding (displaying) our sprites to the game
 	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
 	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
-	this.dialogBox = this.game.add.sprite(50, 400, 'dialogBox');
+	this.dialogBox = this.game.add.sprite(25, 400, 'dialogBox');
 
 	// creaitng players group
 	this.playerGroup = this.game.add.group();
@@ -155,42 +157,82 @@ create: function(){
 	this.backButton = this.game.add.group();
 	
 	// (interactive) buttons for inital/main options
+	// also adds adjacent text
 	this.fightButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'buttons', 
 	this.showFightMenu,this, 2, 1, 0); // fight button (2 = frame when over, 1 = frame when out, 0 = frame when pressed)
+	this.fightButtonText = this.game.add.text(this.fightButton.x, this.fightButton.y, 
+	"Fight");
+
 	this.itemsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
 	this.showItemsOptions,this, 2, 1, 0); // items button
+	this.itemsButtonText = this.game.add.text(this.itemsButton.x, this.itemsButton.y, 
+	"items");
+
 	this.runButton = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 	this.runClicked,this, 2, 1, 0); // run button
-	this.mainMenu.add(this.fightButton);
+	this.runButtonText = this.game.add.text(this.runButton.x, this.runButton.y, 
+	"Flee");
+	// adding buttons and text to main Menu group
+	this.mainMenu.add(this.fightButton);  // MAKE TEXT CHILD TO CORRESPONDING BUTTON
 	this.mainMenu.add(this.itemsButton);
 	this.mainMenu.add(this.runButton);	
+	this.mainMenu.add(this.fightButtonText);
+	this.mainMenu.add(this.itemsButtonText);
+	this.mainMenu.add(this.runButtonText);
 	
 	// buttons for different fight options
 	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 	this.attackClicked,this, 5, 4, 3); // attack button
+	this.attackText = this.game.add.text(this.attack.x, this.attack.y, 
+	"Attack");
+
 	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 	this.showFightMenu,this, 5, 4, 3); // attack1 button
+	this.attack1Text = this.game.add.text(this.attack1.x, this.attack1.y, 
+	"Attack 1");
+
 	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 	this.showFightMenu,this, 5, 4, 3); // attack2 button
+	this.attack2Text = this.game.add.text(this.attack2.x, this.attack2.y, 
+	"Attack 2");
 	this.fightOptions.add(this.attack);
 	this.fightOptions.add(this.attack1);
 	this.fightOptions.add(this.attack2);
+	this.fightOptions.add(this.attackText);
+	this.fightOptions.add(this.attack1Text);
+	this.fightOptions.add(this.attack2Text);
 
 	// buttons for different items options
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 	this.potionClicked,this, 8, 7, 6); // potion2 button
+	this.potionText = this.game.add.text(this.potion.x, this.potion.y, 
+	"Potion");
+
 	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 	this.potion1Clicked,this, 8, 7, 6); // potion1 button
+	this.potion1Text = this.game.add.text(this.potion1.x, this.potion1.y, 
+	"Potion 1");
+
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
 	this.showItemsOptions,this, 8, 7, 6); // potion2 button
-	this.itemsOptions.add(this.potion1);
+	this.potion2Text = this.game.add.text(this.potion2.x, this.potion2.y, 
+	"Potion 2");
 	this.itemsOptions.add(this.potion);
+	this.itemsOptions.add(this.potion1);
 	this.itemsOptions.add(this.potion2);
+	this.itemsOptions.add(this.potionText);
+	this.itemsOptions.add(this.potion1Text);
+	this.itemsOptions.add(this.potion2Text);
 
 	// back button that returns to main screen
-	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y, 'buttons',
-	this.showMainMenu,this, 2, 1, 0); 
+	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y-75, 'buttons',
+	this.showMainMenu,this, 1, 0, 2); 
+	this.backText = this.game.add.text(this.back.x, this.back.y, 
+	"back");
 	this.backButton.add(this.back);
+	this.backButton.add(this.backText);
+	this.back.scale.setTo(1,0.5);
+
 
 	// displays mainmenu/options
 	this.showMainMenu();
