@@ -73,8 +73,8 @@ create: function(){
 	this.enemy;
 	this.enemyDead = false; 
 	this.enemyGroup; 
-	this.enemy_X = 330;  // starting x/y coords of enemies
-	this.enemy_Y = 220;
+	this.enemy_X = 130;  // starting x/y coords of enemies
+	this.enemy_Y = 120;
 	this.score = 0;     
 	this.dialogBox;    //i.e. blue background box
 	this.victoryBox;
@@ -109,7 +109,7 @@ create: function(){
 	// rescaling sprites
 	this.dialogBox.scale.setTo(3,2);
 	// SHOULD RESCALE DEPENDING ON ENEMY FIGHTING
-	this.enemy.scale.setTo(1,1);
+	this.enemy.scale.setTo(.7,.7);
 	this.player.scale.setTo(3,3);
 
 	// creates infoBox (facts)
@@ -134,8 +134,8 @@ create: function(){
 	this.playerBarConfig = {
     width: this.player.maxHealth*5,
     height: 40,
-    x: 1000,
-    y: 200,
+    x: this.player.x,
+    y: 100,
     bg: {    // bar's background color
       color: '#651828'
     },
@@ -151,8 +151,8 @@ create: function(){
 	this.enemyBarConfig = {
     width: this.enemy.maxHealth*5,
     height: 40,
-    x: 400,
-    y: 200,
+    x: this.enemy.x,
+    y: 100,
     bg: {
       color: '#651828'
     },
