@@ -68,7 +68,7 @@ create: function(){
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
 	this.playerGroup;
-	this.player_X = 920;  // starting x/y coords of player
+	this.player_X = 820;  // starting x/y coords of player
 	this.player_Y = 220;
 	this.enemy;
 	this.enemyDead = false; 
@@ -151,7 +151,7 @@ create: function(){
 	this.enemyBarConfig = {
     width: this.enemy.maxHealth*5,
     height: 40,
-    x: this.enemy.x,
+    x: this.enemy.x+150,
     y: 100,
     bg: {
       color: '#651828'
