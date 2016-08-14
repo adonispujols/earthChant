@@ -26,7 +26,7 @@ earthChant.StartScreen.prototype = {
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 		// start button
 		// CHANGE TO ONMOUSE CLICKED
-		this.startButton = this.game.add.button(300, 300,'fightButton', 
+		this.startButton = this.game.add.button(300, 300,'buttons', 
 		this.startGame,this, 2, 1, 0);
 	},
 	startGame: function(){

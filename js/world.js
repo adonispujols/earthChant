@@ -6,9 +6,11 @@ var earthChant = earthChant || {}; // calling from base game
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
-		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters)
+		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
+		// ADD REAL COLLISION WITH MAP Set up Object layers in Tiled)
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
+// ADD MOUSE+KEY INPUT (ON BATTLE)
 
 //MINOR:
 // FIX/ADD COMMENTS 

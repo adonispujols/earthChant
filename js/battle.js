@@ -6,15 +6,17 @@ var earthChant = earthChant || {}; // calling from base game
 // FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
-		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters)
+		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
+// ADD MOUSE+KEY INPUT (ON BATTLE)
 
 //MINOR:
 // FIX/ADD COMMENTS 
 // ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
+
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
@@ -153,41 +155,41 @@ create: function(){
 	this.backButton = this.game.add.group();
 	
 	// (interactive) buttons for inital/main options
-	this.fightButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'fightButton', 
-	this.showFightMenu,this, 2, 1, 0); // fight button
-	this.itemsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'itemsButton', 
+	this.fightButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'buttons', 
+	this.showFightMenu,this, 2, 1, 0); // fight button (2 = frame when over, 1 = frame when out, 0 = frame when pressed)
+	this.itemsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
 	this.showItemsOptions,this, 2, 1, 0); // items button
-	this.runButton = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'runButton', 
+	this.runButton = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 	this.runClicked,this, 2, 1, 0); // run button
 	this.mainMenu.add(this.fightButton);
 	this.mainMenu.add(this.itemsButton);
 	this.mainMenu.add(this.runButton);	
 	
 	// buttons for different fight options
-	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'fightButton', 
-	this.attackClicked,this, 1, 0, 2); // attack button
-	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'fightButton', 
-	this.showFightMenu,this, 1, 0, 2); // attack1 button
-	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'fightButton', 
-	this.showFightMenu,this, 1, 0, 2); // attack2 button
+	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
+	this.attackClicked,this, 5, 4, 3); // attack button
+	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
+	this.showFightMenu,this, 5, 4, 3); // attack1 button
+	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
+	this.showFightMenu,this, 5, 4, 3); // attack2 button
 	this.fightOptions.add(this.attack);
 	this.fightOptions.add(this.attack1);
 	this.fightOptions.add(this.attack2);
 
 	// buttons for different items options
-	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'itemsButton', 
-	this.potionClicked,this, 1, 0, 2); // potion2 button
-	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'itemsButton', 
-	this.potion1Clicked,this, 1, 0, 2); // potion1 button
-	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'itemsButton', 
-	this.showItemsOptions,this, 1, 0, 2); // potion2 button
+	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
+	this.potionClicked,this, 8, 7, 6); // potion2 button
+	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
+	this.potion1Clicked,this, 8, 7, 6); // potion1 button
+	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
+	this.showItemsOptions,this, 8, 7, 6); // potion2 button
 	this.itemsOptions.add(this.potion1);
 	this.itemsOptions.add(this.potion);
 	this.itemsOptions.add(this.potion2);
 
 	// back button that returns to main screen
-	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y, 'backButton',
-	this.showMainMenu,this, 1, 0, 2); 
+	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y, 'buttons',
+	this.showMainMenu,this, 2, 1, 0); 
 	this.backButton.add(this.back);
 
 	// displays mainmenu/options
