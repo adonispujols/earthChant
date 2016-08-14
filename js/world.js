@@ -10,13 +10,14 @@ var earthChant = earthChant || {}; // calling from base game
 		// ADD REAL COLLISION WITH MAP Set up Object layers in Tiled)
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
-// ADD MOUSE+KEY INPUT (ON BATTLE)
 
 //MINOR:
 // FIX/ADD COMMENTS 
 // ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
+// ADD MOUSE+KEY INPUT (ON BATTLE)
+
 
 // setting up state
 earthChant.World = function(){};

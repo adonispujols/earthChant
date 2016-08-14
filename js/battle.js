@@ -10,14 +10,13 @@ var earthChant = earthChant || {}; // calling from base game
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
-// ADD MOUSE+KEY INPUT (ON BATTLE)
 
 //MINOR:
 // FIX/ADD COMMENTS 
 // ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
-
+// ADD MOUSE+KEY INPUT (ON BATTLE)
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
@@ -70,7 +69,7 @@ create: function(){
 	//list of deforestation info
 	this.infolist = ["Almost half of world’s timber and up \n to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
 	this.mainMenu; 	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
-	this.fightOptions;
+	this.attackOptions;
 	this.backButton;
 	this.backButton_X = 220; // x coor
 	this.baseButton_1_X = 220;   // xcoord of base (frequently used) buttons
@@ -152,16 +151,16 @@ create: function(){
 	
 	// creating groups for options (good for easy manipulation)
 	this.mainMenu = this.game.add.group(); 
-	this.fightOptions = this.game.add.group();
+	this.attackOptions = this.game.add.group();
 	this.itemsOptions = this.game.add.group();
 	this.backButton = this.game.add.group();
 	
 	// (interactive) buttons for inital/main options
 	// also adds adjacent text
-	this.fightButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'buttons', 
-	this.showFightMenu,this, 2, 1, 0); // fight button (2 = frame when over, 1 = frame when out, 0 = frame when pressed)
-	this.fightButtonText = this.game.add.text(this.fightButton.x, this.fightButton.y, 
-	"Fight");
+	this.attackButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'buttons', 
+	this.showAttackMenu,this, 2, 1, 0); // attack button (2 = frame when over, 1 = frame when out, 0 = frame when pressed)
+	this.attackButtonText = this.game.add.text(this.attackButton.x, this.attackButton.y, 
+	"Attack");
 
 	this.itemsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
 	this.showItemsOptions,this, 2, 1, 0); // items button
@@ -173,34 +172,34 @@ create: function(){
 	this.runButtonText = this.game.add.text(this.runButton.x, this.runButton.y, 
 	"Flee");
 	// adding buttons and text to main Menu group
-	this.mainMenu.add(this.fightButton);  // MAKE TEXT CHILD TO CORRESPONDING BUTTON
+	this.mainMenu.add(this.attackButton);  // MAKE TEXT CHILD TO CORRESPONDING BUTTON
 	this.mainMenu.add(this.itemsButton);
 	this.mainMenu.add(this.runButton);	
-	this.mainMenu.add(this.fightButtonText);
+	this.mainMenu.add(this.attackButtonText);
 	this.mainMenu.add(this.itemsButtonText);
 	this.mainMenu.add(this.runButtonText);
 	
-	// buttons for different fight options
+	// buttons for different attack options
 	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 	this.attackClicked,this, 5, 4, 3); // attack button
 	this.attackText = this.game.add.text(this.attack.x, this.attack.y, 
 	"Attack");
 
 	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
-	this.showFightMenu,this, 5, 4, 3); // attack1 button
+	this.showAttackMenu,this, 5, 4, 3); // attack1 button
 	this.attack1Text = this.game.add.text(this.attack1.x, this.attack1.y, 
 	"Attack 1");
 
 	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
-	this.showFightMenu,this, 5, 4, 3); // attack2 button
+	this.showAttackMenu,this, 5, 4, 3); // attack2 button
 	this.attack2Text = this.game.add.text(this.attack2.x, this.attack2.y, 
 	"Attack 2");
-	this.fightOptions.add(this.attack);
-	this.fightOptions.add(this.attack1);
-	this.fightOptions.add(this.attack2);
-	this.fightOptions.add(this.attackText);
-	this.fightOptions.add(this.attack1Text);
-	this.fightOptions.add(this.attack2Text);
+	this.attackOptions.add(this.attack);
+	this.attackOptions.add(this.attack1);
+	this.attackOptions.add(this.attack2);
+	this.attackOptions.add(this.attackText);
+	this.attackOptions.add(this.attack1Text);
+	this.attackOptions.add(this.attack2Text);
 
 	// buttons for different items options
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
@@ -254,10 +253,10 @@ show_infoBox: function(){
 },
 
 // clicking displays next set of options (subMenu)
-// for example, showFightMenu() shows 3 attack options ontop of hud
-showFightMenu: function(){
-	// show fightOptions and back button wile hiding mainMenu
-	this.fightOptions.visible = true;
+// for example, showAttackMenu() shows 3 attack options ontop of hud
+showAttackMenu: function(){
+	// show attackOptions and back button wile hiding mainMenu
+	this.attackOptions.visible = true;
 	this.showSubMenu();
 }, 
 
@@ -299,18 +298,18 @@ showSubMenu: function(){
 
 //shows mainhud/menu while hiding all submenus
 showMainMenu: function(){
-	this.fightOptions.visible = false;
+	this.attackOptions.visible = false;
 	this.itemsOptions.visible = false;
 	this.backButton.visible = false;
 	this.mainMenu.visible = true;
-	this.fightButton.frame = 1;  // fixed buttons are stuck at frame 2 bug (previous frame not reseting) by reseting frames
+	this.attackButton.frame = 1;  // fixed buttons are stuck at frame 2 bug (previous frame not reseting) by reseting frames
 	this.itemsButton.frame = 1;
 },
 
 // hides all options (used after actions are done);
 hideHud: function(){
 	this.mainMenu.visible = false;
-	this.fightOptions.visible = false;
+	this.attackOptions.visible = false;
 	this.itemsOptions.visible = false;
 	this.backButton.visible = false;
 },
