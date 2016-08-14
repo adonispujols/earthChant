@@ -54,6 +54,7 @@ earthChant.World.prototype = {
 	this.game.world.setBounds( 0, 0, 2000, 2000);
 	this.game.stage.backgroundColor = '#007000';
 
+	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apparently)
 	//setting up variables for objects
 	this.player;
 	this.player_X_speed = 300;
@@ -66,6 +67,7 @@ earthChant.World.prototype = {
 	this.enemyBattle_sprite;     // stores sprite of enemy player ran into (look at loadBattle)
 	this.cursors;  // arrow keys
 	this.scoreText;
+	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
 	// adding our sprites to game (set at playerLocation_X and Y
 	this.player = this.game.add.sprite(this.playerLocation_X, this.playerLocation_Y, 'betty');
@@ -82,9 +84,6 @@ earthChant.World.prototype = {
 	this.enemy3 = this.game.add.sprite(900,1200, 'snake');
 	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
 
-	// rescalling sprites
-	this.player.scale.setTo(1.5, 1.5); 
-	// this.enemy2.scale.setTo(2,2); 
 
 	// enable physics for enemies (individually for now)
 	this.game.physics.arcade.enable(this.enemy1);
@@ -96,6 +95,14 @@ earthChant.World.prototype = {
 	this.game.physics.arcade.enable(this.enemy4);
 	this.enemy4.enableBody = true;
 
+	// creating basic items place holder with physics
+	this.item = this.game.add.sprite(1000,900, 'tree');
+	this.game.physics.arcade.enable(this.item);
+	this.item.enableBody = true;
+
+	// rescalling sprites
+	this.player.scale.setTo(1.5, 1.5); 
+	// this.enemy2.scale.setTo(2,2); 
 
 	// cycles through the living state of each enemy and kills what is dead
 	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
@@ -137,10 +144,13 @@ earthChant.World.prototype = {
   update: function() {
 	// indicates waht enemy was ran into (or "hit")
 	// when adding new enemies, create new ENEMY<enemy number>
-	this.game.physics.arcade.overlap(this.player, this.enemy1, this.enemy1Hit, null ,this); 	// FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
+	this.game.physics.arcade.overlap(this.player, this.enemy1, this.enemy1Hit, null ,this); // FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
 	this.game.physics.arcade.overlap(this.player, this.enemy2, this.enemy2Hit, null ,this);
 	this.game.physics.arcade.overlap(this.player, this.enemy3, this.enemy3Hit, null ,this);
 	this.game.physics.arcade.overlap(this.player, this.enemy4, this.enemy4Hit, null ,this);
+	// when character is over item, "collect" it
+	this.game.physics.arcade.overlap(this.player, this.item, this.collectItem, null ,this);  // FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
+
 
 	// creating movement for player (she )
 	// reseting velocity x and y to zero
@@ -198,6 +208,11 @@ earthChant.World.prototype = {
   		this.enemyBattle_sprite = 'trashMan';
   		this.enemyBattle_number = 4; 
   		this.loadBattle();  	
+  	},
+
+  	// player "collects" item (removes it from game)
+  	collectItem: function(){
+  		this.item.kill();
   	},
 
 	// loading battle scene (state name, reset world t/f, reset cache t/f)
