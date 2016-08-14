@@ -396,7 +396,7 @@ playersDead: function(){
     this.deadBox.anchor.set(0.5); 
     //displays new info after set interval (* Seconds)
     //should go to gameover screen/ function
-	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.returnToWorld, this);
+	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.returntoStartScreen, this);
 
 },
 
@@ -418,6 +418,12 @@ enemiesDead: function(){
 // returns character to world and tells world living state of enemies (passes parameters to init)
 returnToWorld: function(){
 	this.game.state.start('World', true, false, this.enemyDead, this.score);  // SHOULD MAKE THIS A LIST
+},
+
+// returns to startscreen
+returntoStartScreen: function(){
+	this.game.state.start('StartScreen', true, false);  // SHOULD MAKE THIS A LIST
+
 },
 
 runClicked: function(){
