@@ -1,15 +1,21 @@
 var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
-
-//MAJOR:
-// TOO SIMILAR TO POKEMON! (keep button system)
-// FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
-		// ADD REAL COLLISION WITH MAP Set up Object layers in Tiled)
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
+
+//MAJOR:
+// NEED TEXT NEED TEXT NEED NEED TEXT NEED TEXT!!
+// NEED SOUND NEED SOUND NEED SOUND NEED SOUND!!
+// UNIVERSAL HP, EXP, AND PROPER ATTACK/POTIONS (just use items that wear with each use (but can be repaired) except potions)
+	// ADD RANDOMNESS/CRITICAL CHANCE TO MOVES SO BATTLES DON'T TURN OUT THE SAME(random attk+score+loot TURNS AND RUNNING SUCCESS)!
+	// ADD ACTUAL LEVELS (I mean like, Lvl1, lvl2, with increasing hp and power)
+		// ALSO, MAKE ENEMIES VARY IN DIFFICULTY (by type---this simplifies the game)
+// SIMPLE TUTORIAL SCREEN (one screen)
+// FOCUS GAME ON POLLUTION!!!
+// TOO SIMILAR TO POKEMON! (keep button system)
 
 //MINOR:
 // FIX/ADD COMMENTS 
@@ -17,6 +23,7 @@ var earthChant = earthChant || {}; // calling from base game
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
 // ADD MOUSE+KEY INPUT (ON BATTLE)
+// ASSESS HOW MUCH VARIABILITY IS NEEDED FOR DMG!
 
 
 // setting up state

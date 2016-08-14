@@ -1,22 +1,31 @@
 var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
-
-//MAJOR:
-// TOO SIMILAR TO POKEMON! (keep button system)
-// FOCUS GAME ON POLLUTION!!!
-// TURN INTO MINI RPG ENGINE (easily manipulable)
+// FOR REUSE (essential components of (turn based)RPG game):
+// TURN INTO MINI (turn based) RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
-		// DELETE NOT NEEDED VARIABLES (you don't nee da vaiable for each object!)
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
+	// UNIVERSAL PLAYER HP, EXP, etc.. (char properties) 
+	// NEED TEXT NEED TEXT NEED NEED TEXT NEED TEXT!!
+	// NEED SOUND NEED SOUND NEED SOUND NEED SOUND!!
+	// NEED ITEMS TOO! (weapons, potions, etc...)
+		// ADD RANDOMNESS TO MOVES/TURNS SO BATTLES DON'T TURN OUT HTE SAME!
+			// MAKE ENEMIES VARY IN DIFFICULTY
+
+//MAJOR (for earthChant):
+// FOCUS GAME ON POLLUTION!!!
+// TOO SIMILAR TO POKEMON! (keep button system)
 
 //MINOR:
 // FIX/ADD COMMENTS 
 // ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
+// DON'T DRAW STUFF JUST TO DELETE LATER (i.e makign a sprite that will be killed right after)
 // ADD MOUSE+KEY INPUT (ON BATTLE)
+// SIMPLE TUTORIAL SCREEN (one screen)
+
 
 // more amazing art:
 // http://opengameart.org/content/anime-portrait-for-lpc-characters
@@ -27,9 +36,13 @@ earthChant.Battle = function(){};
 earthChant.Battle.prototype = {
 	//setting up global (across game) variables (sending parameters to state)
 	// loads the specific enemy(s) encountered (defined in World.state)
-	init: function(enemyBattle_sprite){
-    var enemyBattle_sprite = enemyBattle_sprite || null;  //enemy's sprite
+	init: function(enemyBattle_sprite, potionsStored){
+    var enemyBattle_sprite = enemyBattle_sprite || null;  // enemy's sprite
     this.enemyBattle_sprite = enemyBattle_sprite;    //creates local variable from World's variable value
+   	
+   	// loads potionsStored, or sets to default if nothing 
+   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
+   	this.potionsStored = potionsStored;
    },
 
 //setting vars, functions, and objects
@@ -46,10 +59,12 @@ create: function(){
 	this.deadPlayer;   // for dead player sprite
 	this.deadEnemy;
 	this.nullanim; 		// use this null animation to debug
-	this.power; 	// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 3;  //specifices the exact power stat of attack (should be put in seperate list)
-	this.attackPower2 = 3;
-	this.potionRegen = 3;  //amount of health gained 
+	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
+	this.randomScale_max = 5;   
+	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
+	this.attackPower = 6;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower2 = 6;
+	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
 	this.playerGroup;
@@ -101,10 +116,10 @@ create: function(){
 	this.create_infoBox();
 
 	// setting health values
-	this.player.maxHealth = 5;
-	this.player.health = 5;
-	this.enemy.maxHealth = 5;
-	this.enemy.health = 5;
+	this.player.maxHealth = 50;
+	this.player.health = 50;
+	this.enemy.maxHealth = 50;
+	this.enemy.health = 50;
 
 	// setting up our animation sequences (key, frames, frame rate, loop)
 	this.atkanim = this.player.animations.add('spin',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); // defining animation frames here for now
@@ -117,7 +132,7 @@ create: function(){
 	// creating and customizing our healthbars
 	// player health bar
 	this.playerBarConfig = {
-    width: this.player.maxHealth*50,
+    width: this.player.maxHealth*5,
     height: 40,
     x: 1000,
     y: 200,
@@ -134,7 +149,7 @@ create: function(){
 
 	// enemy health bar
 	this.enemyBarConfig = {
-    width: this.enemy.maxHealth*50,
+    width: this.enemy.maxHealth*5,
     height: 40,
     x: 400,
     y: 200,
@@ -152,7 +167,7 @@ create: function(){
 	// creating groups for options (good for easy manipulation)
 	this.mainMenu = this.game.add.group(); 
 	this.attackOptions = this.game.add.group();
-	this.itemsOptions = this.game.add.group();
+	this.PotionsOptions = this.game.add.group();
 	this.backButton = this.game.add.group();
 	
 	// (interactive) buttons for inital/main options
@@ -162,10 +177,10 @@ create: function(){
 	this.attackButtonText = this.game.add.text(this.attackButton.x, this.attackButton.y, 
 	"Attack");
 
-	this.itemsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
-	this.showItemsOptions,this, 2, 1, 0); // items button
-	this.itemsButtonText = this.game.add.text(this.itemsButton.x, this.itemsButton.y, 
-	"items");
+	this.PotionsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
+	this.showPotionsOptions,this, 2, 1, 0); // Potions button
+	this.PotionsButtonText = this.game.add.text(this.PotionsButton.x, this.PotionsButton.y, 
+	"Potions");
 
 	this.runButton = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 	this.runClicked,this, 2, 1, 0); // run button
@@ -173,10 +188,10 @@ create: function(){
 	"Flee");
 	// adding buttons and text to main Menu group
 	this.mainMenu.add(this.attackButton);  // MAKE TEXT CHILD TO CORRESPONDING BUTTON
-	this.mainMenu.add(this.itemsButton);
+	this.mainMenu.add(this.PotionsButton);
 	this.mainMenu.add(this.runButton);	
 	this.mainMenu.add(this.attackButtonText);
-	this.mainMenu.add(this.itemsButtonText);
+	this.mainMenu.add(this.PotionsButtonText);
 	this.mainMenu.add(this.runButtonText);
 	
 	// buttons for different attack options
@@ -201,7 +216,7 @@ create: function(){
 	this.attackOptions.add(this.attack1Text);
 	this.attackOptions.add(this.attack2Text);
 
-	// buttons for different items options
+	// buttons for different Potions options
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 	this.potionClicked,this, 8, 7, 6); // potion2 button
 	this.potionText = this.game.add.text(this.potion.x, this.potion.y, 
@@ -213,15 +228,15 @@ create: function(){
 	"Potion 1");
 
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
-	this.showItemsOptions,this, 8, 7, 6); // potion2 button
+	this.showPotionsOptions,this, 8, 7, 6); // potion2 button
 	this.potion2Text = this.game.add.text(this.potion2.x, this.potion2.y, 
 	"Potion 2");
-	this.itemsOptions.add(this.potion);
-	this.itemsOptions.add(this.potion1);
-	this.itemsOptions.add(this.potion2);
-	this.itemsOptions.add(this.potionText);
-	this.itemsOptions.add(this.potion1Text);
-	this.itemsOptions.add(this.potion2Text);
+	this.PotionsOptions.add(this.potion);
+	this.PotionsOptions.add(this.potion1);
+	this.PotionsOptions.add(this.potion2);
+	this.PotionsOptions.add(this.potionText);
+	this.PotionsOptions.add(this.potion1Text);
+	this.PotionsOptions.add(this.potion2Text);
 
 	// back button that returns to main screen
 	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y-75, 'buttons',
@@ -231,8 +246,8 @@ create: function(){
 	this.backButton.add(this.back);
 	this.backButton.add(this.backText);
 	this.back.scale.setTo(1,0.5);
-
-
+	//only dispalys these items if thy are in player's inventory
+	if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	// displays mainmenu/options
 	this.showMainMenu();
 },
@@ -260,35 +275,35 @@ showAttackMenu: function(){
 	this.showSubMenu();
 }, 
 
-attackClicked: function(){
-	this.hideHud();
-	this.power = this.attackPower;   //sets power of attack according to power of move  
-	this.atkanim.play();         //plays animation
-	//should add an conditional (if hit)
-	this.atkanim.onComplete.add(this.hitEnemy, this); //when atkanim is finished run hitEnemy function
-},
+	attackClicked: function(){
+		this.hideHud();
+		this.power = (this.attackPower*this.game.rnd.integerInRange(this.randomScale_min, this.randomScale_max));   //sets power of attack according to power of move * random multipler
+		this.atkanim.play();         //plays animation
+		//should add an conditional (if hit)
+		this.atkanim.onComplete.add(this.hitEnemy, this); //when atkanim is finished run hitEnemy function
+	},
 
-//items button
-showItemsOptions: function(){
-	this.itemsOptions.visible = true;
+//Potions button
+showPotionsOptions: function(){
+	this.PotionsOptions.visible = true;
 	this.showSubMenu();
 },
 
-//potions button
-potionClicked: function() {
-	this.hideHud();
-	// should set regen to potion stat
-	this.healanim.play();   //play heal animation
-	this.healanim.onComplete.add(this.healPlayer, this);
-},
+	//potions button
+	potionClicked: function() {
+		this.hideHud();
+		// should set regen to potion stat
+		this.healanim.play();   //play heal animation
+		this.healanim.onComplete.add(this.healPlayer, this);
+	},
 
-//potions button
-potion1Clicked: function() {
-	this.hideHud();
-	// should set regen to potion stat
-	this.healanim.play();   //play heal animation
-	this.healanim.onComplete.add(this.healPlayer, this);
-},
+	//potions button
+	potion1Clicked: function() {
+		this.hideHud();
+		// should set regen to potion stat
+		this.healanim.play();   //play heal animation
+		this.healanim.onComplete.add(this.healPlayer, this);
+	},
 
 // shows item submenu, hides mainmenu
 showSubMenu: function(){
@@ -299,18 +314,18 @@ showSubMenu: function(){
 //shows mainhud/menu while hiding all submenus
 showMainMenu: function(){
 	this.attackOptions.visible = false;
-	this.itemsOptions.visible = false;
+	this.PotionsOptions.visible = false;
 	this.backButton.visible = false;
 	this.mainMenu.visible = true;
 	this.attackButton.frame = 1;  // fixed buttons are stuck at frame 2 bug (previous frame not reseting) by reseting frames
-	this.itemsButton.frame = 1;
+	this.PotionsButton.frame = 1;
 },
 
 // hides all options (used after actions are done);
 hideHud: function(){
 	this.mainMenu.visible = false;
 	this.attackOptions.visible = false;
-	this.itemsOptions.visible = false;
+	this.PotionsOptions.visible = false;
 	this.backButton.visible = false;
 },
 
@@ -346,7 +361,7 @@ delayEnemyTurn: function(){
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
 enemyTurn: function(){
 	this.atkanim2.play();  
-	this.power = this.attackPower2;    //still using same power variable 
+	this.power = (this.attackPower2*this.game.rnd.integerInRange(this.randomScale_min, this.randomScale_max));    //still using same power formula 
 	//again, add an conditional (if hit)
 	this.atkanim2.onComplete.add(this.hitPlayer, this); 
 },

@@ -1,22 +1,28 @@
 var earthChant = earthChant || {};
 //NOTES NOTES NOTES NOTES:
-
-//MAJOR:
-// TOO SIMILAR TO POKEMON! (keep button system)
-// FOCUS GAME ON POLLUTION!!!
 // TURN INTO MINI RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
 		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
-// ADD MOUSE+KEY INPUT (ON BATTLE)
+
+//MAJOR:
+// NEED TEXT NEED TEXT NEED NEED TEXT NEED TEXT!!
+// NEED SOUND NEED SOUND NEED SOUND NEED SOUND!!
+// UNIVERSAL HP, EXP, AND PROPER ATTACK/POTIONS (just use items that wear with each use (but can be repaired) except potions)
+	// ADD RANDOMNESS TO MOVES SO BATTLES DON'T TURN OUT HTE SAME!
+	// ADD ACTUAL LEVELS (I mean like, Lvl1, lvl2, with increasing hp and power)
+		// ALSO, MAKE ENEMIES VARY IN DIFFICULTY (do so by type and/or color---this simplifies the game)
+// SIMPLE TUTORIAL SCREEN (one screen)
+// FOCUS GAME ON POLLUTION!!!
+// TOO SIMILAR TO POKEMON! (keep button system)
 
 //MINOR:
 // FIX/ADD COMMENTS 
 // ORGANIZE VARIABLES+FUNCTIONS
 // USE BOOTSTRAP TO RESIZE SCREEN 
 // MAKE ENEMIES RESCALE DEPENDING ON SPRITE
-
+// ADD MOUSE+KEY INPUT (ON BATTLE)
 // calling earthchant from main game
 earthChant.Preload = function(){};
 
