@@ -247,7 +247,7 @@ create: function(){
 	this.backButton.add(this.backText);
 	this.back.scale.setTo(1,0.5);
 	//only dispalys these items if thy are in player's inventory
-	if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
+	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	// displays mainmenu/options
 	this.showMainMenu();
 },

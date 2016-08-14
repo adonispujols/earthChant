@@ -30,11 +30,10 @@ earthChant.Preload.prototype = {
 	preload: function() {
 		// loading sprite sheet. key, url, width, height, frames
 		this.game.load.spritesheet('betty','assets/sprites/betty.png', 48, 48, 16);
-		this.game.load.spritesheet('deadPlayer','assets/sprites/tree.png', 48, 48, 16);
-		this.game.load.spritesheet('deadEnemy','assets/sprites/tree.png', 48, 48, 16);
-		this.game.load.spritesheet('betty1','assets/sprites/betty.png', 48, 48, 16);
-		this.game.load.spritesheet('betty2', 'assets/sprites/betty.png', 48, 48, 16);
-		this.game.load.spritesheet('betty2', 'assets/sprites/betty.png', 48, 48, 16);
+		this.game.load.spritesheet('deadPlayer','assets/sprites/tree.png', 32, 32, 16);
+		this.game.load.spritesheet('deadEnemy','assets/sprites/tree.png', 32, 32, 16);
+		// this.game.load.spritesheet('betty1','assets/sprites/betty.png', 48, 48, 16);
+		// this.game.load.spritesheet('betty2', 'assets/sprites/betty.png', 48, 48, 16);
 		// this.game.load.spritesheet('fightButton','assets/sprites/button_sprite_sheet.png',193, 71);
 		// this.game.load.spritesheet('itemsButton','assets/sprites/button_sprite_sheet.png',193, 71);
 		// this.game.load.spritesheet('runButton','assets/sprites/button_sprite_sheet.png',193, 71);
@@ -46,7 +45,8 @@ earthChant.Preload.prototype = {
 		this.game.load.spritesheet('snake','assets/sprites/snake.png',416,416,2);
 		this.game.load.spritesheet('tree','assets/sprites/tree.png',32,32);
 		this.game.load.spritesheet('trashMan','assets/sprites/trashMan.png',416,416,2);
-
+		this.game.load.image('logo', 'assets/sprites/logo.png');
+		this.game.load.image('background', 'assets/sprites/background.jpg');
 		},
 
 	create: function() {
