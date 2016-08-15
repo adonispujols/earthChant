@@ -253,11 +253,14 @@ create: function(){
 	this.backButton.add(this.back);
 	this.backButton.add(this.backText);
 	this.back.scale.setTo(1,0.5);
-	// creates infoBox (facts)
-	this.create_infoBox();
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	
+	// hides items initally
+	this.hideHud();
+	// adds initial delay to display items
+	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.showMainMenu, this); //*2 increases amount of seconds
+	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.create_infoBox, this); //*2 increases amount of seconds
 	// inital fact display (then shows main menu)
 	this.factBox();
 
@@ -265,7 +268,6 @@ create: function(){
 // displays facts about enemy
 factBox: function(){
 	if(!this.battleStart){
-		this.hideHud();  //hides huds
 		// displaying info
 		this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
 		this.info.anchor.set(0.5);  // sets text at center 
@@ -277,7 +279,6 @@ factBox: function(){
 hideInfo: function(){
 	this.info.kill();   // hides facts
 	this.battleStart = true;
-	this.showMainMenu();
 },
 
 create_infoBox: function(){
