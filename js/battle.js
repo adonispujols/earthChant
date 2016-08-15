@@ -256,29 +256,28 @@ create: function(){
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	
-	// hides items initally
-	this.hideHud();
-	// adds initial delay to display items
-	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.showMainMenu, this); // this transitionSpeed increases amount of seconds
-	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.create_infoBox, this);
 	// inital fact display (then shows main menu)
 	this.factBox();
 
 },
 // displays facts about enemy
 factBox: function(){
-	if(!this.battleStart){
-		// displaying info
-		this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
-		this.info.anchor.set(0.5);  // sets text at center 
-		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed+60, this.hideInfo, this); //*2 increases amount of seconds
-	}
+	this.hideHud();  //hides huds
+	
+	// displaying info
+	this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
+	this.info.anchor.set(0.5);  // sets text at center 
+	this.game.time.events.add(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
 },
 
 //hides the fact box then shows info box and main menu options
 hideInfo: function(){
 	this.info.kill();   // hides facts
-	this.battleStart = true;
+	
+	//	showing items
+	this.showMainMenu();
+	// creates infoBox (facts)
+	this.create_infoBox();
 },
 
 create_infoBox: function(){
