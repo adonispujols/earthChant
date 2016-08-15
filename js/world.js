@@ -260,7 +260,7 @@ earthChant.World.prototype = {
   		this.keyEnabled = true;
   	},
   	// enables input
-  	enableKeys: function (){  
+  	enableKeys: function (){
   		this.gameStart= true;
 		this.keyEnabled = true;
 		this.info.kill();
@@ -269,7 +269,8 @@ earthChant.World.prototype = {
   	// define what sprite to load in battle when corresponding enemy is ran into
   	enemy1Hit: function(){    	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
   		// sends info about enemy to battle state
-  		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
+  		this.infoText = 'Smog Fact!';		// defines what text will display when fighting with enemy
+ 		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
   		this.enemyBattle_number = 1;  // tells Battle.state the enemy number
   		this.loadBattle();
   	},
@@ -304,7 +305,7 @@ earthChant.World.prototype = {
   		
   		// insert whaterver you want to display when item is picked
   		// sprite?
-  		this.infoText= "Info!!"; // defining text to display
+  		this.infoText= "Info about Item"; // defining text to display
   		this.factBox();
   	},
   
@@ -316,7 +317,7 @@ earthChant.World.prototype = {
 	this.playerLocation_Y = this.player.y;
 	
 	// also telling Battle State what enemy the player will fight (only one enemy for now)
-	this.game.state.start('Battle', true, false, this.enemyBattle_sprite); 
+	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.infoText); 
 	},
 
   	//just some debugging info

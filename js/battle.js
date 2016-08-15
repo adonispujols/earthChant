@@ -36,17 +36,18 @@ earthChant.Battle = function(){};
 earthChant.Battle.prototype = {
 	//setting up global (across game) variables (sending parameters to state)
 	// loads the specific enemy(s) encountered (defined in World.state)
-	init: function(enemyBattle_sprite, potionsStored){
+	init: function(enemyBattle_sprite, infoText){
     var enemyBattle_sprite = enemyBattle_sprite || null;  // enemy's sprite
     this.enemyBattle_sprite = enemyBattle_sprite;    //creates local variable from World's variable value
    	
    	// loads potionsStored, or sets to default if nothing 
-   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
-   	this.potionsStored = potionsStored;
-   	
+//   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
+//   	this.potionsStored = potionsStored;
+//   	
    	//drawing infoText about enemy from world
-   	// infoText, infoImage
-   	//
+   	var infoText = infoText || '';
+   	this.infoText = infoText;
+//   infoImage
    },
    
 
@@ -98,7 +99,6 @@ create: function(){
 	this.baseButton_3_X = 720;
 	this.baseButton_Y = 450;   // all buttons are based off of same y coord
 	this.battleStart = false; // boolean for initial info display 
-	this.infoText = 'asdfasdf';  // setting up infotext var as string
 	this.transitionSpeed = 2; //setting speed of transitions between facts box
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
@@ -265,7 +265,7 @@ factBox: function(){
 	if(!this.battleStart){
 		this.hideHud();  //hides huds
 		
-		this.info = this.game.add.text(300, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
+		this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
 		this.info.anchor.set(0.5);  // sets text at center 
 		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
 	}
