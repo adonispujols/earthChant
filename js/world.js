@@ -52,8 +52,8 @@ earthChant.World.prototype = {
    	}
 
    	// current player's location on World (sets to defined value if nothing changed)
-	this.playerLocation_X  = this.playerLocation_X || 1000;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
-	this.playerLocation_Y  = this.playerLocation_Y || 1000;
+	this.playerLocation_X  = this.playerLocation_X || 425;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
+	this.playerLocation_Y  = this.playerLocation_Y || 200;
 	
 	//boolean for initial info screen
 	this.gameStart = this.gameStart || false;  // REPEAT VAR AND || NOT NEEDED HERE
@@ -99,10 +99,10 @@ earthChant.World.prototype = {
 
 
 	// same for our enemy
-	this.enemy1 = this.game.add.sprite(200,1200, 'smog');
-	this.enemy2 = this.game.add.sprite(550,1000, 'canEnemy');
-	this.enemy3 = this.game.add.sprite(900,1200, 'snake');
-	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
+	this.enemy1 = this.game.add.sprite(800,200, 'smog');
+	this.enemy2 = this.game.add.sprite(410,400, 'canEnemy');
+	this.enemy3 = this.game.add.sprite(500,500, 'snake');
+	this.enemy4 = this.game.add.sprite(650,300, 'trashMan');
 
 
 	// enable physics for enemies (individually for now)
@@ -116,19 +116,21 @@ earthChant.World.prototype = {
 	this.enemy4.enableBody = true;
 
 	// creating basic items place holder with physics
-	this.item = this.game.add.sprite(1000,900, 'tree');
+	this.item = this.game.add.sprite(500,600, 'tree');
 	this.game.physics.arcade.enable(this.item);
 	this.item.enableBody = true;
 
 	// rescalling sprites
 	this.player.scale.setTo(1, 1); 
-	this.map.scale.setTo(2,2);
-	// this.enemy2.scale.setTo(2,2); 
+	this.map.scale.setTo(2, 2);
+	this.enemy1.scale.setTo(.1, .1); 
+	this.enemy2.scale.setTo(.3, .3); 
+	this.enemy3.scale.setTo(.2, .2); 
+	this.enemy4.scale.setTo(.2, .2); 
 
 	// cycles through the living state of each enemy and kills what is dead
-	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
-	for (var i = 0; i < this.deadEnemies.length; i++) {
-		if (this.deadEnemies[i] == 1){
+	for (var i = 0; i < this.deadEnemies.length; i++) { 
+		if (this.deadEnemies[i] == 1){ 	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
 	    	this.enemy1.kill();
     	}
 		if (this.deadEnemies[i] == 2){
@@ -143,10 +145,10 @@ earthChant.World.prototype = {
 		}
 
 	// display score
-	this.scoreText = this.game.add.text(1000, 1000, 'Score ' + this.score);
+	this.scoreText = this.game.add.text(100, 100, 'Score ' + this.score, {fill:'red',font:'impact',fontSize:'30px'});
     this.scoreText.anchor.set(0.5);   // sets text to center
     this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
-    this.scoreText.cameraOffset.setTo(1000,100);   // moves score text
+    this.scoreText.cameraOffset.setTo(100,50);   // moves score text
     
     // cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();

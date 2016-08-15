@@ -44,6 +44,9 @@ earthChant.Battle.prototype = {
    	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
    	this.potionsStored = potionsStored;
    	
+   	//drawing infoText about enemy from world
+   	// infoText, infoImage
+   	//
    },
    
 
