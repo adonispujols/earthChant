@@ -61,19 +61,11 @@ earthChant.World.prototype = {
 	//  
 	this.infoBox;
 	//list of deforestation info
-<<<<<<< HEAD
-	this.infolist = ["Almost half of world’s timber and up to 70% of paper is consumed by \n Europe, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
-   },
-  create: function() {
-	// bounds and color of world (negatives sets bounds beyond top left)
-	this.game.world.setBounds(0, 0, 980, 890);
-=======
 	this.infolist = ["Almost half of world’s timber and up \n to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
 	this.game.world.setBounds(0, 0, 980, 690);
->>>>>>> 1bfe8a1959753ffc96d7dae05d69d67c78f76db1
 	this.game.stage.backgroundColor = '#808080';
 	
 	// map of world
