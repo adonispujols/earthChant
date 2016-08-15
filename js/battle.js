@@ -181,12 +181,12 @@ create: function(){
 	// (interactive) buttons for inital/main options
 	// also adds adjacent text
 	this.attackButton = this.game.add.button( this.baseButton_1_X, this.baseButton_Y,'buttons', 
-	this.showAttackMenu,this, 2, 1, 0); // attack button (2 = frame when over, 1 = frame when out, 0 = frame when pressed)
+			this.showAttackMenu,this, 2, 1, 0); // attack button (2 = frame when over, 1 = frame when out, 0 = frame when pressed)
 	this.attackButtonText = this.game.add.text(this.attackButton.x, this.attackButton.y, 
 	"Attack");
 
 	this.PotionsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
-	this.showPotionsOptions,this, 2, 1, 0); // Potions button
+			this.showPotionsOptions,this, 2, 1, 0); // Potions button
 	this.PotionsButtonText = this.game.add.text(this.PotionsButton.x, this.PotionsButton.y, 
 	"Potions");
 
@@ -204,17 +204,17 @@ create: function(){
 	
 	// buttons for different attack options
 	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
-	this.attackClicked,this, 5, 4, 3); // attack button
+			this.attackClicked,this, 5, 4, 3); // attack button
 	this.attackText = this.game.add.text(this.attack.x, this.attack.y, 
 	"Attack");
 
 	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
-	this.showAttackMenu,this, 5, 4, 3); // attack1 button
+			this.showAttackMenu,this, 5, 4, 3); // attack1 button
 	this.attack1Text = this.game.add.text(this.attack1.x, this.attack1.y, 
 	"Attack 1");
 
 	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
-	this.showAttackMenu,this, 5, 4, 3); // attack2 button
+			this.showAttackMenu,this, 5, 4, 3); // attack2 button
 	this.attack2Text = this.game.add.text(this.attack2.x, this.attack2.y, 
 	"Attack 2");
 	this.attackOptions.add(this.attack);
@@ -226,17 +226,17 @@ create: function(){
 
 	// buttons for different Potions options
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
-	this.potionClicked,this, 8, 7, 6); // potion2 button
+			this.potionClicked,this, 8, 7, 6); // potion2 button
 	this.potionText = this.game.add.text(this.potion.x, this.potion.y, 
 	"Potion");
 
 	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
-	this.potion1Clicked,this, 8, 7, 6); // potion1 button
+			this.potion1Clicked,this, 8, 7, 6); // potion1 button
 	this.potion1Text = this.game.add.text(this.potion1.x, this.potion1.y, 
 	"Potion 1");
 
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
-	this.showPotionsOptions,this, 8, 7, 6); // potion2 button
+			this.showPotionsOptions,this, 8, 7, 6); // potion2 button
 	this.potion2Text = this.game.add.text(this.potion2.x, this.potion2.y, 
 	"Potion 2");
 	this.PotionsOptions.add(this.potion);
@@ -248,7 +248,7 @@ create: function(){
 
 	// back button that returns to main screen
 	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y-75, 'buttons',
-	this.showMainMenu,this, 1, 0, 2); 
+			this.showMainMenu,this, 1, 0, 2); 
 	this.backText = this.game.add.text(this.back.x, this.back.y, 
 	"back");
 	this.backButton.add(this.back);

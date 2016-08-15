@@ -55,9 +55,6 @@ earthChant.World.prototype = {
 	this.playerLocation_X  = this.playerLocation_X || 425;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
 	this.playerLocation_Y  = this.playerLocation_Y || 200;
 	
-	//boolean for initial info screen
-	this.gameStart = this.gameStart || false;  // REPEAT VAR AND || NOT NEEDED HERE
-	this.keyEnabled = this.keyEnabled || false; 	//boolean to control when our keys will be enabled
 	//  
 	this.infoBox;
 	//list of deforestation info
@@ -152,14 +149,11 @@ earthChant.World.prototype = {
     // cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 	
+	//boolean to control when our keys will be enabled
+	this.keyEnabled = true;
+	
 	// creates infoBox (facts)
 	this.create_infoBox();
-	
-    // creates info screen 
-	this.infoScreen();
-	
-	// adds a delay before input can be taken
-	this.game.time.events.add(Phaser.Timer.SECOND*2, this.enableKeys, this);
 	
 	// camera follow character (As easy as that!)
 	this.game.camera.follow(this.player);
@@ -219,14 +213,7 @@ earthChant.World.prototype = {
 		}
 	}
   	},
-  	// creates info screen at beginning of game
-  	infoScreen: function(){
-  		if(!this.gameStart){
-  			this.info = this.game.add.text(this.player.x, this.player.y, "Defeat as many enemies as Possible!");  // TRY ADDING AN IMAGE OR SO
-  			this.info.anchor.set(0.5);  // sets text at center 
-  		}
-  	},
-
+  	// creates our 'info box' or text above game with facts
   	create_infoBox: function(){
   		this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
   		this.infoBox = this.game.add.text(1000, 1000, 
@@ -247,21 +234,24 @@ earthChant.World.prototype = {
   	factBox: function(){
   		// displays info about item
   		this.info = this.game.add.text(this.player.x, this.player.y+50, this.infoText);  // TRY ADDING AN IMAGE OR SO
-  		this.info.anchor.set(0.5);  // sets text at center 
-  		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
+  		this.info.anchor.set(0.5);  // sets text at center
+  		
+  		// button that will hide display
+  		this.closeFactButton = this.game.add.button( this.player.x, this.player.y+50,'buttons', 
+  				this.hideInfo,this, 2, 1, 0);
+  		this.closeFactButton.scale.setTo(0,0)
   	},
   		
   	// hides the info box
   	hideInfo: function(){
   		this.info.kill();
+  		this.closeFactButton.kill();
   		this.playerDirection = 0;
   		this.keyEnabled = true;
   	},
   	// enables input
   	enableKeys: function (){
-  		this.gameStart= true;
 		this.keyEnabled = true;
-		this.info.kill();
 	},
 
   	// define what sprite to load in battle when corresponding enemy is ran into
