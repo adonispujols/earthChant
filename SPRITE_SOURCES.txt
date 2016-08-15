@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Credit goes to:
 <author> (<author's site link>) for the <name> <sprite/sound/image>
 
@@ -15,4 +16,23 @@ More amazing free game art at:
  http://opengameart.org 
 
 
+=======
+Credit goes to:
+<author> (<author's site link>) for the <name> <sprite/sound/image>
+
+Mandi Paugh for the Sara spritesheet (http://opengameart.org/content/sara-overland)
+
+Grahhhhh (http://opengameart.org/users/grahhhhh) for the Dialog Box (http://opengameart.org/content/dialog-box)
+
+NagyZsuzsi (http://nagyzsuzsi.deviantart.com/) for the Wy-chan Sprite (http://nagyzsuzsi.deviantart.com/art/Wy-sprite-walking-173469935)
+
+Hyptosis (http://opengameart.org/users/hyptosis) for the tilemaps (http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis)
+
+Clipart Kid for the StartScreen background (http://www.clipartkid.com/120-free-vector-landscape-background-for-designers-PnNPPu-clipart/)
+
+More amazing free game art at:
+ http://opengameart.org 
+
+
+>>>>>>> 1bfe8a1959753ffc96d7dae05d69d67c78f76db1
 steam roller make pixel art.com
