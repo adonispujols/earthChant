@@ -52,15 +52,24 @@ earthChant.World.prototype = {
    	}
 
    	// current player's location on World (sets to defined value if nothing changed)
-	this.playerLocation_X  = this.playerLocation_X || 1000;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
-	this.playerLocation_Y  = this.playerLocation_Y || 1000;
-   
-
+	this.playerLocation_X  = this.playerLocation_X || 425;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
+	this.playerLocation_Y  = this.playerLocation_Y || 200;
+	
+	//boolean for initial info screen
+	this.gameStart = this.gameStart || false;  // REPEAT VAR AND || NOT NEEDED HERE
+	this.keyEnabled = this.keyEnabled || false; 	//boolean to control when our keys will be enabled
+	//  
+	this.infoBox;
+	//list of deforestation info
+	this.infolist = ["Almost half of world’s timber and up to 70% of paper is consumed by \n Europe, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
-	this.game.world.setBounds( 0, 0, 2000, 2000);
-	this.game.stage.backgroundColor = '#007000';
+	this.game.world.setBounds(0, 0, 980, 890);
+	this.game.stage.backgroundColor = '#808080';
+	
+	// map of world
+	this.map = this.game.add.sprite(0,0,'map');
 
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apparently)
 	//setting up variables for objects
@@ -75,6 +84,8 @@ earthChant.World.prototype = {
 	this.enemyBattle_sprite;     // stores sprite of enemy player ran into (look at loadBattle)
 	this.cursors;  // arrow keys
 	this.scoreText;
+	this.infoText = '';  // setting up infotext var as string
+	this.transitionSpeed = 2; //setting speed of transitions between facts box
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
 	// adding our sprites to game (set at playerLocation_X and Y
@@ -87,10 +98,10 @@ earthChant.World.prototype = {
 
 
 	// same for our enemy
-	this.enemy1 = this.game.add.sprite(200,1200, 'smog');
-	this.enemy2 = this.game.add.sprite(550,1000, 'canEnemy');
-	this.enemy3 = this.game.add.sprite(900,1200, 'snake');
-	this.enemy4 = this.game.add.sprite(1200,900, 'trashMan');
+	this.enemy1 = this.game.add.sprite(800,200, 'smog');
+	this.enemy2 = this.game.add.sprite(400,400, 'canEnemy');
+	this.enemy3 = this.game.add.sprite(500,500, 'snake');
+	this.enemy4 = this.game.add.sprite(650,300, 'trashMan');
 
 
 	// enable physics for enemies (individually for now)
@@ -104,18 +115,21 @@ earthChant.World.prototype = {
 	this.enemy4.enableBody = true;
 
 	// creating basic items place holder with physics
-	this.item = this.game.add.sprite(1000,900, 'tree');
+	this.item = this.game.add.sprite(500,600, 'tree');
 	this.game.physics.arcade.enable(this.item);
 	this.item.enableBody = true;
 
 	// rescalling sprites
-	this.player.scale.setTo(1.5, 1.5); 
-	// this.enemy2.scale.setTo(2,2); 
+	this.player.scale.setTo(1, 1); 
+	this.map.scale.setTo(2, 2);
+	this.enemy1.scale.setTo(.1, .1); 
+	this.enemy2.scale.setTo(.3, .3); 
+	this.enemy3.scale.setTo(.2, .2); 
+	this.enemy4.scale.setTo(.2, .2); 
 
 	// cycles through the living state of each enemy and kills what is dead
-	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
-	for (var i = 0; i < this.deadEnemies.length; i++) {
-		if (this.deadEnemies[i] == 1){
+	for (var i = 0; i < this.deadEnemies.length; i++) { 
+		if (this.deadEnemies[i] == 1){ 	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
 	    	this.enemy1.kill();
     	}
 		if (this.deadEnemies[i] == 2){
@@ -130,19 +144,29 @@ earthChant.World.prototype = {
 		}
 
 	// display score
-	this.scoreText = this.game.add.text(1000, 1000, 'Score ' + this.score);
+	this.scoreText = this.game.add.text(0, 0, 'Score ' + this.score, {fill:'red',font:'impact',fontSize:'60px'});
     this.scoreText.anchor.set(0.5);   // sets text to center
     this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
-    this.scoreText.cameraOffset.setTo(1000,100);   // moves score text
-    
-	// cursor controls (arrow keys)
-	this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.scoreText.cameraOffset.setTo(this.game.width/2-70,50);   // moves score text
 
+    // cursor controls (arrow keys)
+	this.cursors = this.game.input.keyboard.createCursorKeys();
+	
+	// creates infoBox (facts)
+	this.create_infoBox();
+	
+    // creates info screen 
+	this.infoScreen();
+	
+	// adds a delay before input can be taken
+	this.game.time.events.add(Phaser.Timer.SECOND*2, this.enableKeys, this);
+	
 	// camera follow character (As easy as that!)
 	this.game.camera.follow(this.player);
 
 	// walk animation for player (key, list of frames, framerate,loop t/f
 	// left= walk left, right =walk right, etc)
+	this.player.animations.add('stop',[0], true);
 	this.player.animations.add('down', [0,4,8,12],10,true);
 	this.player.animations.add('left', [1,5,9,13],10,true);
 	this.player.animations.add('up', [2,6,10,14],10,true);
@@ -164,55 +188,107 @@ earthChant.World.prototype = {
 	// reseting velocity x and y to zero
 	this.player.body.velocity.x = 0;
 	this.player.body.velocity.y = 0;
-
+	
 	// store direction player is facing (the frame for our .stop() function)
-	if (this.cursors.down.isDown) {
-		this.player.body.velocity.y = this.player_Y_speed;
-		this.player.animations.play('down');
-		this.playerDirection = 0;
-	} 
-	else if (this.cursors.left.isDown) {
-		this.player.body.velocity.x = -this.player_X_speed;
-		this.player.animations.play('left');
-		this.playerDirection = 1;
-	} 
-	else if (this.cursors.up.isDown) {
-		this.player.body.velocity.y = -this.player_Y_speed;
-		this.player.animations.play('up');
-		this.playerDirection = 2;
-	} 
-	else if (this.cursors.right.isDown) {
-		this.player.body.velocity.x = this.player_X_speed;
-		this.player.animations.play('right');
-		this.playerDirection = 3;
-	} 
-	else {
-		//  when not in motion, player will stop
-		this.player.animations.stop()
-		this.player.frame = this.playerDirection;
+	// only does this if key is enabled
+	if (this.keyEnabled){
+		if (this.cursors.down.isDown) {
+			this.player.body.velocity.y = this.player_Y_speed;
+			this.player.animations.play('down');
+			this.playerDirection = 0;
+		} 
+		else if (this.cursors.left.isDown) {
+			this.player.body.velocity.x = -this.player_X_speed;
+			this.player.animations.play('left');
+			this.playerDirection = 1;
+		} 
+		else if (this.cursors.up.isDown) {
+			this.player.body.velocity.y = -this.player_Y_speed;
+			this.player.animations.play('up');
+			this.playerDirection = 2;
+		} 
+		else if (this.cursors.right.isDown) {
+			this.player.body.velocity.x = this.player_X_speed;
+			this.player.animations.play('right');
+			this.playerDirection = 3;
+		} 
+		else {
+			//  when not in motion, player will stop
+			this.player.animations.stop();
+			this.player.frame = this.playerDirection;
+		}
 	}
   	},
+  	// creates info screen at beginning of game
+  	infoScreen: function(){
+  		if(!this.gameStart){
+  			this.info = this.game.add.text(this.player.x, this.player.y, "Defeat as many enemies as Possible!");  // TRY ADDING AN IMAGE OR SO
+  			this.info.anchor.set(0.5);  // sets text at center 
+  		}
+  	},
+
+  	create_infoBox: function(){
+  		this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
+  		this.infoBox = this.game.add.text(1000, 1000, 
+  		this.infolist[this.randInfo]);
+  	    this.infoBox.anchor.set(0.5);   // places infoBox at center
+  	    //displays new info after set interval
+  	    this.infoBox.fixedToCamera = true;  // fixes score to camera (like a ui)
+  	    this.infoBox.cameraOffset.setTo(600,100);   // moves score text
+  		this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
+  	},
+
+  	// displays new info (after some time)
+  	show_infoBox: function(){
+  		this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
+  		this.infoBox.setText(this.infolist[this.randInfo]);
+  	},
+  	// displays "fact box"/ box with info when item/enemy ran into
+  	factBox: function(){
+  		// displays info about item
+  		this.info = this.game.add.text(this.player.x, this.player.y+50, this.infoText);  // TRY ADDING AN IMAGE OR SO
+  		this.info.anchor.set(0.5);  // sets text at center 
+  		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
+  	},
+  		
+  	// hides the info box
+  	hideInfo: function(){
+  		this.info.kill();
+  		this.playerDirection = 0;
+  		this.keyEnabled = true;
+  	},
+  	// enables input
+  	enableKeys: function (){
+  		this.gameStart= true;
+		this.keyEnabled = true;
+		this.info.kill();
+	},
 
   	// define what sprite to load in battle when corresponding enemy is ran into
   	enemy1Hit: function(){    	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
-  		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
+  		// sends info about enemy to battle state
+  		this.infoText='Inhaling air pollution takes away at least 1-2 years of a typical human life.';		// defines what text will display when fighting with enemy
+ 		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
   		this.enemyBattle_number = 1;  // tells Battle.state the enemy number
   		this.loadBattle();
   	},
-
+  	
   	enemy2Hit: function(){
+  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic ecosystemssuch as fungi, algae and phytoplankton.';
   		this.enemyBattle_sprite = 'canEnemy';
   		this.enemyBattle_number = 2; 
   		this.loadBattle();
   	},
 
   	enemy3Hit: function(){
+  		this.infoText='Trash and pollution makes other animals homeless and usually makes them change locations';
   		this.enemyBattle_sprite = 'snake';
   		this.enemyBattle_number = 3; 
   		this.loadBattle();  	
   	},
 
   	enemy4Hit: function(){
+  		this.infoText='Every American equates to at least 100 tons of garbage a year';
   		this.enemyBattle_sprite = 'trashMan';
   		this.enemyBattle_number = 4; 
   		this.loadBattle();  	
@@ -220,8 +296,20 @@ earthChant.World.prototype = {
 
   	// player "collects" item (removes it from game)
   	collectItem: function(){
-  		this.item.kill();
+  		this.player.animations.play('stop');
+  		this.item.kill();  //removes item
+  		this.keyEnabled = false;  //disables keys
+  		
+  		// increases score a little 
+  		this.score += 50;
+  		this.scoreText.setText('Score ' + this.score);
+  		
+  		// insert whaterver you want to display when item is picked
+  		// sprite?
+  		this.infoText= "Info about Item"; // defining text to display
+  		this.factBox();
   	},
+  
 
 	// loading battle scene (state name, reset world t/f, reset cache t/f)
 	loadBattle: function() {
@@ -230,7 +318,7 @@ earthChant.World.prototype = {
 	this.playerLocation_Y = this.player.y;
 	
 	// also telling Battle State what enemy the player will fight (only one enemy for now)
-	this.game.state.start('Battle', true, false, this.enemyBattle_sprite); 
+	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.infoText); 
 	},
 
   	//just some debugging info

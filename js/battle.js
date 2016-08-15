@@ -36,18 +36,26 @@ earthChant.Battle = function(){};
 earthChant.Battle.prototype = {
 	//setting up global (across game) variables (sending parameters to state)
 	// loads the specific enemy(s) encountered (defined in World.state)
-	init: function(enemyBattle_sprite, potionsStored){
+	init: function(enemyBattle_sprite, infoText){
     var enemyBattle_sprite = enemyBattle_sprite || null;  // enemy's sprite
     this.enemyBattle_sprite = enemyBattle_sprite;    //creates local variable from World's variable value
    	
    	// loads potionsStored, or sets to default if nothing 
-   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
-   	this.potionsStored = potionsStored;
+//   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
+//   	this.potionsStored = potionsStored;
+//   	
+   	//drawing infoText about enemy from world
+   	var infoText = infoText || '';
+   	this.infoText = infoText;
+//   infoImage
    },
+   
+
 
 //setting vars, functions, and objects
 // Almost Every object, var, and function needs 'this' because it attaches it to our main game(stores in cache it)
 create: function(){
+	this.game.stage.backgroundColor = '#007000';
 
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 	// you can manipulate a lot of properties from here
@@ -91,6 +99,8 @@ create: function(){
 	this.baseButton_2_X = 450;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
 	this.baseButton_3_X = 720;
 	this.baseButton_Y = 450;   // all buttons are based off of same y coord
+	this.battleStart = false; // boolean for initial info display 
+	this.transitionSpeed = 2; //setting speed of transitions between facts box
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
 
@@ -111,9 +121,7 @@ create: function(){
 	// SHOULD RESCALE DEPENDING ON ENEMY FIGHTING
 	this.enemy.scale.setTo(.7,.7);
 	this.player.scale.setTo(3,3);
-
-	// creates infoBox (facts)
-	this.create_infoBox();
+	
 
 	// setting health values
 	this.player.maxHealth = 50;
@@ -248,8 +256,29 @@ create: function(){
 	this.back.scale.setTo(1,0.5);
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
-	// displays mainmenu/options
+	
+	// inital fact display (then shows main menu)
+	this.factBox();
+
+},
+// displays facts about enemy
+factBox: function(){
+	this.hideHud();  //hides huds
+	
+	// displaying info
+	this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
+	this.info.anchor.set(0.5);  // sets text at center 
+	this.game.time.events.add(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
+},
+
+//hides the fact box then shows info box and main menu options
+hideInfo: function(){
+	this.info.kill();   // hides facts
+	
+	//	showing items
 	this.showMainMenu();
+	// creates infoBox (facts)
+	this.create_infoBox();
 },
 
 create_infoBox: function(){
@@ -258,7 +287,7 @@ create_infoBox: function(){
 	this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
     //displays new info after set interval
-	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.show_infoBox, this); //*2 increases amount of seconds
+	this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
 },
 
 // displays new info (after some time)
@@ -389,14 +418,17 @@ playerTurn: function(){
 // defines what happens when players are all dead (right before sending to worldscreen)
 playersDead: function(){
 	//shows image of dead player
-	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer') 
+//	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer');
 	
-	this.deadBox = this.game.add.text(this.game.world.width/2, 225, 
-	"You lost!");
-    this.deadBox.anchor.set(0.5); 
-    //displays new info after set interval (* Seconds)
+	// essenially the death screeen
+	this.gameOver = this.game.add.sprite(0,0, 'gameOver');
+	this.gameOver.scale.setTo(1.5,1.5);
+//	this.deadBox = this.game.add.text(this.game.world.width/2, 225, 
+//	"You lost!");
+//    this.deadBox.anchor.set(0.5); 
+    
     //should go to gameover screen/ function
-	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.returntoStartScreen, this);
+	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.deathScreen, this);
 
 },
 
@@ -404,7 +436,7 @@ playersDead: function(){
 enemiesDead: function(){
 	this.enemyDead = true;  // this will be passed to world's init
 	//shows image of dead enemy
-	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy') 
+	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy');
 	
 	this.victoryBox = this.game.add.text(this.game.world.width/2, 225, 
 	"You won!");
@@ -420,14 +452,14 @@ returnToWorld: function(){
 	this.game.state.start('World', true, false, this.enemyDead, this.score);  // SHOULD MAKE THIS A LIST
 },
 
-// returns to startscreen
-returntoStartScreen: function(){
-	this.game.state.start('StartScreen', true, false);  // SHOULD MAKE THIS A LIST
-
-},
+// creates to deathscreen
+//deathScreen: function(){
+//	this.game.state.start('StartScreen', true, false);  // SHOULD MAKE THIS A LIST
+//
+//},
 
 runClicked: function(){
 	// loading world scene (state name, world t/f, reset cache t/f)
 	this.game.state.start('World', true, false); 
 }
-}
+};

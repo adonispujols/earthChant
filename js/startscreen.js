@@ -22,7 +22,7 @@ earthChant.StartScreen.prototype = {
 
 	create: function() {
 		this.background = this.game.add.sprite(0,0,'background');
-		this.game.stage.backgroundColor = '#FFFFFF'; //back ground color
+		this.game.stage.backgroundColor = '#808080'; //back ground color
 		
 		this.logo = this.game.add.sprite(100,150,'logo');  //logo
 		this.logo.scale.setTo(.8, .8);  //resizing logo
@@ -36,8 +36,11 @@ earthChant.StartScreen.prototype = {
 		this.startButton = this.game.add.button(300, 500,'buttons', 
 		this.startGame,this, 2, 1, 0);
 		this.startButton.scale.setTo(2,.5);
-		this.startText = this.game.add.text(this.startButton.x, this.startButton.y, 'Click here to Start');
+		this.startText = this.game.add.text(this.startButton.x + 100, this.startButton.y, 'Click here to Start');
 	},
+	showIntro: function(){
+		
+	}
 	startGame: function(){
 		this.game.state.start('World');
 	},
