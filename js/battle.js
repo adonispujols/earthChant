@@ -71,7 +71,7 @@ create: function(){
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
 	this.attackPower = 6;  //specifices the exact power stat of attack (should be put in seperate list)
-	this.attackPower2 = 60;
+	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;

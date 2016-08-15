@@ -36,8 +36,11 @@ earthChant.StartScreen.prototype = {
 		this.startButton = this.game.add.button(300, 500,'buttons', 
 		this.startGame,this, 2, 1, 0);
 		this.startButton.scale.setTo(2,.5);
-		this.startText = this.game.add.text(this.startButton.x, this.startButton.y, 'Click here to Start');
+		this.startText = this.game.add.text(this.startButton.x + 100, this.startButton.y, 'Click here to Start');
 	},
+	showIntro: function(){
+		
+	}
 	startGame: function(){
 		this.game.state.start('World');
 	},
