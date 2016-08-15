@@ -51,7 +51,7 @@ earthChant.Preload.prototype = {
 
 	create: function() {
 		// starting physics system, for easy movement control/collision detection
-		this.game.physics.startSystem(Phaser.Physics.ARCADE)
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
 		// goes to start screen state/scene
 		this.game.state.start('StartScreen');

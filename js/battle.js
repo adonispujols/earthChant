@@ -430,4 +430,4 @@ runClicked: function(){
 	// loading world scene (state name, world t/f, reset cache t/f)
 	this.game.state.start('World', true, false); 
 }
-}
+};
