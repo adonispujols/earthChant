@@ -99,15 +99,7 @@ earthChant.World.prototype = {
 
 	// same for our enemy
 	this.enemy1 = this.game.add.sprite(800,200, 'smog');
-<<<<<<< HEAD
 	this.enemy2 = this.game.add.sprite(400,400, 'canEnemy');
-=======
-<<<<<<< HEAD
-	this.enemy2 = this.game.add.sprite(400,400, 'canEnemy');
-=======
-	this.enemy2 = this.game.add.sprite(410,400, 'canEnemy');
->>>>>>> 1bfe8a1959753ffc96d7dae05d69d67c78f76db1
->>>>>>> 759a1fd92c31bc6b5cf9623afd76b6d4f77d96cd
 	this.enemy3 = this.game.add.sprite(500,500, 'snake');
 	this.enemy4 = this.game.add.sprite(650,300, 'trashMan');
 
@@ -152,27 +144,11 @@ earthChant.World.prototype = {
 		}
 
 	// display score
-<<<<<<< HEAD
 	this.scoreText = this.game.add.text(0, 0, 'Score ' + this.score, {fill:'red',font:'impact',fontSize:'60px'});
     this.scoreText.anchor.set(0.5);   // sets text to center
     this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
     this.scoreText.cameraOffset.setTo(this.game.width/2-70,50);   // moves score text
 
-=======
-<<<<<<< HEAD
-	this.scoreText = this.game.add.text(0, 0, 'Score ' + this.score, {fill:'red',font:'impact',fontSize:'60px'});
-    this.scoreText.anchor.set(0.5);   // sets text to center
-    this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
-    this.scoreText.cameraOffset.setTo(this.game.width/2-70,50);   // moves score text
-
-=======
-	this.scoreText = this.game.add.text(100, 100, 'Score ' + this.score, {fill:'red',font:'impact',fontSize:'30px'});
-    this.scoreText.anchor.set(0.5);   // sets text to center
-    this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
-    this.scoreText.cameraOffset.setTo(100,50);   // moves score text
-    
->>>>>>> 1bfe8a1959753ffc96d7dae05d69d67c78f76db1
->>>>>>> 759a1fd92c31bc6b5cf9623afd76b6d4f77d96cd
     // cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 	
