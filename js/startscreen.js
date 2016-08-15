@@ -22,7 +22,7 @@ earthChant.StartScreen.prototype = {
 
 	create: function() {
 		this.background = this.game.add.sprite(0,0,'background');
-		this.game.stage.backgroundColor = '#FFFFFF'; //back ground color
+		this.game.stage.backgroundColor = '#808080'; //back ground color
 		
 		this.logo = this.game.add.sprite(100,150,'logo');  //logo
 		this.logo.scale.setTo(.8, .8);  //resizing logo
