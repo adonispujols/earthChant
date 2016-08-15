@@ -259,8 +259,8 @@ create: function(){
 	// hides items initally
 	this.hideHud();
 	// adds initial delay to display items
-	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.showMainMenu, this); //*2 increases amount of seconds
-	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.create_infoBox, this); //*2 increases amount of seconds
+	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.showMainMenu, this); // this transitionSpeed increases amount of seconds
+	this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.create_infoBox, this);
 	// inital fact display (then shows main menu)
 	this.factBox();
 
@@ -271,7 +271,7 @@ factBox: function(){
 		// displaying info
 		this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
 		this.info.anchor.set(0.5);  // sets text at center 
-		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
+		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed+60, this.hideInfo, this); //*2 increases amount of seconds
 	}
 },
 

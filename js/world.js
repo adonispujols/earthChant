@@ -269,25 +269,28 @@ earthChant.World.prototype = {
   	// define what sprite to load in battle when corresponding enemy is ran into
   	enemy1Hit: function(){    	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
   		// sends info about enemy to battle state
-  		this.infoText = 'Smog Fact!';		// defines what text will display when fighting with enemy
+  		this.infoText='Inhaling air pollution takes away at least 1-2 years of a typical human life.';		// defines what text will display when fighting with enemy
  		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
   		this.enemyBattle_number = 1;  // tells Battle.state the enemy number
   		this.loadBattle();
   	},
   	
   	enemy2Hit: function(){
+  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic ecosystemssuch as fungi, algae and phytoplankton.';
   		this.enemyBattle_sprite = 'canEnemy';
   		this.enemyBattle_number = 2; 
   		this.loadBattle();
   	},
 
   	enemy3Hit: function(){
+  		this.infoText='Trash and pollution makes other animals homeless and usually makes them change locations';
   		this.enemyBattle_sprite = 'snake';
   		this.enemyBattle_number = 3; 
   		this.loadBattle();  	
   	},
 
   	enemy4Hit: function(){
+  		this.infoText='Every American equates to at least 100 tons of garbage a year';
   		this.enemyBattle_sprite = 'trashMan';
   		this.enemyBattle_number = 4; 
   		this.loadBattle();  	
