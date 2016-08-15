@@ -37,7 +37,7 @@ earthChant.StartScreen.prototype = {
 		this.initialButton.scale.setTo(2,.5);    //rescale
 		this.startText = this.game.add.text(this.initialButton.x + 100, this.initialButton.y, 'Click here to Start'); //text for button
 	},
-	// shows the intro screen
+	// shows the intro screen (add images/text here)
 	showIntro: function(){
 		// hide previous items
 		this.initialButton.kill();
@@ -46,7 +46,7 @@ earthChant.StartScreen.prototype = {
 		this.startButton = this.game.add.button(300, 500,'buttons', 
 		this.startGame,this, 2, 1, 0);
 		this.startButton.scale.setTo(2,.5);
-		this.startText = this.game.add.text(this.startButton.x + 100, this.startButton.y, 'P');	// sends to start game()		
+		this.startText = this.game.add.text(this.startButton.x + 100, this.startButton.y, 'PLAY');	// sends to start game()		
 	},
 	// sends to World screen (Starts game)
 	startGame: function(){
