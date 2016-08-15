@@ -47,6 +47,8 @@ earthChant.Preload.prototype = {
 		this.game.load.spritesheet('trashMan','assets/sprites/trashMan.png',416,416,2);
 		this.game.load.image('logo', 'assets/sprites/logo.png');
 		this.game.load.image('background', 'assets/sprites/background.jpg');
+		this.game.load.image('gameOver', 'assets/sprites/gameOver.png');
+		this.game.load.image('map', 'assets/tilemaps/map.png');
 		},
 
 	create: function() {

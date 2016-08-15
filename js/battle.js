@@ -389,14 +389,17 @@ playerTurn: function(){
 // defines what happens when players are all dead (right before sending to worldscreen)
 playersDead: function(){
 	//shows image of dead player
-	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer') 
+//	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer');
 	
-	this.deadBox = this.game.add.text(this.game.world.width/2, 225, 
-	"You lost!");
-    this.deadBox.anchor.set(0.5); 
-    //displays new info after set interval (* Seconds)
+	// essenially the death screeen
+	this.gameOver = this.game.add.sprite(0,0, 'gameOver');
+	this.gameOver.scale.setTo(1.5,1.5);
+//	this.deadBox = this.game.add.text(this.game.world.width/2, 225, 
+//	"You lost!");
+//    this.deadBox.anchor.set(0.5); 
+    
     //should go to gameover screen/ function
-	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.returntoStartScreen, this);
+	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.deathScreen, this);
 
 },
 
@@ -404,7 +407,7 @@ playersDead: function(){
 enemiesDead: function(){
 	this.enemyDead = true;  // this will be passed to world's init
 	//shows image of dead enemy
-	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy') 
+	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy');
 	
 	this.victoryBox = this.game.add.text(this.game.world.width/2, 225, 
 	"You won!");
@@ -420,11 +423,11 @@ returnToWorld: function(){
 	this.game.state.start('World', true, false, this.enemyDead, this.score);  // SHOULD MAKE THIS A LIST
 },
 
-// returns to startscreen
-returntoStartScreen: function(){
-	this.game.state.start('StartScreen', true, false);  // SHOULD MAKE THIS A LIST
-
-},
+// creates to deathscreen
+//deathScreen: function(){
+//	this.game.state.start('StartScreen', true, false);  // SHOULD MAKE THIS A LIST
+//
+//},
 
 runClicked: function(){
 	// loading world scene (state name, world t/f, reset cache t/f)
