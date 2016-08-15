@@ -300,6 +300,8 @@ earthChant.World.prototype = {
   		this.score += 50;
   		this.scoreText.setText('Score ' + this.score);
   		
+  		// insert whaterver you want to display when item is picked
+  		// sprite?
   		this.infoText= "Info!!"; // defining text to display
   		this.factBox();
   	},

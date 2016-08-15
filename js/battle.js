@@ -117,9 +117,7 @@ create: function(){
 	// SHOULD RESCALE DEPENDING ON ENEMY FIGHTING
 	this.enemy.scale.setTo(.7,.7);
 	this.player.scale.setTo(3,3);
-
-	// creates infoBox (facts)
-	this.create_infoBox();
+	
 
 	// setting health values
 	this.player.maxHealth = 50;
@@ -255,10 +253,9 @@ create: function(){
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	
-	// inital fact display
+	// inital fact display (then shows main menu)
 	this.factBox();
-	// displays mainmenu/options
-	this.showMainMenu();
+
 },
 // displays facts about enemy
 factBox: function(){
@@ -271,11 +268,13 @@ factBox: function(){
 	}
 },
 
-//hides the info box 
+//hides the fact box then shows info box and main menu options
 hideInfo: function(){
 	this.info.kill();   // hides facts
 	this.battleStart = true;
 	this.showMainMenu();
+	// creates infoBox (facts)
+	this.create_infoBox();
 },
 
 create_infoBox: function(){
