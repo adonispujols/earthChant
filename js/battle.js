@@ -43,7 +43,10 @@ earthChant.Battle.prototype = {
    	// loads potionsStored, or sets to default if nothing 
    	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
    	this.potionsStored = potionsStored;
+   	
    },
+   
+
 
 //setting vars, functions, and objects
 // Almost Every object, var, and function needs 'this' because it attaches it to our main game(stores in cache it)
@@ -62,8 +65,8 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 6;  //specifices the exact power stat of attack (should be put in seperate list)
-	this.attackPower2 = 6;
+	this.attackPower = 60;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower2 = 60;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
@@ -91,6 +94,9 @@ create: function(){
 	this.baseButton_2_X = 450;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
 	this.baseButton_3_X = 720;
 	this.baseButton_Y = 450;   // all buttons are based off of same y coord
+	this.battleStart = false; // boolean for initial info display 
+	this.infoText = 'asdfasdf';  // setting up infotext var as string
+	this.transitionSpeed = 2; //setting speed of transitions between facts box
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
 
@@ -248,7 +254,27 @@ create: function(){
 	this.back.scale.setTo(1,0.5);
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
+	
+	// inital fact display
+	this.factBox();
 	// displays mainmenu/options
+	this.showMainMenu();
+},
+// displays facts about enemy
+factBox: function(){
+	if(!this.battleStart){
+		this.hideHud();  //hides huds
+		
+		this.info = this.game.add.text(300, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
+		this.info.anchor.set(0.5);  // sets text at center 
+		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
+	}
+},
+
+//hides the info box 
+hideInfo: function(){
+	this.info.kill();   // hides facts
+	this.battleStart = true;
 	this.showMainMenu();
 },
 
@@ -258,7 +284,7 @@ create_infoBox: function(){
 	this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
     //displays new info after set interval
-	this.game.time.events.loop(Phaser.Timer.SECOND * 2, this.show_infoBox, this); //*2 increases amount of seconds
+	this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
 },
 
 // displays new info (after some time)
