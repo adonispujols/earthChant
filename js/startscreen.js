@@ -40,7 +40,7 @@ earthChant.StartScreen.prototype = {
 	},
 	showIntro: function(){
 		
-	}
+	},
 	startGame: function(){
 		this.game.state.start('World');
 	},
