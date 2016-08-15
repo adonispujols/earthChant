@@ -69,8 +69,8 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 60;  //specifices the exact power stat of attack (should be put in seperate list)
-	this.attackPower2 = 60;
+	this.attackPower = 6;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
@@ -253,6 +253,8 @@ create: function(){
 	this.backButton.add(this.back);
 	this.backButton.add(this.backText);
 	this.back.scale.setTo(1,0.5);
+	// creates infoBox (facts)
+	this.create_infoBox();
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	
@@ -264,7 +266,7 @@ create: function(){
 factBox: function(){
 	if(!this.battleStart){
 		this.hideHud();  //hides huds
-		
+		// displaying info
 		this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
 		this.info.anchor.set(0.5);  // sets text at center 
 		this.game.time.events.loop(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
@@ -276,8 +278,6 @@ hideInfo: function(){
 	this.info.kill();   // hides facts
 	this.battleStart = true;
 	this.showMainMenu();
-	// creates infoBox (facts)
-	this.create_infoBox();
 },
 
 create_infoBox: function(){
