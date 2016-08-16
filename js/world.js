@@ -69,7 +69,7 @@ earthChant.World.prototype = {
 	this.map = this.game.add.sprite(0,0,'map');
 
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apparently)
-	//setting up variables for objects
+	// setting up variables for objects
 	this.player;
 	this.player_X_speed = 300;
 	this.player_Y_speed = 300;
