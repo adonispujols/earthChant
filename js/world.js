@@ -232,14 +232,16 @@ earthChant.World.prototype = {
   	},
   	// displays "fact box"/ box with info when item/enemy ran into
   	factBox: function(){
+  		// button that will hide display
+  		this.closeFactButton = this.game.add.button(this.player.x, this.player.y,'buttons', 
+  				this.hideInfo,this, 2, 1, 0);
+  		this.closeFactButton.scale.setTo(1, 0.5);
+		this.closeFactButton.anchor.set(0.5);  // sets anchor at center
+  		
   		// displays info about item
-  		this.info = this.game.add.text(this.player.x, this.player.y+50, this.infoText);  // TRY ADDING AN IMAGE OR SO
+  		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y+50, this.infoText);  // TRY ADDING AN IMAGE OR SO
   		this.info.anchor.set(0.5);  // sets text at center
   		
-  		// button that will hide display
-  		this.closeFactButton = this.game.add.button( this.player.x, this.player.y+50,'buttons', 
-  				this.hideInfo,this, 2, 1, 0);
-  		this.closeFactButton.scale.setTo(0,0)
   	},
   		
   	// hides the info box

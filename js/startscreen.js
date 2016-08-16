@@ -13,7 +13,7 @@ var earthChant = earthChant || {};
 //MINOR:
 // FIX/ADD COMMENTS 
 // STORE PLAYER'S LOCATION WHEN LEAVING BATTLE
-// USE BOOTSTRAP TO RESIZE SCREEN 
+// USE BOOTSTRAP TO RESIZE SCREEN  
 // MAKE ENEMIES
 
 earthChant.StartScreen = function(){};
@@ -32,10 +32,13 @@ earthChant.StartScreen.prototype = {
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 		
 		// intial button (shows intro screen
-		this.initialButton = this.game.add.button(300, 500,'buttons',  		// CHANGE TO ONMOUSE CLICKED
+		this.initialButton = this.game.add.button(550, 520,'buttons',  		// CHANGE TO ONMOUSE CLICKED
 		this.showIntro,this, 2, 1, 0);
 		this.initialButton.scale.setTo(2,.5);    //rescale
-		this.startText = this.game.add.text(this.initialButton.x + 100, this.initialButton.y, 'Click here to Start'); //text for button
+		this.initialButton.anchor.set(0.5);  // sets at center
+		this.startText = this.game.add.text(this.initialButton.x, this.initialButton.y, 'Click here to Start'); //text for button
+		this.startText.anchor.set(0.5);  // sets at center
+
 	},
 	
 	// shows the intro screen (add images/text here)
@@ -45,10 +48,14 @@ earthChant.StartScreen.prototype = {
 		this.logo.kill();
 		
 		// start game button (similar to initial)
-		this.startButton = this.game.add.button(300, 500,'buttons', 
+		this.startButton = this.game.add.button(500, 500,'buttons', 
 		this.startGame,this, 2, 1, 0);
 		this.startButton.scale.setTo(2,.5);
-		this.startText = this.game.add.text(this.startButton.x + 200, this.startButton.y, 'PLAY');	// sends to start game()		
+		this.startButton.anchor.set(0.5);  // sets at center
+		//start text
+		this.startText = this.game.add.text(this.startButton.x, this.startButton.y, 'PLAY');	// sends to start game()		
+		this.startText.anchor.set(0.5);  // sets at center
+
 	},
 	
 	// sends to World screen (Starts game)

@@ -200,7 +200,8 @@ create: function(){
 	this.mainMenu.add(this.runButton);	
 	this.mainMenu.add(this.attackButtonText);
 	this.mainMenu.add(this.PotionsButtonText);
-	this.mainMenu.add(this.runButtonText);
+	this.mainMenu.add(this.runButtonText)
+	this.mainMenu.setAll('anchor.x', 0.5);  // sets all children at center
 	
 	// buttons for different attack options
 	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
@@ -217,43 +218,49 @@ create: function(){
 			this.showAttackMenu,this, 5, 4, 3); // attack2 button
 	this.attack2Text = this.game.add.text(this.attack2.x, this.attack2.y, 
 	"Attack 2");
+	// adding options to group
 	this.attackOptions.add(this.attack);
 	this.attackOptions.add(this.attack1);
 	this.attackOptions.add(this.attack2);
 	this.attackOptions.add(this.attackText);
 	this.attackOptions.add(this.attack1Text);
 	this.attackOptions.add(this.attack2Text);
+	this.attackOptions.setAll('anchor.x', 0.5);  // sets all children at center
 
 	// buttons for different Potions options
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 			this.potionClicked,this, 8, 7, 6); // potion2 button
 	this.potionText = this.game.add.text(this.potion.x, this.potion.y, 
 	"Potion");
-
+	
 	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 			this.potion1Clicked,this, 8, 7, 6); // potion1 button
 	this.potion1Text = this.game.add.text(this.potion1.x, this.potion1.y, 
 	"Potion 1");
-
+	
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
 			this.showPotionsOptions,this, 8, 7, 6); // potion2 button
 	this.potion2Text = this.game.add.text(this.potion2.x, this.potion2.y, 
 	"Potion 2");
+
 	this.PotionsOptions.add(this.potion);
 	this.PotionsOptions.add(this.potion1);
 	this.PotionsOptions.add(this.potion2);
 	this.PotionsOptions.add(this.potionText);
 	this.PotionsOptions.add(this.potion1Text);
 	this.PotionsOptions.add(this.potion2Text);
+	this.PotionsOptions.setAll('anchor.x', 0.5);  // sets all children at center
+
 
 	// back button that returns to main screen
 	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y-75, 'buttons',
 			this.showMainMenu,this, 1, 0, 2); 
 	this.backText = this.game.add.text(this.back.x, this.back.y, 
 	"back");
+
 	this.backButton.add(this.back);
 	this.backButton.add(this.backText);
-	this.back.scale.setTo(1,0.5);
+	this.backButton.setAll('anchor.x', 0.5);  // sets all children at center
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	
