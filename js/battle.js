@@ -94,14 +94,14 @@ create: function(){
 	this.mainMenu; 	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
 	this.attackOptions;
 	this.backButton;
-	this.backButton_X = 150; // x coor
-	this.baseButton_1_X = 420;   // xcoord of base (frequently used) buttons
-	this.baseButton_2_X = 650;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
-	this.baseButton_3_X = 920;
-	this.baseButton_Y = 450;   // all buttons are based off of same y coord
+	this.backButton_X = 60; // x coor
+	this.baseButton_1_X = 260;   // xcoord of base (frequently used) buttons
+	this.baseButton_2_X = 595;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
+	this.baseButton_3_X = 930;
+	this.baseButton_Y = 430;   // all buttons are based off of same y coord
 	this.attack_style = {fill:'red',font:'impact',fontSize:'45px'}; // default style of each option's texxt
-	this.potions_style = {fill:'red',font:'impact',fontSize:'45px'}; // default style of each option's texxt
-	this.text_Y =470;     // set text y coord
+	this.potions_style = {fill:'green',font:'impact',fontSize:'45px'}; // default style of each option's texxt
+	this.text_Y =450;     // set text y coord
 	this.battleStart = false; // boolean for initial info display 
 	this.transitionSpeed = 2; //setting speed of transitions between facts box
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
@@ -178,7 +178,7 @@ create: function(){
 	// creating groups for options (good for easy manipulation)
 	this.mainMenu = this.game.add.group(); 
 	this.attackOptions = this.game.add.group();
-	this.PotionsOptions = this.game.add.group();
+	this.potionsOptions = this.game.add.group();
 	this.backButton = this.game.add.group();
 	
 	// (interactive) buttons for inital/main options
@@ -189,7 +189,7 @@ create: function(){
 	"ATTACK", this.attack_style);
 
 	this.PotionsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
-			this.showPotionsOptions,this, 2, 1, 0); // Potions button
+			this.showpotionsOptions,this, 2, 1, 0); // Potions button
 	this.PotionsButtonText = this.game.add.text(this.PotionsButton.x, this.text_Y, 
 	"POTIONS", this.potions_style);
 
@@ -213,17 +213,17 @@ create: function(){
 	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 			this.attackClicked,this, 5, 4, 3); // attack button
 	this.attackText = this.game.add.text(this.attack.x, this.text_Y, 
-	"ATTACK");
+	"ATTACK", this.attack_style);
 
 	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 			this.showAttackMenu,this, 5, 4, 3); // attack1 button
 	this.attack1Text = this.game.add.text(this.attack1.x, this.text_Y, 
-	"Attack 1");
+	"ATTACK 1", this.attack_style);
 
 	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 			this.showAttackMenu,this, 5, 4, 3); // attack2 button
 	this.attack2Text = this.game.add.text(this.attack2.x, this.text_Y, 
-	"Attack 2");
+	"ATTACK 2", this.attack_style);
 	// adding options to group
 	this.attackOptions.add(this.attack);
 	this.attackOptions.add(this.attack1);
@@ -232,41 +232,47 @@ create: function(){
 	this.attackOptions.add(this.attack1Text);
 	this.attackOptions.add(this.attack2Text);
 	this.attackOptions.setAll('anchor.x', 0.5);  // sets all children at center
-
+	this.attackOptions.setAll('scale.x', 1.5);  // rescales chidlren
+	this.attackOptions.setAll('scale.y', 1.5);  // rescales chidlren
+	
 	// buttons for different Potions options
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 			this.potionClicked,this, 8, 7, 6); // potion2 button
 	this.potionText = this.game.add.text(this.potion.x, this.text_Y, 
-	"Potion");
+	"POTIONS", this.potions_style);
 	
 	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 			this.potion1Clicked,this, 8, 7, 6); // potion1 button
 	this.potion1Text = this.game.add.text(this.potion1.x, this.text_Y, 
-	"Potion 1");
+	"POTIONS 1", this.potions_style);
 	
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
-			this.showPotionsOptions,this, 8, 7, 6); // potion2 button
+			this.showpotionsOptions,this, 8, 7, 6); // potion2 button
 	this.potion2Text = this.game.add.text(this.potion2.x, this.text_Y,
-	"Potion 2");
+	"POTIONS 2", this.potions_style);
 
-	this.PotionsOptions.add(this.potion);
-	this.PotionsOptions.add(this.potion1);
-	this.PotionsOptions.add(this.potion2);
-	this.PotionsOptions.add(this.potionText);
-	this.PotionsOptions.add(this.potion1Text);
-	this.PotionsOptions.add(this.potion2Text);
-	this.PotionsOptions.setAll('anchor.x', 0.5);  // sets all children at center
-
+	this.potionsOptions.add(this.potion);
+	this.potionsOptions.add(this.potion1);
+	this.potionsOptions.add(this.potion2);
+	this.potionsOptions.add(this.potionText);
+	this.potionsOptions.add(this.potion1Text);
+	this.potionsOptions.add(this.potion2Text);
+	this.potionsOptions.setAll('anchor.x', 0.5);  // sets all children at center
+	this.potionsOptions.setAll('scale.x', 1.5);  // rescales chidlren
+	this.potionsOptions.setAll('scale.y', 1.5);  // rescales chidlren
+	
 
 	// back button that returns to main screen
-	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y-75, 'buttons',
+	this.back = this.game.add.button(this.backButton_X, this.baseButton_Y-25, 'buttons',
 			this.showMainMenu,this, 1, 0, 2); 
-	this.backText = this.game.add.text(this.back.x, this.back.y, 
-	"back");
+	this.backText = this.game.add.text(this.back.x, this.back.y+10, 
+	"B\nA\nC\nK", {fill:'black',font:'impact',fontSize:'33px'});
 
 	this.backButton.add(this.back);
 	this.backButton.add(this.backText);
+	this.back.scale.setTo(.3,2.2);  // rescales back
 	this.backButton.setAll('anchor.x', 0.5);  // sets all children at center
+
 	//only dispalys these items if thy are in player's inventory
 	// if this.potionsStored      // MAKE SO THAT THESE AREN'T DRAWN AT ALL UNLESS PLAYER HAS IT
 	
@@ -326,8 +332,8 @@ showAttackMenu: function(){
 	},
 
 //Potions button
-showPotionsOptions: function(){
-	this.PotionsOptions.visible = true;
+showpotionsOptions: function(){
+	this.potionsOptions.visible = true;
 	this.showSubMenu();
 },
 
@@ -356,7 +362,7 @@ showSubMenu: function(){
 //shows mainhud/menu while hiding all submenus
 showMainMenu: function(){
 	this.attackOptions.visible = false;
-	this.PotionsOptions.visible = false;
+	this.potionsOptions.visible = false;
 	this.backButton.visible = false;
 	this.mainMenu.visible = true;
 	this.attackButton.frame = 1;  // fixed buttons are stuck at frame 2 bug (previous frame not reseting) by reseting frames
@@ -367,7 +373,7 @@ showMainMenu: function(){
 hideHud: function(){
 	this.mainMenu.visible = false;
 	this.attackOptions.visible = false;
-	this.PotionsOptions.visible = false;
+	this.potionsOptions.visible = false;
 	this.backButton.visible = false;
 },
 

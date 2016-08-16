@@ -239,7 +239,7 @@ earthChant.World.prototype = {
 		this.closeFactButton.anchor.set(0.5);  // sets anchor at center
   		
   		// displays info about item
-  		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y+50, this.infoText);  // TRY ADDING AN IMAGE OR SO
+  		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y, this.infoText);  // TRY ADDING AN IMAGE OR SO
   		this.info.anchor.set(0.5);  // sets text at center
   		
   	},
