@@ -149,7 +149,7 @@ earthChant.World.prototype = {
     // cursor controls (arrow keys)
 	this.cursors = this.game.input.keyboard.createCursorKeys();
 	
-	//boolean to control when our keys will be enabled
+	// boolean to control when our keys will be enabled
 	this.keyEnabled = true;
 	
 	// creates infoBox (facts)
