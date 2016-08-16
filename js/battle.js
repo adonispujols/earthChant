@@ -72,7 +72,7 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 6;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower = 60;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations

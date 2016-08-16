@@ -87,13 +87,13 @@ earthChant.World.prototype = {
 	this.col2.enableBody = true;
 	this.col2.body.immovable = true;
 	// this.col1.visible=false;
-	this.col3 = this.game.add.sprite(546,124,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col3 = this.game.add.sprite(546,127,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col3.scale.setTo(.07,.78);
 	this.game.physics.arcade.enable(this.col3);
 	this.col3.enableBody = true;
 	this.col3.body.immovable = true;
 	// this.col1.visible=false4
-	this.col4 = this.game.add.sprite(315,401,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col4 = this.game.add.sprite(315,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col4.scale.setTo(.15,.06);
 	this.game.physics.arcade.enable(this.col4);
 	this.col4.enableBody = true;
@@ -151,7 +151,7 @@ earthChant.World.prototype = {
 	this.enemy4.enableBody = true;
 
 	// creating basic items place holder with physics
-	this.item = this.game.add.sprite(500,600, 'tree');
+	this.item = this.game.add.sprite(400,600, 'Sprout');
 	this.game.physics.arcade.enable(this.item);
 	this.item.enableBody = true;
 
@@ -162,6 +162,8 @@ earthChant.World.prototype = {
 	this.enemy2.scale.setTo(.3, .3); 
 	this.enemy3.scale.setTo(.2, .2); 
 	this.enemy4.scale.setTo(.2, .2); 
+	this.item.scale.setTo(.17, .17); 
+
 
 	// cycles through the living state of each enemy and kills what is dead
 	for (var i = 0; i < this.deadEnemies.length; i++) { 

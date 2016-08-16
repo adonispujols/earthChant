@@ -50,7 +50,7 @@ earthChant.Preload.prototype = {
 		this.game.load.image('gameOver', 'assets/sprites/gameOver.png');
 		this.game.load.image('map', 'assets/tilemaps/map.png');
 		this.game.load.image('Evil Paper', 'assets/sprites/paper.png');
-		this.game.load.image('sprout', 'assets/sprites/sprout.png');
+		this.game.load.image('Sprout', 'assets/sprites/sprout.png');
 		this.game.load.image('Destructive Steam Roller','assets/sprites/steamRoller.png');
 		this.game.load.spritesheet('Vile Plastic Bottle', 'assets/sprites/bottle.png', 416,416, 2);
 		this.game.load.image('turtle', 'assets/sprites/turtle.jpg');
