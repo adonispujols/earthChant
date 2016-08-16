@@ -37,7 +37,7 @@ earthChant.World.prototype = {
     var enemyDead = enemyDead || false;      // assumes no enemies are dead if no parameters are passed from Battle.state
     this.enemyDead = enemyDead;        // assigns boolean to local var if an enemy was killed or not 
 	
-	// stores what enemy (by  number, i.e. enemy1=1, enemy2=2...) player was battling
+	// stores what enemy (by number, i.e. enemy1=1, enemy2=2...) player was battling
     this.enemyBattle_number; 
 
     // permanent list of dead enemies (creates empty list if nothing set yet)
