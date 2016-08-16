@@ -48,6 +48,7 @@ earthChant.Preload.prototype = {
 		this.game.load.image('logo', 'assets/sprites/logo.png');
 		this.game.load.image('background', 'assets/sprites/background.jpg');
 		this.game.load.image('gameOver', 'assets/sprites/gameOver.png');
+		this.game.load.image('gameOver1', 'assets/sprites/gameOver1.png');
 		this.game.load.image('map', 'assets/tilemaps/map.png');
 		this.game.load.image('Evil Paper', 'assets/sprites/paper.png');
 		this.game.load.image('Sprout', 'assets/sprites/sprout.png');

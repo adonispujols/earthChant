@@ -33,7 +33,7 @@ earthChant.StartScreen.prototype = {
 		
 		// intial button (shows intro screen
 		this.initialButton = this.game.add.button(550, 540,'buttons',  		// CHANGE TO ONMOUSE CLICKED
-		this.showIntro,this, 2, 1, 0);
+		this.startGame,this, 2, 1, 0);
 		this.initialButton.scale.setTo(2,.7);    //rescale
 		this.initialButton.anchor.set(0.5);  // sets at center
 		
@@ -45,7 +45,6 @@ earthChant.StartScreen.prototype = {
 	showIntro: function(){
 		// remove previous items
 		this.initialButton.kill();
-		this.introText.kill();
 		this.logo.kill();
 		
 		// start game button (similar to initial)

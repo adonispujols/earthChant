@@ -64,7 +64,7 @@ earthChant.World.prototype = {
 	// facts
 	this.infoBox;
 	//list of deforestation info
-	this.infolist = ["About half of the world’s timber \n and up to 70% of paper is consumed by \n Europe, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
+	this.infolist = ["About half of the world’s timber \nand up to 70% of paper is consumed by \nEurope, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -158,11 +158,16 @@ earthChant.World.prototype = {
 	// rescalling sprites
 	this.player.scale.setTo(1, 1); 
 	this.map.scale.setTo(2, 2);
-	this.enemy1.scale.setTo(.1, .1); 
+	this.enemy1.scale.setTo(.17, .17); 
 	this.enemy2.scale.setTo(.3, .3); 
 	this.enemy3.scale.setTo(.2, .2); 
 	this.enemy4.scale.setTo(.2, .2); 
-	this.item.scale.setTo(.17, .17); 
+	this.item.scale.setTo(.17,.17); 
+
+	//changing start frame of enemies
+	this.enemy4.frame = 1;
+	this.enemy3.frame = 1;
+
 
 
 	// cycles through the living state of each enemy and kills what is dead
@@ -278,7 +283,7 @@ earthChant.World.prototype = {
   	    this.infoBox.anchor.set(0.5);   // places infoBox at center
   	    //displays new info after set interval
   	    this.infoBox.fixedToCamera = true;  // fixes score to camera (like a ui)
-  	    this.infoBox.cameraOffset.setTo(400,150);   // moves score text
+  	    this.infoBox.cameraOffset.setTo(375,150);   // moves score text
   		this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
   	},
 
@@ -301,7 +306,8 @@ earthChant.World.prototype = {
   		this.infoImg.anchor.set(0.5);
   		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y, 'Close');  // TRY ADDING AN IMAGE OR SO
   		this.info.anchor.set(0.5);  // sets text at center
-  		this.infotxt = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y-50, '18 percent of carbon emissions are \n absorbed by existing forests every year.', {fill:'red',fontSize:'30px'});  // TRY ADDING AN IMAGE OR SO
+  		// info txt to go along the item
+  		this.infotxt = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y-60, '18 percent of carbon emissions are \n absorbed by existing forests every year.', {fill:'red',fontSize:'30px'});  // TRY ADDING AN IMAGE OR SO
   		this.infotxt.anchor.set(0.5);  // sets text at center
   		
   	},
@@ -310,6 +316,7 @@ earthChant.World.prototype = {
   	hideInfo: function(){
   		this.info.kill();
   		this.infoImg.kill();
+  		this.infotxt.kill();
   		this.closeFactButton.kill();
   		this.playerDirection = 0;
   		this.keyEnabled = true;

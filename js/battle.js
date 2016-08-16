@@ -72,7 +72,7 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 75;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower = 7.5;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
@@ -468,10 +468,11 @@ playerTurn: function(){
 playersDead: function(){
 	//shows image of dead player
 //	this.deadPlayer = this.game.add.sprite(this.player_X,this.player_Y,'deadPlayer');
-	
+	this.game.stage.backgroundColor = '#7F7F7F';
 	// essenially the death screeen
-	this.gameOver = this.game.add.sprite(0,0, 'gameOver');
-	this.gameOver.scale.setTo(1.5,1.5);
+	this.dialogBox.kill();
+	this.gameOver = this.game.add.sprite(0,50, 'gameOver1');
+	this.gameOver.scale.setTo(1.6,1.6);
 //	this.deadBox = this.game.add.text(this.game.world.width/2, 225, 
 //	"You lost!");
 //    this.deadBox.anchor.set(0.5); 
@@ -487,8 +488,8 @@ enemiesDead: function(){
 	//shows image of dead enemy
 	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy');
 	
-	this.victoryBox = this.game.add.text(this.game.world.width/2, 225, 
-	"You won!");
+	this.victoryBox = this.game.add.text(630, 275, 
+	"YOU WIN!", {fill:'blue',font:'impact',fontSize:'325px'});
     this.victoryBox.anchor.set(0.5); 
     //increases score by a hundred 
     this.score += 100; 
