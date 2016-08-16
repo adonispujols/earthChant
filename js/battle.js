@@ -36,18 +36,20 @@ earthChant.Battle = function(){};
 earthChant.Battle.prototype = {
 	//setting up global (across game) variables (sending parameters to state)
 	// loads the specific enemy(s) encountered (defined in World.state)
-	init: function(enemyBattle_sprite, infoText){
+	init: function(enemyBattle_sprite, infoText, infoImage){
     var enemyBattle_sprite = enemyBattle_sprite || null;  // enemy's sprite
     this.enemyBattle_sprite = enemyBattle_sprite;    //creates local variable from World's variable value
    	
    	// loads potionsStored, or sets to default if nothing 
-//   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
-//   	this.potionsStored = potionsStored;
-//   	
+	//   	var potionsStored = potionsStored || [0,0,0];  //[basic, medium,stronger]
+	//   	this.potionsStored = potionsStored;
+	//   	
    	//drawing infoText about enemy from world
    	var infoText = infoText || '';
    	this.infoText = infoText;
-//   infoImage
+	//  infoImage
+	var infoImage = infoImage || '';
+   	this.infoImage = infoImage;
    },
    
 
@@ -70,19 +72,25 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 6;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower = 60;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
 	this.playerGroup;
-	this.player_X = 820;  // starting x/y coords of player
+	this.player_X = 750;  // starting x/y coords of player
 	this.player_Y = 220;
 	this.enemy;
 	this.enemyDead = false; 
 	this.enemyGroup; 
-	this.enemy_X = 130;  // starting x/y coords of enemies
-	this.enemy_Y = 120;
+	// fixing awkward position of tin can
+	if (this.enemyBattle_sprite=='Evil Tin Can'){
+		this.enemy_X = 200;
+		this.enemy_Y = 220;
+	} else {
+		this.enemy_X = 180;  // starting x/y coords of enemies
+		this.enemy_Y = 120;	
+	}
 	this.score = 0;     
 	this.dialogBox;    //i.e. blue background box
 	this.victoryBox;
@@ -101,6 +109,8 @@ create: function(){
 	this.baseButton_Y = 430;   // all buttons are based off of same y coord
 	this.attack_style = {fill:'red',font:'impact',fontSize:'45px'}; // default style of each option's texxt
 	this.potions_style = {fill:'green',font:'impact',fontSize:'45px'}; // default style of each option's texxt
+	this.fact_style = {fontSize:'30px'};
+	this.headerStyle = {fill:'blue',fontSize:'60px'}
 	this.text_Y =450;     // set text y coord
 	this.battleStart = false; // boolean for initial info display 
 	this.transitionSpeed = 2; //setting speed of transitions between facts box
@@ -110,7 +120,7 @@ create: function(){
 	// adding (displaying) our sprites to the game
 	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
 	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
-	this.dialogBox = this.game.add.sprite(0, 400, 'dialogBox');
+	this.dialogBox = this.game.add.sprite(0, 400, 'dialogBox'); //background box
 
 	// creaitng players group
 	this.playerGroup = this.game.add.group();
@@ -143,9 +153,9 @@ create: function(){
 	// creating and customizing our healthbars
 	// player health bar
 	this.playerBarConfig = {
-    width: this.player.maxHealth*5,
+    width: this.player.maxHealth*7,
     height: 40,
-    x: this.player.x,
+    x: this.player.x+100,
     y: 100,
     bg: {    // bar's background color
       color: '#651828'
@@ -158,9 +168,13 @@ create: function(){
   	};
 	this.playerHealthBar = new HealthBar(this.game, this.playerBarConfig);
 
+	//player's name
+	this.playerName = this.game.add.text(this.playerHealthBar.x-100,this.playerHealthBar.y-26,
+		'Player',{fill:'blue',font:'impact',fontSize:'45px'});
+	
 	// enemy health bar
 	this.enemyBarConfig = {
-    width: this.enemy.maxHealth*5,
+    width: this.enemy.maxHealth*7,
     height: 40,
     x: this.enemy.x+150,
     y: 100,
@@ -174,6 +188,10 @@ create: function(){
     flipped: false
   	};
 	this.enemyHealthBar = new HealthBar(this.game, this.enemyBarConfig);
+	
+	// enemy's name
+	this.enemyName = this.game.add.text(this.enemyHealthBar.x-150,this.enemyHealthBar.y-26,
+		this.enemyBattle_sprite,{fill:'red',font:'impact',fontSize:'45px'});
 	
 	// creating groups for options (good for easy manipulation)
 	this.mainMenu = this.game.add.group(); 
@@ -283,19 +301,29 @@ create: function(){
 // displays facts about enemy
 factBox: function(){
 	this.hideHud();  //hides huds
+	this.factImage = this.game.add.sprite(600, 225, this.infoImage);
+	this.factImage.anchor.set(0.5);
+	this.factImage.scale.setTo(.5,.5);
+	// Did you know? text
+	this.headerText = this.game.add.text(400, 25, 'Did you know?', this.headerStyle);
 	
 	// displaying fact related to enemy
-	this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
+	this.info = this.game.add.text(600, 450, this.infoText, this.fact_style);  // TRY ADDING AN IMAGE OR SO
 	this.info.anchor.set(0.5);  // sets text at center 
-	this.hideInfoButton = this.game.add.button( 500, 500,'buttons', 
+	this.hideInfoButton = this.game.add.button( 600, 525,'buttons', 
 		this.hideInfo,this, 2, 1, 0);  // reates button hiding fact 
-	
+	this.hideInfoButton.anchor.set(0.5);
+	this.hideInfoText = this.game.add.text(this.hideInfoButton.x, this.hideInfoButton.y, 'Close', this.fact_style);  // TRY ADDING AN IMAGE OR SO
+	this.hideInfoText.anchor.set(0.5);
 },
 
 //hides the fact box then shows info box and main menu options
 hideInfo: function(){
+	this.factImage.kill();
+	this.headerText.kill();
 	this.info.kill();   // hides facts
 	this.hideInfoButton.kill();
+	this.hideInfoText.kill();
 	//	showing items
 	this.showMainMenu();
 	// creates infoBox (facts)

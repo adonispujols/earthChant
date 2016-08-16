@@ -51,11 +51,17 @@ earthChant.World.prototype = {
    		this.deadEnemies.push(this.enemyBattle_number); // storing dead enemy in list
    	}
 
-   	// current player's location on World (sets to defined value if nothing changed)
+   	// stores collected items in list
+   	this.itemNumber;
+   	this.itemsCollected = this.itemsCollected || [];
+
+   	// current player's location o
+
+   	 // player location in World (sets to defined value if nothing changed)
 	this.playerLocation_X  = this.playerLocation_X || 425;  // TRY PASSING THESE TWO PARAMETERS AS ONE VARIABLE/GROUP 
 	this.playerLocation_Y  = this.playerLocation_Y || 200;
 	
-	//  
+	// facts
 	this.infoBox;
 	//list of deforestation info
 	this.infolist = ["Almost half of world’s timber and up to 70% of paper is consumed by \n Europe, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
@@ -64,9 +70,14 @@ earthChant.World.prototype = {
 	// bounds and color of world (negatives sets bounds beyond top left)
 	this.game.world.setBounds(0, 0, 980, 890);
 	this.game.stage.backgroundColor = '#808080';
-	
+
 	// map of world
 	this.map = this.game.add.sprite(0,0,'map');
+
+	// rudimentary collision boxes (col1= collison box 1)
+	this.col1 = this.game.add.sprite(265,120,'placeHolder');
+	this.col1.scale.setTo(.75,.1);
+	
 
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apparently)
 	// setting up variables for objects
@@ -79,6 +90,7 @@ earthChant.World.prototype = {
 	this.enemy3;
 	this.enemy4;
 	this.enemyBattle_sprite;     // stores sprite of enemy player ran into (look at loadBattle)
+	this.infoImage;   //sores the info image to display
 	this.cursors;  // arrow keys
 	this.scoreText;
 	this.infoText = '';  // setting up infotext var as string
@@ -95,10 +107,10 @@ earthChant.World.prototype = {
 
 
 	// same for our enemy
-	this.enemy1 = this.game.add.sprite(800,200, 'smog');
-	this.enemy2 = this.game.add.sprite(400,400, 'canEnemy');
-	this.enemy3 = this.game.add.sprite(500,500, 'bottle');
-	this.enemy4 = this.game.add.sprite(650,300, 'trashMan');
+	this.enemy1 = this.game.add.sprite(800,200, 'Poisonous Smog');
+	this.enemy2 = this.game.add.sprite(390,400, 'Evil Tin Can');
+	this.enemy3 = this.game.add.sprite(500,500, 'Vile Plastic Bottle');
+	this.enemy4 = this.game.add.sprite(650,300, 'Dirty Trash Man');
 
 
 	// enable physics for enemies (individually for now)
@@ -139,6 +151,13 @@ earthChant.World.prototype = {
 	    	this.enemy4.kill();
 	    	}
 		}
+
+	// cycles through the collected state of each item
+	for (var i = 0; i < this.itemsCollected.length; i++) { 
+		if (this.itemsCollected[i] == 1){ 	// TRY TO NOT DRAW SPRITES IN FIRST PLACE IF DEAD
+	    	this.item.kill();
+    	}
+    }
 
 	// display score
 	this.scoreText = this.game.add.text(0, 0, 'Score:  ' + this.score, {fill:'red',font:'impact',fontSize:'60px'});
@@ -217,7 +236,7 @@ earthChant.World.prototype = {
   	create_infoBox: function(){
   		this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
   		this.infoBox = this.game.add.text(1000, 1000, 
-  		this.infolist[this.randInfo]);
+  		'Did you Know?\n' + this.infolist[this.randInfo]);
   	    this.infoBox.anchor.set(0.5);   // places infoBox at center
   	    //displays new info after set interval
   	    this.infoBox.fixedToCamera = true;  // fixes score to camera (like a ui)
@@ -228,7 +247,7 @@ earthChant.World.prototype = {
   	// displays new info (after some time)
   	show_infoBox: function(){
   		this.randInfo = Math.floor(Math.random() * (this.infolist.length)); //chooses random index from list
-  		this.infoBox.setText(this.infolist[this.randInfo]);
+  		this.infoBox.setText('Did you Know?\n' + this.infolist[this.randInfo]);
   	},
   	// displays "fact box"/ box with info when item/enemy ran into
   	factBox: function(){
@@ -260,29 +279,33 @@ earthChant.World.prototype = {
   	enemy1Hit: function(){    	// REPETITIVE. SIMPLIFIY CODE (use json or similar)
   		// sends info about enemy to battle state
   		this.infoText='Inhaling air pollution takes away at least 1-2 years of a typical human life.';		// defines what text will display when fighting with enemy
- 		this.enemyBattle_sprite = 'smog';  // tells Battle.state the key name of sprite
+ 		this.enemyBattle_sprite = 'Poisonous Smog';  // tells Battle.state the key name of sprite
   		this.enemyBattle_number = 1;  // tells Battle.state the enemy number
+  		this.infoImage = 'airPollution'
   		this.loadBattle();
   	},
   	
   	enemy2Hit: function(){
-  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic ecosystemssuch as fungi, algae and phytoplankton.';
-  		this.enemyBattle_sprite = 'canEnemy';
-  		this.enemyBattle_number = 2; 
+  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic \n ecosystemssuch as fungi, algae and phytoplankton.';
+  		this.enemyBattle_sprite = 'Evil Tin Can';
+  		this.enemyBattle_number = 2;
+  		this.infoImage = 'tinCan'; 
   		this.loadBattle();
   	},
 
   	enemy3Hit: function(){
-  		this.infoText='Plastic bags and other plastic garbage thrown into the ocean kill as many as 1 million sea creatures every year.';
-  		this.enemyBattle_sprite = 'bottle';
+  		this.infoText='Plastic bags and other plastic garbage thrown into the ocean \n    kill as many as 1 million sea creatures every year.';
+  		this.enemyBattle_sprite = 'Vile Plastic Bottle';
   		this.enemyBattle_number = 3; 
+  		this.infoImage = 'turtle';
   		this.loadBattle();  	
   	},
 
   	enemy4Hit: function(){
   		this.infoText='Every American equates to at least 100 tons of garbage a year';
-  		this.enemyBattle_sprite = 'trashMan';
+  		this.enemyBattle_sprite = 'Dirty Trash Man';
   		this.enemyBattle_number = 4; 
+  		this.infoImage = 'landFill';
   		this.loadBattle();  	
   	},
 
@@ -292,6 +315,10 @@ earthChant.World.prototype = {
   		this.item.kill();  //removes item
   		this.keyEnabled = false;  //disables keys
   		
+  		// adds collected item to list 
+  		this.itemNumber = 1;
+  		this.itemsCollected.push(this.itemNumber);
+
   		// increases score a little 
   		this.score += 50;
   		this.scoreText.setText('Score ' + this.score);
@@ -310,7 +337,7 @@ earthChant.World.prototype = {
 	this.playerLocation_Y = this.player.y;
 	
 	// also telling Battle State what enemy the player will fight (only one enemy for now)
-	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.infoText); 
+	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.infoText, this.infoImage); 
 	},
 
   	//just some debugging info
