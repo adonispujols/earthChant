@@ -42,7 +42,7 @@ earthChant.Preload.prototype = {
 		this.game.load.spritesheet('buttons','assets/sprites/buttons.png', 227, 83, 9);		
 		this.game.load.spritesheet('smog','assets/sprites/smog.png', 416,416,2);
 		this.game.load.spritesheet('canEnemy','assets/sprites/canEnemy.png', 192,192,2);
-		this.game.load.spritesheet('snake','assets/sprites/snake.png',416,416,2);
+		// this.game.load.spritesheet('snake','assets/sprites/snake.png',416,416,2);
 		this.game.load.spritesheet('tree','assets/sprites/tree.png',32,32);
 		this.game.load.spritesheet('trashMan','assets/sprites/trashMan.png',416,416,2);
 		this.game.load.image('logo', 'assets/sprites/logo.png');
@@ -52,6 +52,7 @@ earthChant.Preload.prototype = {
 		this.game.load.image('paper', 'assets/sprites/paper.png');
 		this.game.load.image('sprout', 'assets/sprites/sprout.png');
 		this.game.load.image('steamRoller','assets/sprites/steamRoller.png');
+		this.game.load.spritesheet('bottle', 'assets/sprites/bottle.png', 416,416, 2);
 		},
 
 	create: function() {

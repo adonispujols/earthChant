@@ -1,7 +1,9 @@
 Credit goes to:
 <author> (<author's site link>) for the <name> <sprite/sound/image>
 
-Mandi Paugh for the Sara spritesheet (http://opengameart.org/content/sara-overland)
+Julian Archer (julesracer@gmail.com) and Deangelo Castro (deangeloidk@gmail.com) for many of the enemies/items
+
+Mandi Paugh for the Sara spritesheet (http://opengameart.org/julesracer@gmail.comcontent/sara-overland)
 
 Grahhhhh (http://opengameart.org/users/grahhhhh) for the Dialog Box (http://opengameart.org/content/dialog-box)
 
@@ -9,10 +11,10 @@ NagyZsuzsi (http://nagyzsuzsi.deviantart.com/) for the Wy-chan Sprite (http://na
 
 Hyptosis (http://opengameart.org/users/hyptosis) for the tilemaps (http://opengameart.org/content/lots-of-free-2d-tiles-and-sprites-by-hyptosis)
 
-Clipart Kid for the StartScreen background (http://www.clipartkid.com/120-free-vector-landscape-background-for-designers-PnNPPu-clipart/)
+Clipart Kid (www.clipartkid.com) for the StartScreen background (http://www.clipartkid.com/120-free-vector-landscape-background-for-designers-PnNPPu-clipart/)
 
 More amazing free game art at:
- http://opengameart.org 
+http://opengameart.org 
 
 
 steam roller make pixel art.com

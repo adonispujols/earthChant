@@ -36,6 +36,7 @@ earthChant.StartScreen.prototype = {
 		this.showIntro,this, 2, 1, 0);
 		this.initialButton.scale.setTo(2,.7);    //rescale
 		this.initialButton.anchor.set(0.5);  // sets at center
+		
 		this.introText = this.game.add.text(this.initialButton.x, this.initialButton.y, 'Click here to Start', {fill:'green',font:'impact',fontSize:'45px'}); //text for button
 		this.introText.anchor.set(0.5);  // sets at center
 	},

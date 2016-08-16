@@ -97,7 +97,7 @@ earthChant.World.prototype = {
 	// same for our enemy
 	this.enemy1 = this.game.add.sprite(800,200, 'smog');
 	this.enemy2 = this.game.add.sprite(400,400, 'canEnemy');
-	this.enemy3 = this.game.add.sprite(500,500, 'snake');
+	this.enemy3 = this.game.add.sprite(500,500, 'bottle');
 	this.enemy4 = this.game.add.sprite(650,300, 'trashMan');
 
 
@@ -141,7 +141,7 @@ earthChant.World.prototype = {
 		}
 
 	// display score
-	this.scoreText = this.game.add.text(0, 0, 'Score ' + this.score, {fill:'red',font:'impact',fontSize:'60px'});
+	this.scoreText = this.game.add.text(0, 0, 'Score:  ' + this.score, {fill:'red',font:'impact',fontSize:'60px'});
     this.scoreText.anchor.set(0.5);   // sets text to center
     this.scoreText.fixedToCamera = true;  // fixes score to camera (like a ui)
     this.scoreText.cameraOffset.setTo(this.game.width/2-70,50);   // moves score text
@@ -274,7 +274,7 @@ earthChant.World.prototype = {
 
   	enemy3Hit: function(){
   		this.infoText='Trash and pollution makes other animals homeless and usually makes them change locations';
-  		this.enemyBattle_sprite = 'snake';
+  		this.enemyBattle_sprite = 'bottle';
   		this.enemyBattle_number = 3; 
   		this.loadBattle();  	
   	},
