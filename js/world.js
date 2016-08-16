@@ -296,10 +296,13 @@ earthChant.World.prototype = {
 		this.closeFactButton.anchor.set(0.5);  // sets anchor at center
   		
   		// displays info about item
-  		this.infoImg = this.game.add.sprite(this.closeFactButton.x,this.closeFactButton.y-250,'sproutImg');
+  		this.infoImg = this.game.add.sprite(this.closeFactButton.x,this.closeFactButton.y-200,'sproutImg');
   		this.infoImg.scale.setTo(.4,.4);
-  		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y, this.infoText);  // TRY ADDING AN IMAGE OR SO
+  		this.infoImg.anchor.set(0.5);
+  		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y, 'Close');  // TRY ADDING AN IMAGE OR SO
   		this.info.anchor.set(0.5);  // sets text at center
+  		this.infotxt = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y-50, '18 percent of carbon emissions are \n absorbed by existing forests every year.', {fill:'red',fontSize:'30px'});  // TRY ADDING AN IMAGE OR SO
+  		this.infotxt.anchor.set(0.5);  // sets text at center
   		
   	},
   		

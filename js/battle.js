@@ -234,12 +234,12 @@ create: function(){
 	"PUNCH", this.attack_style);
 
 	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
-			this.showAttackMenu,this, 5, 4, 3); // attack1 button
+			this.attackClicked,this, 5, 4, 3); // attack1 button
 	this.attack1Text = this.game.add.text(this.attack1.x, this.text_Y, 
 	"KICK", this.attack_style);
 
 	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
-			this.showAttackMenu,this, 5, 4, 3); // attack2 button
+			this.attackClicked,this, 5, 4, 3); // attack2 button
 	this.attack2Text = this.game.add.text(this.attack2.x, this.text_Y, 
 	"SLAP", this.attack_style);
 	// adding options to group
@@ -265,9 +265,9 @@ create: function(){
 	"ELIXIR", this.potions_style);
 	
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
-			this.showpotionsOptions,this, 8, 7, 6); // potion2 button
+			this.potionClicked,this, 8, 7, 6); // potion2 button
 	this.potion2Text = this.game.add.text(this.potion2.x, this.text_Y,
-	"AMULET", this.potions_style);
+	"TONIC", this.potions_style);
 
 	this.potionsOptions.add(this.potion);
 	this.potionsOptions.add(this.potion1);
