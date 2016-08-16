@@ -72,13 +72,13 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 60;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower = 75;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
 	this.player;
 	this.playerGroup;
-	this.player_X = 750;  // starting x/y coords of player
+	this.player_X = 775;  // starting x/y coords of player
 	this.player_Y = 220;
 	this.enemy;
 	this.enemyDead = false; 
@@ -98,11 +98,11 @@ create: function(){
 	this.deadBox;
 	this.infoBox;
 	//list of deforestation info
-	this.infolist = ["Almost half of world’s timber and up \n to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
+	this.infolist = ["About half of world’s timber \n and up to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
 	this.mainMenu; 	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
 	this.attackOptions;
 	this.backButton;
-	this.backButton_X = 60; // x coor
+	this.backButton_X = 60; // x coord
 	this.baseButton_1_X = 260;   // xcoord of base (frequently used) buttons
 	this.baseButton_2_X = 595;  // when adding a commonly used button with different X or Y, add baseButton_(x)_X or Y
 	this.baseButton_3_X = 930;
@@ -209,7 +209,7 @@ create: function(){
 	this.PotionsButton = this.game.add.button( this.baseButton_2_X, this.baseButton_Y,'buttons', 
 			this.showpotionsOptions,this, 2, 1, 0); // Potions button
 	this.PotionsButtonText = this.game.add.text(this.PotionsButton.x, this.text_Y, 
-	"POTIONS", this.potions_style);
+	"HEAL", this.potions_style);
 
 	this.runButton = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 	this.runClicked,this, 2, 1, 0); // run button
@@ -231,17 +231,17 @@ create: function(){
 	this.attack = this.game.add.button(this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 			this.attackClicked,this, 5, 4, 3); // attack button
 	this.attackText = this.game.add.text(this.attack.x, this.text_Y, 
-	"ATTACK", this.attack_style);
+	"PUNCH", this.attack_style);
 
 	this.attack1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 			this.showAttackMenu,this, 5, 4, 3); // attack1 button
 	this.attack1Text = this.game.add.text(this.attack1.x, this.text_Y, 
-	"ATTACK 1", this.attack_style);
+	"KICK", this.attack_style);
 
 	this.attack2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons', 
 			this.showAttackMenu,this, 5, 4, 3); // attack2 button
 	this.attack2Text = this.game.add.text(this.attack2.x, this.text_Y, 
-	"ATTACK 2", this.attack_style);
+	"SLAP", this.attack_style);
 	// adding options to group
 	this.attackOptions.add(this.attack);
 	this.attackOptions.add(this.attack1);
@@ -257,17 +257,17 @@ create: function(){
 	this.potion = this.game.add.button( this.baseButton_1_X, this.baseButton_Y, 'buttons', 
 			this.potionClicked,this, 8, 7, 6); // potion2 button
 	this.potionText = this.game.add.text(this.potion.x, this.text_Y, 
-	"POTIONS", this.potions_style);
+	"POTION", this.potions_style);
 	
 	this.potion1 = this.game.add.button( this.baseButton_2_X, this.baseButton_Y, 'buttons', 
 			this.potion1Clicked,this, 8, 7, 6); // potion1 button
 	this.potion1Text = this.game.add.text(this.potion1.x, this.text_Y, 
-	"POTIONS 1", this.potions_style);
+	"ELIXIR", this.potions_style);
 	
 	this.potion2 = this.game.add.button( this.baseButton_3_X, this.baseButton_Y, 'buttons',
 			this.showpotionsOptions,this, 8, 7, 6); // potion2 button
 	this.potion2Text = this.game.add.text(this.potion2.x, this.text_Y,
-	"POTIONS 2", this.potions_style);
+	"AMULET", this.potions_style);
 
 	this.potionsOptions.add(this.potion);
 	this.potionsOptions.add(this.potion1);
@@ -332,7 +332,7 @@ hideInfo: function(){
 
 create_infoBox: function(){
 	this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
-	this.infoBox = this.game.add.text(this.game.world.width/3, 100, 
+	this.infoBox = this.game.add.text(this.game.world.width-325, 250, 
 	this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
     //displays new info after set interval

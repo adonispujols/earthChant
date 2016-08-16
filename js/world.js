@@ -64,7 +64,7 @@ earthChant.World.prototype = {
 	// facts
 	this.infoBox;
 	//list of deforestation info
-	this.infolist = ["Almost half of world’s timber and up to 70% of paper is consumed by \n Europe, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
+	this.infolist = ["About half of the world’s timber \n and up to 70% of paper is consumed by \n Europe, United States and Japan alone.","25% of cancers fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields every minute."]; 
    },
   create: function() {
 	// bounds and color of world (negatives sets bounds beyond top left)
@@ -80,31 +80,31 @@ earthChant.World.prototype = {
 	this.game.physics.arcade.enable(this.col1);
 	this.col1.enableBody = true;
 	this.col1.body.immovable = true;
-	// this.col1.visible=false;
+	this.col1.renderable = false;
 	this.col2 = this.game.add.sprite(280,142,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col2.scale.setTo(.065,.75);
 	this.game.physics.arcade.enable(this.col2);
 	this.col2.enableBody = true;
 	this.col2.body.immovable = true;
-	// this.col1.visible=false;
+	this.col2.renderable = false;
 	this.col3 = this.game.add.sprite(546,127,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col3.scale.setTo(.07,.78);
 	this.game.physics.arcade.enable(this.col3);
 	this.col3.enableBody = true;
 	this.col3.body.immovable = true;
-	// this.col1.visible=false4
+	this.col3.renderable = false;
 	this.col4 = this.game.add.sprite(315,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col4.scale.setTo(.15,.06);
 	this.game.physics.arcade.enable(this.col4);
 	this.col4.enableBody = true;
 	this.col4.body.immovable = true;
-	// this.col1.visible=false;
+	this.col4.renderable = false;
 	this.col5 = this.game.add.sprite(450,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col5.scale.setTo(.2,.05);
 	this.game.physics.arcade.enable(this.col5);
 	this.col5.enableBody = true;
 	this.col5.body.immovable = true;
-	// this.col1.visible=false;
+	this.col5.renderable = false;
 
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apparently)
 	// setting up variables for objects
@@ -278,7 +278,7 @@ earthChant.World.prototype = {
   	    this.infoBox.anchor.set(0.5);   // places infoBox at center
   	    //displays new info after set interval
   	    this.infoBox.fixedToCamera = true;  // fixes score to camera (like a ui)
-  	    this.infoBox.cameraOffset.setTo(600,100);   // moves score text
+  	    this.infoBox.cameraOffset.setTo(400,150);   // moves score text
   		this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
   	},
 
@@ -290,12 +290,14 @@ earthChant.World.prototype = {
   	// displays "fact box"/ box with info when item/enemy ran into
   	factBox: function(){
   		// button that will hide display
-  		this.closeFactButton = this.game.add.button(this.player.x, this.player.y,'buttons', 
+  		this.closeFactButton = this.game.add.button(this.player.x+50, this.player.y+150,'buttons', 
   				this.hideInfo,this, 2, 1, 0);
   		this.closeFactButton.scale.setTo(1, 0.5);
 		this.closeFactButton.anchor.set(0.5);  // sets anchor at center
   		
   		// displays info about item
+  		this.infoImg = this.game.add.sprite(this.closeFactButton.x,this.closeFactButton.y-250,'sproutImg');
+  		this.infoImg.scale.setTo(.4,.4);
   		this.info = this.game.add.text(this.closeFactButton.x, this.closeFactButton.y, this.infoText);  // TRY ADDING AN IMAGE OR SO
   		this.info.anchor.set(0.5);  // sets text at center
   		
@@ -304,6 +306,7 @@ earthChant.World.prototype = {
   	// hides the info box
   	hideInfo: function(){
   		this.info.kill();
+  		this.infoImg.kill();
   		this.closeFactButton.kill();
   		this.playerDirection = 0;
   		this.keyEnabled = true;
@@ -324,7 +327,7 @@ earthChant.World.prototype = {
   	},
   	
   	enemy2Hit: function(){
-  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic \n ecosystemssuch as fungi, algae and phytoplankton.';
+  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic \n ecosystems such as fungi, algae and phytoplankton.';
   		this.enemyBattle_sprite = 'Evil Tin Can';
   		this.enemyBattle_number = 2;
   		this.infoImage = 'tinCan'; 
@@ -376,11 +379,12 @@ earthChant.World.prototype = {
 	
 	// also telling Battle State what enemy the player will fight (only one enemy for now)
 	this.game.state.start('Battle', true, false, this.enemyBattle_sprite, this.infoText, this.infoImage); 
-	},
-
-  	//just some debugging info
-  render: function() {
-   	this.game.debug.cameraInfo(this.game.camera, 32, 32);
-    this.game.debug.spriteCoords(this.player, 32, 500);
 	}
 };
+
+//   	//just some debugging info
+//   render: function() {
+//    	this.game.debug.cameraInfo(this.game.camera, 32, 32);
+//     this.game.debug.spriteCoords(this.player, 32, 500);
+// 	}
+// };

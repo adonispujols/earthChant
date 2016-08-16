@@ -58,6 +58,7 @@ earthChant.Preload.prototype = {
 		this.game.load.image('landFill', 'assets/sprites/landfill.jpg');
 		this.game.load.image('airPollution', 'assets/sprites/airPollution.jpg');
 		this.game.load.image('placeHolder', 'assets/sprites/placeHolder.png');
+		this.game.load.image('sproutImg', 'assets/sprites/sproutImg.png');
 		},
 
 	create: function() {
