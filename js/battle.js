@@ -83,7 +83,8 @@ create: function(){
 	this.enemy;
 	this.enemyDead = false; 
 	this.enemyGroup; 
-	if (this.enemyBattle_sprite=='Evil Tin Can'){ // fixing awkward position of tin can
+	// fixing awkward position of tin can
+	if (this.enemyBattle_sprite=='Evil Tin Can'){
 		this.enemy_X = 200;
 		this.enemy_Y = 220;
 	} else {
@@ -123,7 +124,7 @@ create: function(){
 	// background box
 
 	this.dialogBox = this.game.add.sprite(0, 400, 'dialogBox');
-	
+
 	// changing start frame of enemies
 	if (this.enemyBattle_sprite=='Vile Plastic Bottle') { 
 		this.enemy.frame = 1;
@@ -179,7 +180,7 @@ create: function(){
 
 	//player's name
 	this.playerName = this.game.add.text(this.playerHealthBar.x-100,this.playerHealthBar.y-26,
-		'Player',{fill:'blue',font:'impact',fontSize:'45px'});
+		'Betty',{fill:'blue',font:'impact',fontSize:'45px'});
 	
 	// enemy health bar
 	this.enemyBarConfig = {
@@ -495,6 +496,8 @@ playersDead: function(){
 enemiesDead: function(){
 	this.enemyDead = true;  // this will be passed to world's init
 
+	this.infoBox.kill(); // hides info text
+	
 	// replacing now dead enemy sprite with another one for our animation
 	this.defeatedEnemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
 	this.defeatedEnemy.anchor.set(0.5);  // setting enemy at the cetner
@@ -504,8 +507,8 @@ enemiesDead: function(){
     this.game.add.tween(this.defeatedEnemy.scale).to( { x: 0, y: 0 }, 2000, Phaser.Easing.Linear.None, true);   // scaling tween
 	
     // simply victory text
-	this.victoryBox = this.game.add.text(630, 275, 
-	"YOU WIN!", {fill:'blue',font:'impact',fontSize:'100px'});
+	this.victoryBox = this.game.add.text(600, 500, 
+	"YOU WIN!", {fill:'blue',font:'impact',fontSize:'200px'});
     this.victoryBox.anchor.set(0.5); 
 
     //increases score by a hundred 
