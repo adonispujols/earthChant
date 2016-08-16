@@ -284,16 +284,18 @@ create: function(){
 factBox: function(){
 	this.hideHud();  //hides huds
 	
-	// displaying info
+	// displaying fact related to enemy
 	this.info = this.game.add.text(500, 300, this.infoText);  // TRY ADDING AN IMAGE OR SO
 	this.info.anchor.set(0.5);  // sets text at center 
-	this.game.time.events.add(Phaser.Timer.SECOND * this.transitionSpeed, this.hideInfo, this); //*2 increases amount of seconds
+	this.hideInfoButton = this.game.add.button( 500, 500,'buttons', 
+		this.hideInfo,this, 2, 1, 0);  // reates button hiding fact 
+	
 },
 
 //hides the fact box then shows info box and main menu options
 hideInfo: function(){
 	this.info.kill();   // hides facts
-	
+	this.hideInfoButton.kill();
 	//	showing items
 	this.showMainMenu();
 	// creates infoBox (facts)

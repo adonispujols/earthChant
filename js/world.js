@@ -273,7 +273,7 @@ earthChant.World.prototype = {
   	},
 
   	enemy3Hit: function(){
-  		this.infoText='Trash and pollution makes other animals homeless and usually makes them change locations';
+  		this.infoText='Plastic bags and other plastic garbage thrown into the ocean kill as many as 1 million sea creatures every year.';
   		this.enemyBattle_sprite = 'bottle';
   		this.enemyBattle_number = 3; 
   		this.loadBattle();  	
