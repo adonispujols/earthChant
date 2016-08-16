@@ -72,7 +72,7 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 70.5;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower = 7.5;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
@@ -85,11 +85,11 @@ create: function(){
 	this.enemyGroup; 
 	// fixing awkward position of tin can
 	if (this.enemyBattle_sprite=='Evil Tin Can'){
-		this.enemy_X = 200;
-		this.enemy_Y = 220;
+		this.enemy_X = 300;
+		this.enemy_Y = 280;
 	} else {
-		this.enemy_X = 180;  // starting x/y coords of enemies
-		this.enemy_Y = 220;	
+		this.enemy_X = 280;  // starting x/y coords of enemies
+		this.enemy_Y = 260;	
 	}
 	this.score = 0;     
 	this.dialogBox;    //i.e. blue background box
@@ -156,10 +156,16 @@ create: function(){
 	this.atkanim = this.player.animations.add('spin',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],15,false); // defining animation frames here for now
 	this.hitanim = this.player.animations.add('spin2',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
 	this.healanim = this.player.animations.add('spin3',[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],25,false); 
+	// different enemies have slightly different animations
+	if (this.enemyBattle_sprite=='Vile Plastic Bottle' || this.enemyBattle_sprite=='Dirty Trash Man' ) { 
+		this.atkanim2 = this.enemy.animations.add('spin4',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1],15,false); 
+		this.hitanim2 = this.enemy.animations.add('spin5',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1],25,false); 
+			this.enemy.frame = 1;
+	} else {
 	this.atkanim2 = this.enemy.animations.add('spin4',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],15,false); 
 	this.hitanim2 = this.enemy.animations.add('spin5',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],25,false); 
 	this.nullanim = this.enemy.animations.add('null',[0],1,false); 
-	
+	}
 	// creating and customizing our healthbars
 	// player health bar
 	this.playerBarConfig = {
@@ -186,7 +192,7 @@ create: function(){
 	this.enemyBarConfig = {
     width: this.enemy.maxHealth*7,
     height: 40,
-    x: this.enemy.x+150,
+    x: this.enemy.x+75,
     y: 100,
     bg: {
       color: '#651828'
