@@ -72,7 +72,7 @@ create: function(){
 	this.randomScale_min = 1; //sets the min/max of how random/varialbe the attack power of moves will be (i.e. the multiplier)
 	this.randomScale_max = 5;   
 	this.power; 			// var that controls power of attacks (changes depending on attack chosen)
-	this.attackPower = 7.5;  //specifices the exact power stat of attack (should be put in seperate list)
+	this.attackPower = 70.5;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
@@ -83,13 +83,12 @@ create: function(){
 	this.enemy;
 	this.enemyDead = false; 
 	this.enemyGroup; 
-	// fixing awkward position of tin can
-	if (this.enemyBattle_sprite=='Evil Tin Can'){
+	if (this.enemyBattle_sprite=='Evil Tin Can'){ // fixing awkward position of tin can
 		this.enemy_X = 200;
 		this.enemy_Y = 220;
 	} else {
 		this.enemy_X = 180;  // starting x/y coords of enemies
-		this.enemy_Y = 120;	
+		this.enemy_Y = 220;	
 	}
 	this.score = 0;     
 	this.dialogBox;    //i.e. blue background box
@@ -120,7 +119,17 @@ create: function(){
 	// adding (displaying) our sprites to the game
 	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
 	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
-	this.dialogBox = this.game.add.sprite(0, 400, 'dialogBox'); //background box
+	this.enemy.anchor.set(0.5);  // setting enemy at the cetner
+	// background box
+
+	this.dialogBox = this.game.add.sprite(0, 400, 'dialogBox');
+	
+	// changing start frame of enemies
+	if (this.enemyBattle_sprite=='Vile Plastic Bottle') { 
+		this.enemy.frame = 1;
+	} else if (this.enemyBattle_sprite=='Dirty Trash Man') {
+		this.enemy.frame = 1;
+	}
 
 	// creaitng players group
 	this.playerGroup = this.game.add.group();
@@ -485,12 +494,20 @@ playersDead: function(){
 // defines what happens when enemies are all dead (right before sending to worldscreen)
 enemiesDead: function(){
 	this.enemyDead = true;  // this will be passed to world's init
-	//shows image of dead enemy
-	this.deadEnemy = this.game.add.sprite(this.enemy_X,this.enemy_Y,'deadEnemy');
+
+	// replacing now dead enemy sprite with another one for our animation
+	this.defeatedEnemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
+	this.defeatedEnemy.anchor.set(0.5);  // setting enemy at the cetner
+
+	// 'tweens' allow for the angle and scale of our sprite to change over a period of time (miliseconds)
+    this.game.add.tween(this.defeatedEnemy).to( { angle: 2160 }, 2000, Phaser.Easing.Linear.None, true);   // rotating tween
+    this.game.add.tween(this.defeatedEnemy.scale).to( { x: 0, y: 0 }, 2000, Phaser.Easing.Linear.None, true);   // scaling tween
 	
+    // simply victory text
 	this.victoryBox = this.game.add.text(630, 275, 
-	"YOU WIN!", {fill:'blue',font:'impact',fontSize:'325px'});
+	"YOU WIN!", {fill:'blue',font:'impact',fontSize:'100px'});
     this.victoryBox.anchor.set(0.5); 
+
     //increases score by a hundred 
     this.score += 100; 
     //displays new info after set interval (* Seconds)
