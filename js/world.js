@@ -75,9 +75,36 @@ earthChant.World.prototype = {
 	this.map = this.game.add.sprite(0,0,'map');
 
 	// rudimentary collision boxes (col1= collison box 1)
-	this.col1 = this.game.add.sprite(265,120,'placeHolder');
-	this.col1.scale.setTo(.75,.1);
-	
+	this.col1 = this.game.add.sprite(280,120,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col1.scale.setTo(.60,.03);
+	this.game.physics.arcade.enable(this.col1);
+	this.col1.enableBody = true;
+	this.col1.body.immovable = true;
+	// this.col1.visible=false;
+	this.col2 = this.game.add.sprite(280,142,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col2.scale.setTo(.065,.75);
+	this.game.physics.arcade.enable(this.col2);
+	this.col2.enableBody = true;
+	this.col2.body.immovable = true;
+	// this.col1.visible=false;
+	this.col3 = this.game.add.sprite(546,124,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col3.scale.setTo(.07,.78);
+	this.game.physics.arcade.enable(this.col3);
+	this.col3.enableBody = true;
+	this.col3.body.immovable = true;
+	// this.col1.visible=false4
+	this.col4 = this.game.add.sprite(315,401,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col4.scale.setTo(.15,.06);
+	this.game.physics.arcade.enable(this.col4);
+	this.col4.enableBody = true;
+	this.col4.body.immovable = true;
+	// this.col1.visible=false;
+	this.col5 = this.game.add.sprite(450,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col5.scale.setTo(.2,.05);
+	this.game.physics.arcade.enable(this.col5);
+	this.col5.enableBody = true;
+	this.col5.body.immovable = true;
+	// this.col1.visible=false;
 
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apparently)
 	// setting up variables for objects
@@ -187,12 +214,21 @@ earthChant.World.prototype = {
   },
 
   update: function() {
+  	// collision with invisible boxes
+	this.game.physics.arcade.collide(this.player, this.col1, null); 
+	this.game.physics.arcade.collide(this.player, this.col2, null); 
+	this.game.physics.arcade.collide(this.player, this.col3, null); 
+	this.game.physics.arcade.collide(this.player, this.col4, null); 
+	this.game.physics.arcade.collide(this.player, this.col5, null); 
+
+
 	// indicates waht enemy was ran into (or "hit")
 	// when adding new enemies, create new ENEMY<enemy number>
 	this.game.physics.arcade.overlap(this.player, this.enemy1, this.enemy1Hit, null ,this); // FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
 	this.game.physics.arcade.overlap(this.player, this.enemy2, this.enemy2Hit, null ,this);
 	this.game.physics.arcade.overlap(this.player, this.enemy3, this.enemy3Hit, null ,this);
 	this.game.physics.arcade.overlap(this.player, this.enemy4, this.enemy4Hit, null ,this);
+	
 	// when character is over item, "collect" it
 	this.game.physics.arcade.overlap(this.player, this.item, this.collectItem, null ,this);  // FIGURE OUT HOW TO OPTIMIZE THIS CODE (passing enemyBattle parameter here?)
 
