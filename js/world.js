@@ -159,7 +159,7 @@ earthChant.World.prototype = {
 	this.game.camera.follow(this.player);
 
 	// walk animation for player (key, list of frames, framerate,loop t/f
-	// left= walk left, right =walk right, etc)
+	// left= walk left, right = walk right, etc)
 	this.player.animations.add('stop',[0], true);
 	this.player.animations.add('down', [0,4,8,12],10,true);
 	this.player.animations.add('left', [1,5,9,13],10,true);
