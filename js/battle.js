@@ -170,7 +170,7 @@ create: function(){
 	} else {
 	this.atkanim2 = this.enemy.animations.add('spin4',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],15,false); 
 	this.hitanim2 = this.enemy.animations.add('spin5',[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],25,false); 
-	this.nullanim = this.enemy.animations.add('null',[0],1,false); 
+	this.nullanim = this.enemy.animations.add('null',[0],10,false); 
 	}
 	// creating and customizing our healthbars
 	// player health bar
@@ -381,10 +381,10 @@ showAttackMenu: function(){
 		this.player.animations.play('left');
 		// fixing awakward attack positioning for the Smog
 		if (this.enemyBattle_sprite=='Poisonous Smog'){
-			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 30 }, 700, Phaser.Easing.Linear.None, true);
+			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 30 }, 600, Phaser.Easing.Linear.None, true);
 
 		} else{
-			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 110 }, 700, Phaser.Easing.Linear.None, true);
+			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 110 }, 600, Phaser.Easing.Linear.None, true);
 		}
 		// this.atkanim.play();         //plays animation
 		//should add an conditional (if hit)
@@ -491,7 +491,7 @@ delayEnemyTurn: function(){
 enemyTurn: function(){
 	// this.atkanim2.play(); 
 	if (this.enemyBattle_sprite=='Poisonous Smog'){
-		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 300}, 600, Phaser.Easing.Linear.None, true);
+		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 390}, 600, Phaser.Easing.Linear.None, true);
 
 	} else{
 		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 345 }, 600, Phaser.Easing.Linear.None, true);
@@ -514,9 +514,9 @@ hitPlayer: function(){
 	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
 	this.game.add.tween(this.enemy).to( {angle: 0}, 100, Phaser.Easing.Linear.None, true);
 	if (this.enemyBattle_sprite=='Poisonous Smog'){
-		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 300}, 500, Phaser.Easing.Linear.None, true);
+		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 390}, 400, Phaser.Easing.Linear.None, true);
 	} else{
-		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 345 }, 500, Phaser.Easing.Linear.None, true);
+		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 345 }, 400, Phaser.Easing.Linear.None, true);
 	}
 	//when all players die, play playersDead(), or else run playerTurn
 	if (this.playerGroup.countLiving()==0){
