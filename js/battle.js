@@ -433,16 +433,25 @@ showpotionsOptions: function(){
 	potionClicked: function() {
 		this.hideHud();
 		// should set regen to potion stat
-		this.healanim.play();   //play heal animation
-		this.healanim.onComplete.add(this.healPlayer, this);
+		this.player.heal(this.potionRegen);
+		// health bar adjusts to percentage of health left
+		this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
+	
+		this.healanim1 = this.game.add.tween(this.player.scale).to( { x: 5, y: 5 }, 300, Phaser.Easing.Linear.None, true);
+		this.healanim1.onComplete.add(this.healPlayer, this);
 	},
 
 	//potions button
 	potion1Clicked: function() {
 		this.hideHud();
 		// should set regen to potion stat
-		this.healanim.play();   //play heal animation
-		this.healanim.onComplete.add(this.healPlayer, this);
+		this.player.heal(this.potionRegen);
+		// health bar adjusts to percentage of health left
+		this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
+	
+		// this.healanim.play();   //play heal animation
+		this.healanim1 = this.game.add.tween(this.player.scale).to( { x: 5, y: 5 }, 300, Phaser.Easing.Linear.None, true);
+		this.healanim1.onComplete.add(this.healPlayer, this);
 	},
 
 // shows item submenu, hides mainmenu
@@ -472,10 +481,8 @@ hideHud: function(){
 // heals player and switches to enemy turn
 healPlayer: function(){
 	this.nullanim.play();    //trying to fix scope error / setpercent not defined bug
-	this.player.heal(this.potionRegen);
-	// health bar adjusts to percentage of health left
-	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
-	this.nullanim.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
+	this.healanim2 = this.game.add.tween(this.player.scale).to( { x: 3, y: 3 }, 300, Phaser.Easing.Linear.None, true);
+	this.healanim2.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
 },
 
 //add a slight delay before enemy does anything
