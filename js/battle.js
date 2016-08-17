@@ -384,7 +384,7 @@ showAttackMenu: function(){
 			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 30 }, 700, Phaser.Easing.Linear.None, true);
 
 		} else{
-			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 90 }, 700, Phaser.Easing.Linear.None, true);
+			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 110 }, 700, Phaser.Easing.Linear.None, true);
 		}
 		// this.atkanim.play();         //plays animation
 		//should add an conditional (if hit)
@@ -393,7 +393,7 @@ showAttackMenu: function(){
 
 	attackanim: function(){
 		this.player.animations.stop();
-		this.actualattack = this.game.add.tween(this.player).to( { angle: 30}, 100, Phaser.Easing.Linear.None, true);
+		this.actualattack = this.game.add.tween(this.player).to( { angle: 45}, 100, Phaser.Easing.Linear.None, true);
 		this.actualattack.onComplete.add(this.hitEnemy, this); //when atkanim is finished run hitEnemy function
 	},
 
@@ -402,11 +402,11 @@ hitEnemy: function(){
 	this.hitanim2.play(); 
 	// walking back
 	this.player.animations.play('right');
-	this.game.add.tween(this.player).to( {angle: 0}, 300, Phaser.Easing.Linear.None, true);
+	this.game.add.tween(this.player).to( {angle: 0}, 100, Phaser.Easing.Linear.None, true);
 	if (this.enemyBattle_sprite=='Poisonous Smog'){
 		this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 30 }, 600, Phaser.Easing.Linear.None, true);
 	} else{
-		this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 90 }, 600, Phaser.Easing.Linear.None, true);
+		this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 110 }, 600, Phaser.Easing.Linear.None, true);
 	}
 	// this.moveback.onComplete.add(this.delayEnemyTurn, this); //when atkanim is finished run hitEnemy function
 	
@@ -491,10 +491,10 @@ delayEnemyTurn: function(){
 enemyTurn: function(){
 	// this.atkanim2.play(); 
 	if (this.enemyBattle_sprite=='Poisonous Smog'){
-		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 365}, 600, Phaser.Easing.Linear.None, true);
+		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 300}, 600, Phaser.Easing.Linear.None, true);
 
 	} else{
-		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 365 }, 600, Phaser.Easing.Linear.None, true);
+		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 345 }, 600, Phaser.Easing.Linear.None, true);
 	}
 	this.power = (this.attackPower2*this.game.rnd.integerInRange(this.randomScale_min, this.randomScale_max));    //still using same power formula 
 	//again, add an conditional (if hit)
@@ -502,7 +502,7 @@ enemyTurn: function(){
 },
 
 slightkick: function(){
-	this.slightKick = this.game.add.tween(this.enemy).to( {angle: 30}, 200, Phaser.Easing.Linear.None, true);
+	this.slightKick = this.game.add.tween(this.enemy).to( {angle: 45}, 100, Phaser.Easing.Linear.None, true);
 	this.slightKick.onComplete.add(this.hitPlayer, this); 
 
 },
@@ -512,11 +512,11 @@ hitPlayer: function(){
 	this.hitanim.play();
 	this.player.damage(this.power);
 	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
-	this.game.add.tween(this.enemy).to( {angle: 0}, 300, Phaser.Easing.Linear.None, true);
+	this.game.add.tween(this.enemy).to( {angle: 0}, 100, Phaser.Easing.Linear.None, true);
 	if (this.enemyBattle_sprite=='Poisonous Smog'){
-		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 365}, 500, Phaser.Easing.Linear.None, true);
+		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 300}, 500, Phaser.Easing.Linear.None, true);
 	} else{
-		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 365 }, 500, Phaser.Easing.Linear.None, true);
+		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 345 }, 500, Phaser.Easing.Linear.None, true);
 	}
 	//when all players die, play playersDead(), or else run playerTurn
 	if (this.playerGroup.countLiving()==0){
