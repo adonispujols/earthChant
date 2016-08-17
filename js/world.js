@@ -218,9 +218,14 @@ earthChant.World.prototype = {
 	this.player.animations.add('left', [1,5,9,13],10,true);
 	this.player.animations.add('up', [2,6,10,14],10,true);
 	this.player.animations.add('right', [3,7,11,15],10,true);
+	this.tapped = false;
+	//getting it on phone
+	this.game.input.onDown.add(this.onTap, this);
+
   },
 
   update: function() {
+  	// trying to make it
   	// collision with invisible boxes
 	this.game.physics.arcade.collide(this.player, this.col1, null); 
 	this.game.physics.arcade.collide(this.player, this.col2, null); 
@@ -242,28 +247,33 @@ earthChant.World.prototype = {
 
 	// creating movement for player (she )
 	// reseting velocity x and y to zero
-	this.player.body.velocity.x = 0;
-	this.player.body.velocity.y = 0;
-	
+	if (!this.tapped){
+		this.player.body.velocity.x = 0;
+		this.player.body.velocity.y = 0;
+	}
 	// store direction player is facing (the frame for our .stop() function)
 	// only does this if key is enabled
 	if (this.keyEnabled){
 		if (this.cursors.down.isDown) {
+			this.tapped = false;
 			this.player.body.velocity.y = this.player_Y_speed;
 			this.player.animations.play('down');
 			this.playerDirection = 0;
 		} 
 		else if (this.cursors.left.isDown) {
+			this.tapped = false;
 			this.player.body.velocity.x = -this.player_X_speed;
 			this.player.animations.play('left');
 			this.playerDirection = 1;
 		} 
 		else if (this.cursors.up.isDown) {
+			this.tapped = false;
 			this.player.body.velocity.y = -this.player_Y_speed;
 			this.player.animations.play('up');
 			this.playerDirection = 2;
 		} 
 		else if (this.cursors.right.isDown) {
+			this.tapped = false;
 			this.player.body.velocity.x = this.player_X_speed;
 			this.player.animations.play('right');
 			this.playerDirection = 3;
@@ -274,6 +284,10 @@ earthChant.World.prototype = {
 			this.player.frame = this.playerDirection;
 		}
 	}
+  	},
+  	onTap: function(){
+  		this.tapped = true;
+  		this.game.physics.arcade.moveToPointer(this.player, 100);
   	},
   	// creates our 'info box' or text above game with facts
   	create_infoBox: function(){
