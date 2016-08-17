@@ -287,7 +287,7 @@ earthChant.World.prototype = {
   	},
   	onTap: function(){
   		this.tapped = true;
-  		this.game.physics.arcade.moveToPointer(this.player, 100);
+  		this.game.physics.arcade.moveToPointer(this.player, 200);
   	},
   	// creates our 'info box' or text above game with facts
   	create_infoBox: function(){

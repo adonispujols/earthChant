@@ -97,7 +97,7 @@ create: function(){
 	this.deadBox;
 	this.infoBox;
 	//list of deforestation info
-	this.infolist = ["About half of world’s timber \n and up to 70% of paper is consumed by \n Europe, United States and \n Japan alone.","25% of cancers \n fighting organisms \n are found in the amazon.","20% of the world’s oxygen \n is produced in the \n Amazon forest.","The rate of deforestation equals \n to loss of 20 football fields \n every minute."]; 
+	this.infolist = ["About half of world’s timber and up to 70% of paper is consumed by\nEurope, United States and Japan alone.","25% of cancers fighting organisms are found in the amazon.","20% of the world’s oxygen is produced in the Amazon forest.","The rate of deforestation equals to loss of 20 football fields every minute."]; 
 	this.mainMenu; 	// SHOULD FOCUS MORE ON POLLUTION NOW!!!
 	this.attackOptions;
 	this.backButton;
@@ -354,8 +354,8 @@ hideInfo: function(){
 
 create_infoBox: function(){
 	this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
-	this.infoBox = this.game.add.text(this.game.world.width-325, 250, 
-	'Did you know?\n' + this.infolist[this.randInfo]);
+	this.infoBox = this.game.add.text(this.game.world.width-325, 50, 
+	this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
     //displays new info after set interval
 	this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
