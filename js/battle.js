@@ -75,11 +75,10 @@ create: function(){
 	this.attackPower = 7.5;  //specifices the exact power stat of attack (should be put in seperate list)
 	this.attackPower2 = 6;
 	this.potionRegen = 30;     //amount of health gained 
-	this.enemyDelayTime = .75;  // amount of seconds between enemy hti and attack animations
+	this.enemyDelayTime = .25;  // amount of seconds between enemy hti and attack animations
 	this.player;
-	this.playerGroup;
-	this.player_X = 775;  // starting x/y coords of player
-	this.player_Y = 220;
+	this.player_X = 785;  // starting x/y coords of player
+	this.player_Y = 260;
 	this.enemy;
 	this.enemyDead = false; 
 	this.enemyGroup; 
@@ -117,14 +116,21 @@ create: function(){
 	//  DO NOT NEED TO SET UP VARIABLE FOR EACH OBJECT (apprently)
 
 
+
 	// adding (displaying) our sprites to the game
 	this.player = this.game.add.sprite(this.player_X, this.player_Y,'betty');
+	this.player.anchor.set(0.5);
 	this.enemy = this.game.add.sprite(this.enemy_X, this.enemy_Y, this.enemyBattle_sprite);
 	this.enemy.anchor.set(0.5);  // setting enemy at the cetner
 	// background box
 
 	this.dialogBox = this.game.add.sprite(0, 400, 'dialogBox');
 
+	// setting up animations for betty
+	this.player.animations.add('left', [1,5,9,13],10,true);
+	this.player.animations.add('right', [3,7,11,15],10,true);
+	
+	this.playerGroup;
 	// changing start frame of enemies
 	if (this.enemyBattle_sprite=='Vile Plastic Bottle') { 
 		this.enemy.frame = 1;
@@ -349,7 +355,7 @@ hideInfo: function(){
 create_infoBox: function(){
 	this.randInfo = this.game.rnd.integerInRange(0,this.infolist.length); //chooses random index from list using Phaser's randomint generator
 	this.infoBox = this.game.add.text(this.game.world.width-325, 250, 
-	this.infolist[this.randInfo]);
+	'Did you know?\n' + this.infolist[this.randInfo]);
     this.infoBox.anchor.set(0.5);   // places infoBox at center
     //displays new info after set interval
 	this.game.time.events.loop(Phaser.Timer.SECOND * 4, this.show_infoBox, this); //*2 increases amount of seconds
@@ -372,10 +378,40 @@ showAttackMenu: function(){
 	attackClicked: function(){
 		this.hideHud();
 		this.power = (this.attackPower*this.game.rnd.integerInRange(this.randomScale_min, this.randomScale_max));   //sets power of attack according to power of move * random multipler
-		this.atkanim.play();         //plays animation
+		this.player.animations.play('left');
+		this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 90 }, 700, Phaser.Easing.Linear.None, true);
+		// this.atkanim.play();         //plays animation
 		//should add an conditional (if hit)
-		this.atkanim.onComplete.add(this.hitEnemy, this); //when atkanim is finished run hitEnemy function
+		this.moveforward.onComplete.add(this.attackanim, this); //when atkanim is finished run hitEnemy function
 	},
+
+	attackanim: function(){
+		this.player.animations.stop();
+		this.actualattack = this.game.add.tween(this.player).to( { angle: 30}, 100, Phaser.Easing.Linear.None, true);
+		this.actualattack.onComplete.add(this.hitEnemy, this); //when atkanim is finished run hitEnemy function
+	},
+
+//deals damage to enemy when hit and switches to enemy turn
+hitEnemy: function(){  
+	this.hitanim2.play(); 
+	// walking back
+	this.player.animations.play('right');
+	this.game.add.tween(this.player).to( {angle: 0}, 300, Phaser.Easing.Linear.None, true);
+	this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 90 }, 600, Phaser.Easing.Linear.None, true);
+	// this.moveback.onComplete.add(this.delayEnemyTurn, this); //when atkanim is finished run hitEnemy function
+	
+	this.enemy.damage(this.power);
+	// health bar adjusts to percentage of health left
+	this.enemyHealthBar.setPercent(100*this.enemy.health/this.enemy.maxHealth);
+	//when all enemes die, play enemiesDead(), or else run delayEnemyTurn
+	if (this.enemyGroup.countLiving()==0){ 
+		this.enemiesDead();
+	}
+	else{
+	this.hitanim2.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
+	}
+},
+
 
 //Potions button
 showpotionsOptions: function(){
@@ -432,24 +468,13 @@ healPlayer: function(){
 	this.nullanim.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
 },
 
-//deals damage to enemy when hit and switches to enemy turn
-hitEnemy: function(){  
-	this.hitanim2.play(); 
-	this.enemy.damage(this.power);
-	// health bar adjusts to percentage of health left
-	this.enemyHealthBar.setPercent(100*this.enemy.health/this.enemy.maxHealth);
-	//when all enemes die, play enemiesDead(), or else run delayEnemyTurn
-	if (this.enemyGroup.countLiving()==0){ 
-		this.enemiesDead();
-	}
-	else{
-	this.hitanim2.onComplete.add(this.delayEnemyTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
-	}
-},
-
 //add a slight delay before enemy does anything
 delayEnemyTurn: function(){
 	this.game.time.events.add(Phaser.Timer.SECOND*this.enemyDelayTime, this.enemyTurn, this);
+	//stops character
+	this.player.animations.stop();
+	// resets character animation
+	this.player.frame = 0;
 },
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
@@ -501,7 +526,8 @@ playersDead: function(){
 // defines what happens when enemies are all dead (right before sending to worldscreen)
 enemiesDead: function(){
 	this.enemyDead = true;  // this will be passed to world's init
-
+	this.player.animations.stop();
+	this.player.frame = 0;
 	this.infoBox.kill(); // hides info text
 	
 	// replacing now dead enemy sprite with another one for our animation
@@ -509,7 +535,7 @@ enemiesDead: function(){
 	this.defeatedEnemy.anchor.set(0.5);  // setting enemy at the cetner
 
 	// 'tweens' allow for the angle and scale of our sprite to change over a period of time (miliseconds)
-    this.game.add.tween(this.defeatedEnemy).to( { angle: 2160 }, 2000, Phaser.Easing.Linear.None, true);   // rotating tween
+    this.game.add.tween(this.defeatedEnemy).to( { angle: 1080 }, 2000, Phaser.Easing.Linear.None, true);   // rotating tween
     this.game.add.tween(this.defeatedEnemy.scale).to( { x: 0, y: 0 }, 2000, Phaser.Easing.Linear.None, true);   // scaling tween
 	
     // simply victory text

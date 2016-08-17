@@ -337,7 +337,7 @@ earthChant.World.prototype = {
   	},
   	
   	enemy2Hit: function(){
-  		this.infoText='Tin cans are known to cause a great deal of harm to aquatic \n ecosystems such as fungi, algae and phytoplankton.';
+  		this.infoText='Tin cans cause a great deal of harm to aquatic \n ecosystems, as they are very toxic to fungi and algae.';
   		this.enemyBattle_sprite = 'Evil Tin Can';
   		this.enemyBattle_number = 2;
   		this.infoImage = 'tinCan'; 
