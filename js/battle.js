@@ -77,7 +77,7 @@ create: function(){
 	this.potionRegen = 30;     //amount of health gained 
 	this.enemyDelayTime = .25;  // amount of seconds between enemy hti and attack animations
 	this.player;
-	this.player_X = 785;  // starting x/y coords of player
+	this.player_X = 795;  // starting x/y coords of player
 	this.player_Y = 260;
 	this.enemy;
 	this.enemyDead = false; 
@@ -379,7 +379,13 @@ showAttackMenu: function(){
 		this.hideHud();
 		this.power = (this.attackPower*this.game.rnd.integerInRange(this.randomScale_min, this.randomScale_max));   //sets power of attack according to power of move * random multipler
 		this.player.animations.play('left');
-		this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 90 }, 700, Phaser.Easing.Linear.None, true);
+		// fixing awakward attack positioning for the Smog
+		if (this.enemyBattle_sprite=='Poisonous Smog'){
+			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 30 }, 700, Phaser.Easing.Linear.None, true);
+
+		} else{
+			this.moveforward = this.game.add.tween(this.player).to( { x: this.player.x - this.enemy.x - 90 }, 700, Phaser.Easing.Linear.None, true);
+		}
 		// this.atkanim.play();         //plays animation
 		//should add an conditional (if hit)
 		this.moveforward.onComplete.add(this.attackanim, this); //when atkanim is finished run hitEnemy function
@@ -397,7 +403,11 @@ hitEnemy: function(){
 	// walking back
 	this.player.animations.play('right');
 	this.game.add.tween(this.player).to( {angle: 0}, 300, Phaser.Easing.Linear.None, true);
-	this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 90 }, 600, Phaser.Easing.Linear.None, true);
+	if (this.enemyBattle_sprite=='Poisonous Smog'){
+		this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 30 }, 600, Phaser.Easing.Linear.None, true);
+	} else{
+		this.moveback = this.game.add.tween(this.player).to( { x: this.player.x + this.enemy.x + 90 }, 600, Phaser.Easing.Linear.None, true);
+	}
 	// this.moveback.onComplete.add(this.delayEnemyTurn, this); //when atkanim is finished run hitEnemy function
 	
 	this.enemy.damage(this.power);
@@ -479,10 +489,22 @@ delayEnemyTurn: function(){
 
 // defines what enemy does in their turn (very basic ai here, they literally just attack)
 enemyTurn: function(){
-	this.atkanim2.play();  
+	// this.atkanim2.play(); 
+	if (this.enemyBattle_sprite=='Poisonous Smog'){
+		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 365}, 600, Phaser.Easing.Linear.None, true);
+
+	} else{
+		this.moveforwardenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x + this.player.x - 365 }, 600, Phaser.Easing.Linear.None, true);
+	}
 	this.power = (this.attackPower2*this.game.rnd.integerInRange(this.randomScale_min, this.randomScale_max));    //still using same power formula 
 	//again, add an conditional (if hit)
-	this.atkanim2.onComplete.add(this.hitPlayer, this); 
+	this.moveforwardenim.onComplete.add(this.slightkick, this); 
+},
+
+slightkick: function(){
+	this.slightKick = this.game.add.tween(this.enemy).to( {angle: 30}, 200, Phaser.Easing.Linear.None, true);
+	this.slightKick.onComplete.add(this.hitPlayer, this); 
+
 },
 
 // deals damage to player when hit and switches to player turn
@@ -490,6 +512,12 @@ hitPlayer: function(){
 	this.hitanim.play();
 	this.player.damage(this.power);
 	this.playerHealthBar.setPercent(100*this.player.health/this.player.maxHealth);
+	this.game.add.tween(this.enemy).to( {angle: 0}, 300, Phaser.Easing.Linear.None, true);
+	if (this.enemyBattle_sprite=='Poisonous Smog'){
+		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 365}, 500, Phaser.Easing.Linear.None, true);
+	} else{
+		this.movebackenim = this.game.add.tween(this.enemy).to( { x: this.enemy.x - this.player.x + 365 }, 500, Phaser.Easing.Linear.None, true);
+	}
 	//when all players die, play playersDead(), or else run playerTurn
 	if (this.playerGroup.countLiving()==0){
 		//add "dead player" sprite 
@@ -498,6 +526,8 @@ hitPlayer: function(){
 	else{
 		this.playerTurn();   // play player turn
 	}
+	// this.movebackenim.onComplete.add(this.playerTurn, this);
+	this.hitanim.onComplete.add(this.playerTurn, this); // SCOPE ERROR: OLD BUG (before I had a new anim to use with .onComp(function,this)) fixed infinite loop bug (using new .onComplete while the first .onComplete's function is running) by using first sprite.onComplete)
 },
 
 // shows options again

@@ -93,13 +93,13 @@ earthChant.World.prototype = {
 	this.col3.enableBody = true;
 	this.col3.body.immovable = true;
 	this.col3.renderable = false;
-	this.col4 = this.game.add.sprite(315,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col4 = this.game.add.sprite(307,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col4.scale.setTo(.15,.06);
 	this.game.physics.arcade.enable(this.col4);
 	this.col4.enableBody = true;
 	this.col4.body.immovable = true;
 	this.col4.renderable = false;
-	this.col5 = this.game.add.sprite(450,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
+	this.col5 = this.game.add.sprite(453,400,'placeHolder');  //EXTREMELY INEFFICIENT. CAN YOU ATLEAST USE GROuP COLLISION
 	this.col5.scale.setTo(.2,.05);
 	this.game.physics.arcade.enable(this.col5);
 	this.col5.enableBody = true;
