@@ -1,7 +1,7 @@
 var earthChant = earthChant || {}; // calling from base game
 //NOTES NOTES NOTES NOTES:
 // FOR REUSE (essential components of (turn based)RPG game):
-// TURN INTO MINI (turn based) RPG ENGINE (easily manipulable)
+// TURN INTO MINI ( turn based) RPG ENGINE (easily manipulable)
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
