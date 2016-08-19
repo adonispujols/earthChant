@@ -5,7 +5,7 @@ var earthChant = earthChant || {}; // calling from base game
 	// BE MORE EFFICIENT (more phaser constructors, variables, etc..)
 		// USE JSON ++ PHASER'S GROUP CONSTRUCTOR (pass objects and entire properties through parameters) 
 	// WRITE DOCUMENTAION ON CODE 
-		// How to add/manipulate components (i.e. 'Add another enemy to scene by doing...')
+		// How to add/manipulate components ( i.e. 'Add another enemy to scene by doing...')
 	// UNIVERSAL PLAYER HP, EXP, etc.. (char properties) 
 	// NEED TEXT NEED TEXT NEED NEED TEXT NEED TEXT!!
 	// NEED SOUND NEED SOUND NEED SOUND NEED SOUND!!
