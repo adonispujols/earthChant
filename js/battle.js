@@ -8,7 +8,7 @@ var earthChant = earthChant || {}; // calling from base game
 		// How to add/manipulate components ( i.e. 'Add another enemy to scene by doing...')
 	// UNIVERSAL PLAYER HP, EXP, etc.. (char properties) 
 	// NEED TEXT NEED TEXT NEED NEED TEXT NEED TEXT!!
-	// NEED SOUND NEED SOUND NEED SOUND NEED SOUND!!
+	// NEED SOUND NEED SOUNDNEED SOUND NEED SOUND!!
 	// NEED ITEMS TOO! (weapons, potions, etc...)
 		// ADD RANDOMNESS TO MOVES/TURNS SO BATTLES DON'T TURN OUT HTE SAME!
 			// MAKE ENEMIES VARY IN DIFFICULTY
